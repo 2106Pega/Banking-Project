@@ -1,9 +1,14 @@
 package bank;
 
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import model.*;
+import dao.*;
 
 public class BankPortal {
 	private static User loggedOnUser;
+	private static BankDAO dao = new BankDAOImpl();
 	static Scanner in = new Scanner(System.in);
 	
 	static void signOn() {
@@ -71,6 +76,8 @@ public class BankPortal {
 					createNewUser();
 					break;
 				case 3:
+					ArrayList<Client> clientList = dao.getAllClients();
+					System.out.println(clientList.size()); // should be 1 for now
 					running = false;
 					in.close();
 					break;

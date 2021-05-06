@@ -1,12 +1,12 @@
-package bank;
+package model;
 
 public abstract class User {
 	int userId;
 	int username;
 	int password;
 	
-	abstract void printOptions();
-	abstract int processChoice(int choice);
+	public abstract void printOptions();
+	public abstract int processChoice(int choice);
 	
 	public int getUserId() {
 		return userId;

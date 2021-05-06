@@ -1,4 +1,4 @@
-package bank;
+package model;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,17 @@ public class Client extends User {
 	String firstName;
 	String lastName;
 	private ArrayList<Account> accounts;
+	
+	public Client(String fName, String lName) {
+		this.firstName = fName;
+		this.lastName = lName;
+	}
+	
+	public Client(String fName, String lName, ArrayList<Account> accts) {
+		this.firstName = fName;
+		this.lastName = lName;
+		this.accounts = accts;
+	}
 	
 	@Override
 	void printOptions() {
