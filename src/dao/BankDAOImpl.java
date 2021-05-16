@@ -37,7 +37,7 @@ public class BankDAOImpl implements BankDAO {
 			statement = connection.prepareStatement(sql);
 			ResultSet allClients= statement.executeQuery();
 			while(allClients.next()) {
-				Client newClient = new Client(allClients.getString("firstname"),
+				Client newClient = new Client(allClients.getInt("id"), allClients.getString("firstname"),
 						allClients.getString("lastname"));
 				clients.add(newClient);
 			}
@@ -60,6 +60,41 @@ public class BankDAOImpl implements BankDAO {
 		} catch(SQLException ex ) {
 			ex.printStackTrace();
 		}
+	}
+
+	@Override
+	public User verifyUser(String uname, String passwd, int type) {
+		User foundUser = null;
+		String sql = "";
+		switch(type) {
+		case User.EMPLOYEE_TYPE:
+			sql = "SELECT * FROM employees WHERE username = '%s' AND password = '%s'";
+			sql = String.format(sql, uname, passwd);
+		case User.CLIENT_TYPE: default: //If type is not valid, default to user table
+			sql = "SELECT * FROM clients WHERE username = '%s' AND password = '%s'";
+			sql = String.format(sql, uname, passwd);
+			break;
+		}
+		
+		try {
+			connection = DAOUtil.getConnection();	
+			statement = connection.prepareStatement(sql);
+			ResultSet rs = statement.executeQuery();
+			while(rs.next()) {
+				switch(type) {
+				case User.EMPLOYEE_TYPE:
+					foundUser = new Employee(rs.getInt("id"), rs.getString("username"), rs.getString("password"));
+					break;
+				case User.CLIENT_TYPE: default:
+					foundUser = new Client(rs.getInt("id"), rs.getString("username"), rs.getString("password"));
+				}
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}finally {
+			closeResources(); 
+		}
+		return foundUser;
 	}
 	
 }

@@ -7,13 +7,18 @@ import model.*;
 import dao.*;
 
 public class BankPortal {
-	private static User loggedOnUser;
+	private static User loggedOnUser = null;
 	private static BankDAO dao = new BankDAOImpl();
 	static Scanner in = new Scanner(System.in);
 	
 	static void signOn() {
 		String uname;
 		String passwd;
+		int type;
+		
+		System.out.print("Please enter your account type (1. Client; 2. Employee): ");
+		type = in.nextInt();
+		in.nextLine();
 		
 		System.out.print("Please enter your username: ");
 		uname = in.nextLine();
@@ -21,7 +26,13 @@ public class BankPortal {
 		System.out.print("Please enter your password: ");
 		passwd = in.nextLine();
 		
-		System.out.println("TODO: working user login");
+		loggedOnUser = dao.verifyUser(uname, passwd, type);
+		if (loggedOnUser != null) {
+			System.out.println("Welcome, " + loggedOnUser.getUsername());
+			userMenu();
+		} else {
+			System.out.println("Sorry, username or password is wrong!");
+		}
 	}
 	
 	static void createNewUser() {
@@ -30,7 +41,7 @@ public class BankPortal {
 		int type;
 		boolean setPasswd = false;
 		
-		System.out.print("Please enter your account type (1. user; 2. employee) :");
+		System.out.print("Please enter your account type (1. Client; 2. Employee): ");
 		type = in.nextInt();
 		in.nextLine();
 		
@@ -76,8 +87,6 @@ public class BankPortal {
 					createNewUser();
 					break;
 				case 3:
-					ArrayList<Client> clientList = dao.getAllClients();
-					System.out.println(clientList.size()); // should be 1 for now
 					running = false;
 					in.close();
 					break;

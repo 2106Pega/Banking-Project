@@ -2,8 +2,13 @@ package model;
 
 public abstract class User {
 	int userId;
-	int username;
-	int password;
+	String username;
+	String password;
+	String firstName;
+	String lastName;
+	
+	public static final int CLIENT_TYPE = 1;
+	public static final int EMPLOYEE_TYPE = 2;
 	
 	public abstract void printOptions();
 	public abstract int processChoice(int choice);
@@ -11,19 +16,7 @@ public abstract class User {
 	public int getUserId() {
 		return userId;
 	}
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-	public int getUsername() {
+	public String getUsername() {
 		return username;
-	}
-	public void setUsername(int username) {
-		this.username = username;
-	}
-	public int getPassword() {
-		return password;
-	}
-	public void setPassword(int password) {
-		this.password = password;
 	}
 }
