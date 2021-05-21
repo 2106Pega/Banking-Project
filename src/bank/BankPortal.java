@@ -70,6 +70,7 @@ public class BankPortal {
 		while (running) {
 			loggedOnUser.printOptions();
 			loggedOnUser.processChoice(in.nextInt());
+			in.nextLine();
 		}
 	}
 	

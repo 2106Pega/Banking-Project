@@ -4,8 +4,6 @@ public abstract class User {
 	int userId;
 	String username;
 	String password;
-	String firstName;
-	String lastName;
 	
 	public static final int CLIENT_TYPE = 1;
 	public static final int EMPLOYEE_TYPE = 2;

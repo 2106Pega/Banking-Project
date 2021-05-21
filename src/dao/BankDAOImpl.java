@@ -18,14 +18,44 @@ public class BankDAOImpl implements BankDAO {
 
 	@Override
 	public ArrayList<Message> getMessageInbox(int recipID) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Message> messages = new ArrayList<Message>(); 
+		try {
+			connection = DAOUtil.getConnection();
+			String sql = "SELECT * FROM messages WHERE recipient_id = '%d'";
+			sql = String.format(sql, recipID);
+			statement = connection.prepareStatement(sql);
+			ResultSet allMessages = statement.executeQuery();
+			while(allMessages.next()) {
+				Message msg = new Message(allMessages.getInt("message_id"), allMessages.getInt("sender_id"), allMessages.getInt("recipient_id"), allMessages.getDouble("balance"));
+				messages.add(msg);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}finally {
+			closeResources(); 
+		}
+		return messages;
 	}
 
 	@Override
 	public ArrayList<Account> getAccounts(int ownerID) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Account> accounts = new ArrayList<Account>(); 
+		try {
+			connection = DAOUtil.getConnection();
+			String sql = "SELECT * FROM accounts WHERE owner_id = %d";
+			sql = String.format(sql, ownerID);
+			statement = connection.prepareStatement(sql);
+			ResultSet allAccounts = statement.executeQuery();
+			while(allAccounts.next()) {
+				Account acct = new Account(allAccounts.getInt("account_id"), allAccounts.getInt("owner_id"), allAccounts.getDouble("balance"));
+				accounts.add(acct);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}finally {
+			closeResources(); 
+		}
+		return accounts;
 	}
 
 	@Override
@@ -35,10 +65,10 @@ public class BankDAOImpl implements BankDAO {
 			connection = DAOUtil.getConnection();
 			String sql = "SELECT * FROM clients";
 			statement = connection.prepareStatement(sql);
-			ResultSet allClients= statement.executeQuery();
+			ResultSet allClients = statement.executeQuery();
 			while(allClients.next()) {
-				Client newClient = new Client(allClients.getInt("id"), allClients.getString("firstname"),
-						allClients.getString("lastname"));
+				Client newClient = new Client(allClients.getInt("id"), allClients.getString("username"),
+						allClients.getString("password"));
 				clients.add(newClient);
 			}
 		} catch (SQLException ex) {
@@ -70,6 +100,7 @@ public class BankDAOImpl implements BankDAO {
 		case User.EMPLOYEE_TYPE:
 			sql = "SELECT * FROM employees WHERE username = '%s' AND password = '%s'";
 			sql = String.format(sql, uname, passwd);
+			break;
 		case User.CLIENT_TYPE: default: //If type is not valid, default to user table
 			sql = "SELECT * FROM clients WHERE username = '%s' AND password = '%s'";
 			sql = String.format(sql, uname, passwd);
@@ -95,6 +126,76 @@ public class BankDAOImpl implements BankDAO {
 			closeResources(); 
 		}
 		return foundUser;
+	}
+
+	@Override
+	public void sendMessage(Message msg) {
+		String sql = "INSERT INTO public.messages "
+				+ "(sender_id, recipient_id, balance) "
+				+ "VALUES('%d', '%d', '%f');";
+		sql = String.format(sql, msg.senderID, msg.recipientID, msg.balance);
+		try {
+			connection = DAOUtil.getConnection();	
+			statement = connection.prepareStatement(sql);
+			statement.execute();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			closeResources(); 
+		}
+	}
+
+	@Override
+	public Client getClient(int userID) {
+		Client cli = null;
+		try {
+			connection = DAOUtil.getConnection();
+			String sql = "SELECT * FROM clients where id = '%d'";
+			sql = String.format(sql, userID);
+			statement = connection.prepareStatement(sql);
+			ResultSet allClients = statement.executeQuery();
+			while (allClients.next()) {
+				cli = new Client(allClients.getInt("id"), allClients.getString("username"),
+						allClients.getString("password"));
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}finally {
+			closeResources(); 
+		}
+		return cli;
+	}
+
+	@Override
+	public void deleteMessage(int msgID) {
+		// TODO Auto-generated method stub
+		String sql = "DELETE FROM public.messages WHERE message_id = '%d';";
+		sql = String.format(sql, msgID);
+		try {
+			connection = DAOUtil.getConnection();	
+			statement = connection.prepareStatement(sql);
+			statement.execute();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			closeResources(); 
+		}
+	}
+
+	@Override
+	public void createBankAccount(int ownerID, double balance) {
+		// TODO Auto-generated method stub
+		String sql = "INSERT INTO public.accounts (balance, owner_id) VALUES(%f, %d);";
+		sql = String.format(sql, balance, ownerID);
+		try {
+			connection = DAOUtil.getConnection();	
+			statement = connection.prepareStatement(sql);
+			statement.execute();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			closeResources(); 
+		}
 	}
 	
 }

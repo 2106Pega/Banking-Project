@@ -1,35 +1,23 @@
 package model;
 
 public class Message {
-	int senderID;
-	int recipientID;
-	double balance;
+	public int messageID;
+	public int senderID;
+	public int recipientID;
+	public double balance;
 	
-	public Message() {}
+	public static final int EMPLOYEE_RID = -1;
+	
 	public Message(int sId, int rId, double bal) {
+		this.messageID = -1;
 		this.senderID = sId;
 		this.recipientID = rId;
 		this.balance = bal;
 	}
-	
-	public int getSenderID() {
-		return senderID;
+	public Message(int mId, int sId, int rId, double bal) {
+		this.messageID = mId;
+		this.senderID = sId;
+		this.recipientID = rId;
+		this.balance = bal;
 	}
-	public void setSenderID(int senderID) {
-		this.senderID = senderID;
-	}
-	public int getRecipientID() {
-		return recipientID;
-	}
-	public void setRecipientID(int recipientID) {
-		this.recipientID = recipientID;
-	}
-	public double getBalance() {
-		return balance;
-	}
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
-	
-	
 }
