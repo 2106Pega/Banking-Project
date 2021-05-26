@@ -133,7 +133,7 @@ public class Client extends User {
 			in.nextLine();
 			double wdRes = withdraw(amount, acctChoice);
 			if (wdRes >= 0.0) {
-				deposit(amount, acctChoice);
+				deposit(amount, secondAcctChoice);
 				System.out.println("Money transfer conpleted!");
 			} else {
 				System.out.println("Money transfer failed! Is one of your accounts low?");
