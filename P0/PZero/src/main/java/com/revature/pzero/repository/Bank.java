@@ -3,13 +3,15 @@ package com.revature.pzero.repository;
 import java.util.List;
 
 import com.revature.pzero.models.Account;
+import com.revature.pzero.models.User;
 
 public interface Bank {
 
 	//CRUD
 	
 	//create
-	void newAccount(Account a);
+	boolean newUser(User u);
+	boolean newAccount(Account a);
 	
 	//read
 	Account viewAccountByAccountId(int accountId);
@@ -17,10 +19,11 @@ public interface Bank {
 	List<Account> viewAllAccounts();
 	
 	//update
-	void withdraw(Account a);
-	void deposit(Account a);
-	void transfer(Account a, Account b);
+	boolean withdraw(Account a);
+	boolean deposit(Account a);
+	boolean transfer(Account a, Account b);
 	
 	//delete
-	void closeAccount();
+	boolean closeAccount();
+	boolean deleteUser();
 }

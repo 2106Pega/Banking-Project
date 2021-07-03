@@ -6,21 +6,40 @@ public class Account {
 	private Double balance;
 	private String nickName;
 	
+	public Account() {
+		super();
+		this.id = -1;
+		this.balance = 0.0;
+		this.nickName = "";
+	}
+
+	public Account(int id, Double balance, String nickName) {
+		super();
+		this.id = id;
+		this.balance = balance;
+		this.nickName = nickName;
+	}
+
 	public int getId() {
 		return id;
 	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	public Double getBalance() {
 		return balance;
 	}
+	
 	public void setBalance(Double balance) {
 		this.balance = balance;
 	}
+	
 	public String getNickName() {
 		return nickName;
 	}
+	
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
@@ -33,6 +52,15 @@ public class Account {
 		result = prime * result + id;
 		result = prime * result + ((nickName == null) ? 0 : nickName.hashCode());
 		return result;
+	}
+	
+	public void displayBalance() {
+		if(!nickName.isEmpty()) {
+			System.out.printf("ACCOUNT: " + nickName + "\nBALANCE: $%.2f%n", balance);
+		}else {
+			System.out.printf("ACCOUNT: " + id + "\nBALANCE: $%.2f%n", balance);
+//			System.out.printf("'%5.2f'%n", 5.1473);
+		}
 	}
 	
 	@Override
@@ -61,7 +89,7 @@ public class Account {
 	
 	@Override
 	public String toString() {
-		return "Account [id=" + id + ", balance=" + balance + ", nickName=" + nickName + "]";
+		return "Account [ id= " + id + ", balance= $" + balance + ", nickName= " + nickName + " ]";
 	}
 	
 	

@@ -7,6 +7,22 @@ public class User {
 	private String lastName;
 	private String userType;
 	
+	public User() {
+		super();
+		this.id = -1;
+		this.firstName = "";
+		this.lastName = "";
+		this.userType = "";
+	}
+
+	public User(int id, String firstName, String lastName, String userType) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.userType = userType;
+	}
+
 	public int getId() {
 		return id;
 	}
