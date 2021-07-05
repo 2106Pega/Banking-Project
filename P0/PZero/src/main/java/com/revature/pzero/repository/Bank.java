@@ -18,11 +18,16 @@ public interface Bank {
 	Account viewAccountByAccountId(int accountId);
 	List<Account> viewAccountByUserID(int userID);
 	List<Account> viewAllAccounts();
+	List<String> viewUsernames(); //returns a list of usernames
+	User getUserById(int userID);
+	User getUserFromAccountId(int accountId);
+	List<Account> viewUnapprovedAccounts();
 	
 	//update
 	boolean withdraw(Account a, double newAmount);
 	boolean deposit(Account a, double newAmount);
 	boolean transfer(Account a, Account b, double transferAmount);
+	boolean updateApproval(Account a);
 	
 	//delete
 	boolean closeAccount(Account a);

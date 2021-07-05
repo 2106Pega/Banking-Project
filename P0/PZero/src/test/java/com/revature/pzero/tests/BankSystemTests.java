@@ -69,23 +69,23 @@ public class BankSystemTests {
 		assertEquals(u, testBankSystem.login(validUsername, validPassword));
 	}
 	
-	@Test
-	public void registerTest() {
-		String username = "username";
-		String password = "password";
-		String userType = "Customer";
-		
-		assertFalse(testBankSystem.register(null));
-		assertFalse(testBankSystem.register(new User(0, null, null, userType, username, password)));
-		assertFalse(testBankSystem.register(new User(0, null, "lastName", userType, username, password)));
-		assertFalse(testBankSystem.register(new User(0, "firstName", null, userType, username, password)));
-		assertFalse(testBankSystem.register(new User(0, "", "lastName", userType, username, password)));
-		assertFalse(testBankSystem.register(new User(0, "firstName", "", userType, username, password)));
-		assertFalse(testBankSystem.register(new User(0, "firstName", "lastName",  null, username, password)));
-		assertFalse(testBankSystem.register(new User(0, "firstName", "lastName", userType, null, password)));
-		assertFalse(testBankSystem.register(new User(0, "firstName", "lastName", userType, username, null)));
-		assertTrue(testBankSystem.register(new User(0, "firstName", "lastName", userType, username, password)));
-	}
+//	@Test
+//	public void registerTest() {
+//		String username = "username";
+//		String password = "password";
+//		String userType = "Customer";
+//		
+//		assertFalse(testBankSystem.register(null));
+//		assertFalse(testBankSystem.register(new User(0, null, null, userType, username, password)));
+//		assertFalse(testBankSystem.register(new User(0, null, "lastName", userType, username, password)));
+//		assertFalse(testBankSystem.register(new User(0, "firstName", null, userType, username, password)));
+//		assertFalse(testBankSystem.register(new User(0, "", "lastName", userType, username, password)));
+//		assertFalse(testBankSystem.register(new User(0, "firstName", "", userType, username, password)));
+//		assertFalse(testBankSystem.register(new User(0, "firstName", "lastName",  null, username, password)));
+//		assertFalse(testBankSystem.register(new User(0, "firstName", "lastName", userType, null, password)));
+//		assertFalse(testBankSystem.register(new User(0, "firstName", "lastName", userType, username, null)));
+//		assertTrue(testBankSystem.register(new User(0, "firstName", "lastName", userType, username, password)));
+//	}
 	
 //	@Test
 //	public void authenticateTest() {
@@ -98,24 +98,24 @@ public class BankSystemTests {
 ////		assertEquals(double expected, double actual, double delta)
 //	}
 	
-	@Test
-	public void authenticateUsernameTest() {
-		String username = "username";
-		testBankSystem.authenticateLoginUsername(null);
-		
-		assertFalse(testBankSystem.authenticateLoginUsername(null));
-		assertFalse(testBankSystem.authenticateLoginUsername(""));
-		assertTrue(testBankSystem.authenticateLoginUsername("username"));
-	}
-	
-	@Test
-	public void authenticatePasswordTest() {
-		testBankSystem.authenticateLoginPassword(null);
-		
-		assertFalse(testBankSystem.authenticateLoginPassword(null));
-		assertFalse(testBankSystem.authenticateLoginPassword(""));
-		assertTrue(testBankSystem.authenticateLoginPassword("password"));
-	}
+//	@Test
+//	public void authenticateUsernameTest() {
+//		String username = "username";
+//		testBankSystem.authenticateLoginUsername(null);
+//		
+//		assertFalse(testBankSystem.authenticateLoginUsername(null));
+//		assertFalse(testBankSystem.authenticateLoginUsername(""));
+//		assertTrue(testBankSystem.authenticateLoginUsername("username"));
+//	}
+//	
+//	@Test
+//	public void authenticatePasswordTest() {
+//		testBankSystem.authenticateLoginPassword(null);
+//		
+//		assertFalse(testBankSystem.authenticateLoginPassword(null));
+//		assertFalse(testBankSystem.authenticateLoginPassword(""));
+//		assertTrue(testBankSystem.authenticateLoginPassword("password"));
+//	}
 	
 	@Test
 	public void withdrawTest() {		

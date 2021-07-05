@@ -269,6 +269,37 @@ public class BankImpl implements Bank{
 		return success;
 	}
 
+	@Override
+	public List<String> viewUsernames() {  //returns list of usernames
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User getUserById(int userID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User getUserFromAccountId(int accountId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Account> viewUnapprovedAccounts() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean updateApproval(Account a) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
 	
 	
 }

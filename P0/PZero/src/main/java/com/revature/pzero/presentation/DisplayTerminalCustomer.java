@@ -12,82 +12,76 @@ import com.revature.pzero.service.BankSystemImpl;
 
 public class DisplayTerminalCustomer extends DisplayTerminal{
 	
+	/*
+	 * 
+	 * protected void displayLogin()
+	 * protected User checkLogin()
+	 * protected boolean quitDecision()
+	 * protected boolean yesOrNoDecision(String prompt)
+	 * protected boolean areYouSure()
+	 * protected void logout()
+	 * 
+	 */
+	
 	public DisplayTerminalCustomer() {
 		bankSystem = new BankSystemImpl(bank);
+		userType = "Customer";
 	}
 	
-	public void welcomeCustomer() {
+//	public void welcomeCustomer() {
+//		System.out.println("CUSTOMER WELCOME");
+//	}	
+	
+	@Override
+	protected void accessAccount(User user) {
+		List<Account> listOfCustomerAccounts = bankSystem.getCustomerAccounts(user.getId());
+		String prompt = "";
 		
-		System.out.println("Welcome to " + bankName + ".\n[0] - Login?\n[1] - Sign Up?\n[2] - Quit?");
-		String userInput = scanner.next();
-		
-		while(true) {
-			userInput = userInput.toLowerCase();
-			if(userInput.equals("0")) {
-				System.out.println("Login!");
-				displayLogin();
-				break;
-			}else if(userInput.equals("1")) {
-				System.out.println("Signup!");
-				displaySignUp();
-				break;
-			}else if(userInput.equals("2")) {
-				System.out.println("QUIT!");
-				break;
-			}else {
-				System.out.println("Invalid input. Please input one of the following:");
-				System.out.println("[0] - Login?\n[1] - Sign Up?\n[2] - Quit?");
-				userInput = scanner.next();
+		if(listOfCustomerAccounts.equals(null)) {
+			prompt = "Would you like to create one? [yes/no]";
+			boolean quit = false;
+			
+			while(quit == false) {
+				System.out.println("There are no accounts under this name." + prompt);
+				boolean yesOrNo = yesOrNoDecision(prompt);
+	
+				if(yesOrNo == true) {
+					boolean accountCreated = displayNewAccountCreation(user);
+					if(accountCreated == true) {
+						break;
+					}else {
+						System.out.println("Account creation stopped.");
+						quit = quitDecision();
+					}
+				}
 			}
+			if(quit == true) {
+				return;
+			}
+		}else {
+			displayAccounts(user, listOfCustomerAccounts);
 		}
-		
-		System.out.println("Welcome method: END");
 	}	
 	
-	public void displaySignUp() {
-//		System.out.println("DISPLAY SIGNUP");
-		User user = new User();
-		boolean quit = false;
-		boolean successful = false;
+	//differs from Employee at this point
+	public void displayAccounts(User user, List<Account> listOfCustomerAccounts) {
+		System.out.println("\nAccounts for " + user.getFirstName() + " " + user.getLastName());
+		System.out.println(divider);
 		
-		//int id, String firstName, String lastName, String userType
-		while(quit == false) {
-			System.out.print("Please enter your first name: ");
-			String firstName = scanner.next();
-			System.out.print("Please enter your last name: ");
-			String lastName = scanner.next();
-			
-			boolean nameDone = areYouSure();
-			
-			if(nameDone == true) {
-				user.setFirstName(firstName);
-				user.setLastName(lastName);
-			}else {
-				quit = quitDecision();
-			}
-			
-			System.out.println("Please input a username.");
-			String username = scanner.next();
-			System.out.println("Please input a password.");
-			String password = scanner.next();
-			
-			user.setUserName(username);
-			user.setUserPassword(password);
-			
-			boolean done = areYouSure();
-			
-			if(done == true) {
-				successful = bankSystem.register(user);
-			}else {
-				quit = quitDecision();
-			}
+		int i = 0;
+		String prompt = "";
+		for(Account a : listOfCustomerAccounts) {
+			prompt += "[" + i + "]: " + a.toString() + "\n";
+			System.out.println("[" + i++ + "]: " + a.toString());
 		}
 		
-		if(quit != true) {
-			System.out.println("Customer account successfully made.");
-		}
+		//select an account
+		int decision = numberDecisions(prompt);
+		
+		displayUserAccount(user, listOfCustomerAccounts.get(decision));		
 	}
 	
+	///////////////REDO
 	public boolean displayNewAccountCreation(User u) { 
 		//int id, Double balance, String nickName
 		
@@ -121,128 +115,59 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 		return successful; 
 	}
 	
-	public void displayAccounts(User user) {
-		List<Account> listOfCustomerAccounts = bankSystem.getCustomerAccounts(user.getId());
-		
-		///////////////////////////////////////////////////// 
-		listOfCustomerAccounts = new ArrayList<Account>();
-		listOfCustomerAccounts.add(new Account(5, 239.31, "main account", true));
-		listOfCustomerAccounts.add(new Account(11, 1932.90, "Tom's savings account", true));
-		listOfCustomerAccounts.add(new Account(54, 0.0, "dead account", true));
-		/////////////////////////////////////////////////////
-		
-		String prompt = "";
-		
-		if(listOfCustomerAccounts.equals(null)) {
-			prompt = "Would you like to create one? [yes/no]";
-			
-			boolean quit = false;
-			
-			while(quit == false) {
-				System.out.println("There are no accounts under this name." + prompt);
-				boolean yesOrNo = yesOrNoDecision(prompt);
-	
-				if(yesOrNo == true) {
-					boolean accountCreated = displayNewAccountCreation(user);
-					if(accountCreated == true) {
-						break;
-					}else {
-						System.out.println("Account creation stopped.");
-						quit = quitDecision();
-					}
-				}
-			}
-			if(quit == true) {
-				return;
-			}
-		}
-		
-		//prompt = "Accounts for " + user.getFirstName();
-		System.out.println("Accounts for " + user.getFirstName() + " " + user.getLastName());
-		System.out.println(divider);
-		
-		int i = 0;
-		for(Account a : listOfCustomerAccounts) {
-			System.out.println("[" + i++ + "]: " + a.toString());
-		}
-		//select an account
-		
-		boolean quit = false;
-		int index = -1;
-		while(quit == false) {
-			System.out.println("Please select an account by typing in the number beside it.");
-			String userInput = scanner.next();
-			try {
-				index = Integer.parseInt(userInput);
-			}catch(Exception e) {
-				System.out.println("Please input an integer.");
-			}
-			
-			if(index > listOfCustomerAccounts.size() || index < 0) {
-				System.out.println("Please input a valid integer.");
-			}else {
-				break;
-			}
-		}
-		
-		displayUserAccount(user, listOfCustomerAccounts.get(index));		
-	}
-	
 	public void displayUserAccount(User user, Account account) {
 		boolean quit = false;
 		while(quit == false) {
-			System.out.println(divider);
+			System.out.println("\n" + divider);
 			account.displayBalance();
 			System.out.println(divider + "\n");
 			
-			System.out.println("What would you like to do?");
+			String prompt = "What would you like to do?\n\n"
+					+ "[0] Withdraw\n"
+					+ "[1] Deposit\n"
+					+ "[2] Transfer\n"
+					+ "[3] Change Accounts\n"
+					+ "[4] Create a new account\n"
+					+ "[-1] Logout\n";
+					
+			System.out.println(prompt);
 			
-			System.out.println("[0] Withdraw");
-			System.out.println("[1] Deposit");
-			System.out.println("[2] Transfer");
-			System.out.println("[3] Change Accounts");
-			System.out.println("[4] Create a new account");
-			System.out.println("[5] Logout");
+			int decision = numberDecisions(prompt);
 			
-			String userInput = scanner.next();
 			boolean success = false;
 			
-			switch(userInput) {
-				case "0": //withdraw
+			switch(decision) {
+				case 0: //withdraw
 					success = displayWithdraw(account);
 					displayOptionStatus("WITHDRAW", success);
 					break;
-				case "1": //deposit
+				case 1: //deposit
 					success = displayDeposit(account);
 					displayOptionStatus("DEPOSIT", success);
 					break;
-				case "2": //transfer
+				case 2: //transfer
 					success = displayTransfer(account);
 					displayOptionStatus("TRANSFER", success);
 					break;
-				case "3": //change accounts
-//					success = displayWithdraw(account);
-					displayAccounts(user);
-//					displayOptionStatus("CHANGE ACCOUNTS", success);
+				case 3: //change accounts
+					accessAccount(user);
 					break;
-				case "4": //create a new account	
-					//success = displayWithdraw(account);
+				case 4: //create a new account	
 					displayNewAccountCreation(user);
-//					displayOptionStatus("CREATE A NEW ACCOUNT", success);
 					break;
-				case "5": //logout
-					//success = displayWithdraw(account);
-//					displayOptionStatus("LOGOUT", success);
+				case -1: //logout
 					System.out.println("Thank you for using " + bankName);
 					quit = true;
 					break;
 				default:
-					System.out.println("Please input a valid option.");
+					System.out.println("ERROR");
 					break;
 			}	
 		}
 		
-		welcome();
+		if(quit == true) {
+			welcome(); 
+		}
 	}
 	
 	private void displayOptionStatus(String option, boolean success) {
@@ -258,83 +183,99 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 		double transferAmount = 0;
 		String userInput = "";
 		int accountToTransfer = -1;
+		String prompt = "Please input an account you wish to transfer to.\n";
+		
+		Account accountToTransferTo = null;
 		
 		while(quit == false) {
 			System.out.println("TRANSFER\n" + divider + "\n");
 			account.displayBalance();
 			
-			System.out.println("Please input an account you wish to transfer to.");
-			userInput = scanner.next();
+			System.out.println(prompt);
+			accountToTransfer = numberDecisions(prompt);
 			
-			try {
-				accountToTransfer = Integer.parseInt(userInput);
-				break;
-			}catch(Exception e) {
+			accountToTransferTo = verifyAccountId(accountToTransfer);
+			
+			if(accountToTransferTo == null) {
 				System.out.println("Please input a valid id.");
-			}
-			
-			quit = quitDecision();
-		}
-			
-		if(accountToTransfer != -1) {
-			quit = false;
-			while(quit == false) {	
-				System.out.print("How much would you like to transfer?\nPlease input a number:");
-				userInput = scanner.next();
-				
-				try {
-					transferAmount = Double.parseDouble(userInput);
-					successful = true;
-					break;
-				}catch(Exception e) {
-					System.out.println("Please input a valid number.");
-				}
-				
 				quit = quitDecision();
 			}
 		}
-		///////////////////////////////////////////////////////////
-//		if(quit != true) {
-//			if(areYouSure())
-//				successful = bankSystem.transfer(account, transferAmount);
-//		}
+			
+		if(accountToTransferTo != null && quit == false) {
+			prompt = "How much would you like to transfer?\nPlease input a number:";
+			while(quit == false && successful == false) {	
+				System.out.print(prompt);
+				
+				transferAmount = moneyDecisions(prompt);
+				
+				if(checkTransferAmount(account, transferAmount) == true) {
+					successful = true;
+				}else {
+					System.out.println("Please input a valid amount.");
+					quit = quitDecision();
+				}
+			}
+		}
+		
+		if(quit != true) {
+			if(areYouSure())
+				successful = bankSystem.transfer(account, accountToTransferTo, transferAmount);
+		}
+		
 		return successful; 
 	}
 	
-//	private boolean verifyAccountID(int id) { 
-//		return bankSystem.verifyAccount(id); 
-//	}
+	private Account verifyAccountId(int id) { 
+		return bankSystem.verifyAccount(id); 
+	}
+	
+	private boolean checkTransferAmount(Account account, double transferAmount) { 
+		return bankSystem.canTransfer(account, transferAmount);
+	}
+	
+	private boolean checkWithdrawAmount(Account account, double withdrawAmount) {
+		return bankSystem.canWithdraw(account, withdrawAmount);
+	}
+	
+	private boolean checkDepositAmount(Account account, double depositAmount) {
+		return bankSystem.canDeposit(account, depositAmount);
+	}
 	
 	public boolean displayWithdraw(Account account) {
 		boolean quit = false;
 		boolean successful = false;
 		double withdrawAmount = 0;
+		String prompt = "How much would you like to withdraw?\nPlease input a number:";
 		
-		while(quit == false) {
+		while(quit == false && successful == false) {
 			System.out.println("WITHDRAW\n" + divider + "\n");
 			account.displayBalance();
-			System.out.print("How much would you like to withdraw?\nPlease input a number:");
-			String userInput = scanner.next();
 			
-			try {
-				withdrawAmount = Double.parseDouble(userInput);
-				successful = true;
+			withdrawAmount = moneyDecisions(prompt);
+			
+			if(withdrawAmount == -1) {
+				quit = true;
 				break;
-			}catch(Exception e) {
+			}
+			
+			if(checkWithdrawAmount(account, withdrawAmount) == true) {
+				successful = true;
+			}else {
 				System.out.println("Please input a valid number.");
 				quit = quitDecision();
 			}
 		}
 		
 		if(quit != true) {
-			/////////////////////////////////////////////////////////
-//			successful = bankSystem.withdraw(account, withdrawAmount);
-			successful = true;
+			successful = bankSystem.withdraw(account, withdrawAmount);
+//			successful = true;
 		}
 		
 		return successful;
 	}
 	
+	/////////////////////
 	public boolean displayDeposit(Account account) {
 		boolean successful = false;
 		System.out.println("DEPOSIT\n" + divider + "\n");
@@ -350,24 +291,31 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 	
 	private double addMoneyPrompt(Account account) {
 		boolean quit = false;
+		boolean successful = false;
 		
 		double depositAmount = 0;
+		String prompt = "How much would you like to add?\nPlease input a number:";
 		
-		while(quit == false) {
+		while(quit == false && successful == false) {
 			if(account.getId() != -1) { //not a new account
 				System.out.println("DEPOSIT\n" + divider + "\n");
 				account.displayBalance();
 			}
-			System.out.print("How much would you like to add?\nPlease input a number:");
-			String userInput = scanner.next();
 			
-			try {
-				depositAmount = Double.parseDouble(userInput);
-			}catch(Exception e) {
-				System.out.println("Please input a valid number.");
+			System.out.print(prompt);
+			depositAmount = moneyDecisions(prompt);
+			
+			if(depositAmount == -1) {
+				quit = true;
+				break;
 			}
 			
-			quit = quitDecision();
+			if(checkDepositAmount(account, depositAmount) == true) {
+				successful = true;
+			}else {
+				System.out.println("Please input a valid number.");
+				quit = quitDecision();
+			}
 		}
 		
 		if(quit == true)
@@ -375,5 +323,5 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 		
 		return depositAmount;
 		
-	}	
+	}
 }

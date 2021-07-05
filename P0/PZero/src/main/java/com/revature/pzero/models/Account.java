@@ -70,7 +70,6 @@ public class Account {
 			System.out.printf("ACCOUNT: " + nickName + "\nBALANCE: $%.2f%n", balance);
 		}else {
 			System.out.printf("ACCOUNT: " + id + "\nBALANCE: $%.2f%n", balance);
-//			System.out.printf("'%5.2f'%n", 5.1473);
 		}
 	}
 	
