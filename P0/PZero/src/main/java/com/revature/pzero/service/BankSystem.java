@@ -10,9 +10,13 @@ public interface BankSystem {
 	
 	boolean approveRequest(); 
 	
-	boolean login(String username, String password); // check if a part of database
+	User login(String username, String password); // check if a part of database
 	
-	boolean register(User user, String username, String password); // put in database
+	Account createNewAccount();
+	
+	User createNewUser();
+	
+	boolean register(User user); // put in database
 	
 	boolean viewLog(); //call serialization
 	
@@ -22,15 +26,11 @@ public interface BankSystem {
 	
 	boolean authenticateLoginPassword(String passwordInput);
 	
-	User getUserViaLogin(String username, String password);
-	
 	List<Account> getCustomerAccounts(int id);
-	
-	boolean verifyAccount(int id);
 	
 	boolean withdraw(Account account, double withdrawAmount);
 	
 	boolean deposit(Account account, double depositAmount);
 	
-	boolean transfer(Account account, double transferAmount);
+	boolean transfer(Account originAccount, Account transferToAccount, double transferAmount);
 }

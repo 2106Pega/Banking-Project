@@ -5,19 +5,22 @@ public class Account {
 	private int id;
 	private Double balance;
 	private String nickName;
+	private boolean approved;
 	
 	public Account() {
 		super();
 		this.id = -1;
 		this.balance = 0.0;
 		this.nickName = "";
+		this.approved = false;
 	}
 
-	public Account(int id, Double balance, String nickName) {
+	public Account(int id, Double balance, String nickName, boolean approved) {
 		super();
 		this.id = id;
 		this.balance = balance;
 		this.nickName = nickName;
+		this.approved = approved;
 	}
 
 	public int getId() {
@@ -32,7 +35,7 @@ public class Account {
 		return balance;
 	}
 	
-	public void setBalance(Double balance) {
+	public void setBalance(double balance) {
 		this.balance = balance;
 	}
 	
@@ -44,6 +47,14 @@ public class Account {
 		this.nickName = nickName;
 	}
 	
+	public boolean isApproved() {
+		return approved;
+	}
+
+	public void setApproved(boolean approved) {
+		this.approved = approved;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

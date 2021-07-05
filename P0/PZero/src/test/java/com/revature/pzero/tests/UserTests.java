@@ -1,17 +1,31 @@
 package com.revature.pzero.tests;
 
-public class UserTests {
+import org.junit.Before;
+import org.junit.Test;
 
-	/*
-	 * 
-	 * 	private int id;
-	 *  private String firstName;
-	 *  private String lastName;
-	 *  private String userType;
-	 * 
-	 */
+public class UserTests {
 	
 	//firstname can't be null
 	//lastname can't be null
 	//usertype can only be "employee" and "customer"
+	
+	@Before
+	public void beforeTests() {	}
+	
+	
+	@Test
+	public void idTest() {	}
+	
+	@Test
+	public void firstNameTest() {}
+	
+	@Test
+	public void userTypeTest() {}
+	
+	@Test
+	public void userNameTest() {}
+	
+	@Test void userPasswordTest() {}
+	
+	
 }

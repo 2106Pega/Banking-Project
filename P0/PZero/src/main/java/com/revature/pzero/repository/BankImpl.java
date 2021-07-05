@@ -17,16 +17,19 @@ public class BankImpl implements Bank{
 	}
 
 	@Override
-	public boolean newUser(User u) {
+	public boolean newUser(User u, String userType) {
 		boolean success = false;
 		
-		String sqlString = "";
+		String sqlQuery = "insert into user_table(first_name, last_name, user_type, account_username, account_password) values (?, ?, ?, ?, ?);";
 		
 		try(Connection conn = ConnectionPoint.getConnection()){
 			
-			CallableStatement cStatement = conn.prepareCall(sqlString);
-//			cStatement.setString(1, u.getFirstName());
-//			cStatement.setDouble(2, 0.0);
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			cStatement.setString(1, u.getFirstName());
+			cStatement.setString(2, u.getLastName());
+			cStatement.setString(3, userType);
+			cStatement.setString(4, u.getUserName());
+			cStatement.setString(5,  u.getUserPassword());
 			
 			cStatement.execute();
 			success = true;
@@ -41,12 +44,14 @@ public class BankImpl implements Bank{
 	public boolean newAccount(Account a) {
 		boolean success = false;
 		
-		String sqlString = "";
+		String sqlQuery = "insert into account_table(account_balance, account_name, account_approved) values (?, ?, ?);";
 		
 		try(Connection conn = ConnectionPoint.getConnection()){
 			
-			CallableStatement cStatement = conn.prepareCall(sqlString);
-//			cStatement.setString(1, "");
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			cStatement.setDouble(1, a.getBalance());
+			cStatement.setString(2, a.getNickName());
+			cStatement.setBoolean(3, a.isApproved());
 			
 			cStatement.execute();
 			success = true;
@@ -56,21 +61,53 @@ public class BankImpl implements Bank{
 		
 		return success;
 	}
-
+	
 	@Override
-	public Account viewAccountByAccountId(int accountId) {
-		Account account = null;
-		String sqlString = "";
+	public User login(String username, String password) {
+		User user = null;
+		String sqlQuery = "select * from user_table where account_username = ? and account_password = ?;";
 		
 		try(Connection conn = ConnectionPoint.getConnection()){
 			
-			CallableStatement cStatement = conn.prepareCall(sqlString);
-//			cStatement.setString(1, u.getFirstName());
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			cStatement.setString(1, username);
+			cStatement.setString(1, password);
 			
 			ResultSet result = cStatement.executeQuery();
 			
 			if(result.next()) {
-				account = new Account();
+				user = new User(result.getInt("user_id"),
+						result.getString("first_Name"),
+						result.getString("last_Name"),
+						result.getString("user_type"),
+						result.getString("account_username"),
+						result.getString("account_password"));
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return user;
+	}
+
+	@Override
+	public Account viewAccountByAccountId(int accountId) {
+		Account account = null;
+		String sqlQuery = "select * from account_table where account_id = ?;";
+		
+		try(Connection conn = ConnectionPoint.getConnection()){
+			
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			cStatement.setInt(1, accountId);
+			
+			ResultSet result = cStatement.executeQuery();
+			
+			if(result.next()) {
+				account = new Account(result.getInt("account_id"),
+						result.getDouble("account_balance"),
+						result.getString("account_name"),
+						result.getBoolean("account_approved"));
 			}
 			
 		}catch(Exception e) {
@@ -83,12 +120,12 @@ public class BankImpl implements Bank{
 	@Override
 	public List<Account> viewAccountByUserID(int userID) {
 		List<Account> listOfAccounts = null;
-		String sqlString = "";
+		String sqlQuery = "select * from account_table where account_id in (select account_id from account_to_user where user_id = ?);";
 		
 		try(Connection conn = ConnectionPoint.getConnection()){
 			
-			CallableStatement cStatement = conn.prepareCall(sqlString);
-//			cStatement.setString(1, u.getFirstName());
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			cStatement.setInt(1, userID);
 			
 			ResultSet result = cStatement.executeQuery();
 			
@@ -107,11 +144,11 @@ public class BankImpl implements Bank{
 	@Override
 	public List<Account> viewAllAccounts() {
 		List<Account> listOfAccounts = null;
-		String sqlString = "";
+		String sqlQuery = "select * from account_table;";
 		
 		try(Connection conn = ConnectionPoint.getConnection()){
 			
-			CallableStatement cStatement = conn.prepareCall(sqlString);
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
 //			cStatement.setString(1, u.getFirstName());
 			
 			ResultSet result = cStatement.executeQuery();
@@ -129,14 +166,45 @@ public class BankImpl implements Bank{
 	}
 
 	@Override
-	public boolean withdraw(Account a) {
+	public boolean withdraw(Account a, double newAmount) {
+		return moneyAdjustment(a, newAmount);
+	}
+
+	@Override
+	public boolean deposit(Account a, double newAmount) {
+		return moneyAdjustment(a, newAmount);
+	}
+	
+	private boolean moneyAdjustment(Account a, double newAmount) {
 		boolean success = false;
 		
-		String sqlString = "";
+		String sqlQuery = "update account_table set account_balance = ? where account_id = ?;";
 		
 		try(Connection conn = ConnectionPoint.getConnection()){
 			
-			CallableStatement cStatement = conn.prepareCall(sqlString);
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			cStatement.setDouble(1, a.getBalance());
+			cStatement.setInt(2,  a.getId());
+			
+			cStatement.execute();
+			success = true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return success;
+	}
+
+	///////////////////////////////////////////////////////////////////////
+	@Override
+	public boolean transfer(Account a, Account b, double transferAmount) {
+		boolean success = false;
+		
+		String sqlQuery = "";
+		
+		try(Connection conn = ConnectionPoint.getConnection()){
+			
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
 //			cStatement.setString(1, "");
 			
 			cStatement.execute();
@@ -149,17 +217,24 @@ public class BankImpl implements Bank{
 	}
 
 	@Override
-	public boolean deposit(Account a) {
+	public boolean closeAccount(Account a) {
 		boolean success = false;
 		
-		String sqlString = "";
+		String sqlQuery = "delete from account_to_user where account_id = ?;";
+		String sqlQuery2 = "delete from account_table where account_id = ?;";
 		
 		try(Connection conn = ConnectionPoint.getConnection()){
 			
-			CallableStatement cStatement = conn.prepareCall(sqlString);
-//			cStatement.setString(1, "");
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			cStatement.setInt(1, a.getId());
+			
+			
+			CallableStatement cStatementTwo = conn.prepareCall(sqlQuery2);
+			cStatementTwo.setInt(1, a.getId());
 			
 			cStatement.execute();
+			cStatementTwo.execute();
+			
 			success = true;
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -169,57 +244,23 @@ public class BankImpl implements Bank{
 	}
 
 	@Override
-	public boolean transfer(Account a, Account b) {
+	public boolean deleteUser(User u) {
 		boolean success = false;
 		
-		String sqlString = "";
+		String sqlQuery = "delete from account_to_user where user_id = ?;";
+		String sqlQuery2 = "delete from user_table where user_id = ?;";
 		
 		try(Connection conn = ConnectionPoint.getConnection()){
 			
-			CallableStatement cStatement = conn.prepareCall(sqlString);
-//			cStatement.setString(1, "");
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			cStatement.setInt(1, u.getId());
+			
+			CallableStatement cStatementTwo = conn.prepareCall(sqlQuery2);
+			cStatementTwo.setInt(1,  u.getId());
 			
 			cStatement.execute();
-			success = true;
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		return success;
-	}
-
-	@Override
-	public boolean closeAccount() {
-		boolean success = false;
-		
-		String sqlString = "";
-		
-		try(Connection conn = ConnectionPoint.getConnection()){
+			cStatementTwo.execute();
 			
-			CallableStatement cStatement = conn.prepareCall(sqlString);
-//			cStatement.setString(1, "");
-			
-			cStatement.execute();
-			success = true;
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		return success;
-	}
-
-	@Override
-	public boolean deleteUser() {
-		boolean success = false;
-		
-		String sqlString = "";
-		
-		try(Connection conn = ConnectionPoint.getConnection()){
-			
-			CallableStatement cStatement = conn.prepareCall(sqlString);
-//			cStatement.setString(1, "");
-			
-			cStatement.execute();
 			success = true;
 		}catch(Exception e) {
 			e.printStackTrace();
