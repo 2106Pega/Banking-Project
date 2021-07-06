@@ -21,7 +21,7 @@ public class DAOUtil {
 	
 	static {
 		try {
-			FileInputStream fs = new FileInputStream("C:\\Users\\paulk\\eclipse-workspace\\bank\\src\\com\\paul\\resources\\application.properties");
+			FileInputStream fs = new FileInputStream("C:\\Users\\paulk\\eclipse-workspace\\bank-maven\\src\\main\\resources\\application.properties");
 			Properties props = new Properties();
 			props.load(fs);
 			CONNECTION_URL = props.getProperty("CONNECTION_URL");

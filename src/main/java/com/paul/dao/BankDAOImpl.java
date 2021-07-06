@@ -96,21 +96,21 @@ public class BankDAOImpl implements BankDAO {
 	@Override
 	public User verifyUser(String uname, String passwd, int accountType) {
 		User foundUser = null;
-		String sql = "";
+		String sql;
 		switch(accountType) {
 		case User.EMPLOYEE_TYPE:
-			sql = "SELECT * FROM employees WHERE username = '%s' AND password = '%s'";
-			sql = String.format(sql, uname, passwd);
+			sql = "SELECT * FROM employees WHERE username = ? AND password = ?";
 			break;
 		case User.CLIENT_TYPE: default: //If type is not valid, default to user table
-			sql = "SELECT * FROM clients WHERE username = '%s' AND password = '%s'";
-			sql = String.format(sql, uname, passwd);
+			sql = "SELECT * FROM clients WHERE username = ? AND password = ?";
 			break;
 		}
 		
 		try {
 			connection = DAOUtil.getConnection();	
 			statement = connection.prepareStatement(sql);
+			statement.setString(1, uname);
+			statement.setBytes(2, passwd.getBytes());
 			ResultSet rs = statement.executeQuery();
 			while(rs.next()) {
 				switch(accountType) {
@@ -216,25 +216,31 @@ public class BankDAOImpl implements BankDAO {
 
 	@Override
 	public void commitUser(String uname, String passwd, int accountType) {
-		String sql = "";
+		String sql;
 		switch (accountType) {
 		case User.EMPLOYEE_TYPE:
-			sql = "INSERT INTO public.employees (username, \"password\") VALUES('%s', '%s');";
-			sql = String.format(sql, uname, passwd);
+			sql = "INSERT INTO public.employees (username, \"password\") VALUES(?, ?);";
 			break;
 		case User.CLIENT_TYPE: default: //If type is not valid, default to user table
-			sql = "INSERT INTO public.clients (username, \"password\") VALUES('%s', '%s');";
-			sql = String.format(sql, uname, passwd);
+			sql = "INSERT INTO public.clients (username, \"password\") VALUES(?, ?);";
 			break;
 		}
 		try {
 			connection = DAOUtil.getConnection();	
 			statement = connection.prepareStatement(sql);
+			statement.setString(1, uname);
+			statement.setBytes(2, passwd.getBytes());
 			statement.execute();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
 			closeResources(); 
 		}
+	}
+
+	@Override
+	public User verifyUser(String uname) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

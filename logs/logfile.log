@@ -241,3 +241,23 @@
 2021-05-26 11:28:26  INFO com.paul.model.Client:171 User test tried to deposit a negative balance
 2021-05-26 11:28:26  INFO com.paul.model.Client:186 User test tried to withdraw a negative balance
 2021-07-01 14:10:05  TRACE com.paul.bank.BankPortal:35 User paul logged on
+2021-07-06 16:33:32  TRACE com.paul.bank.BankPortal:91 New User paul created
+2021-07-06 16:37:39  TRACE com.paul.bank.BankPortal:91 New User paul created
+2021-07-06 16:43:15  TRACE com.paul.bank.BankPortal:91 New User based created
+2021-07-06 16:45:55  TRACE com.paul.bank.BankPortal:92 New User paul created
+2021-07-06 17:17:19  TRACE com.paul.bank.BankPortal:91 New User paul created
+2021-07-06 17:18:30  TRACE com.paul.bank.BankPortal:91 New User paul created
+2021-07-06 17:21:37  TRACE com.paul.bank.BankPortal:91 New User paul created
+2021-07-06 17:22:18  TRACE com.paul.bank.BankPortal:91 New User paul2 created
+2021-07-06 17:48:20  TRACE com.paul.bank.BankPortal:90 New User paul created
+2021-07-06 17:57:04  TRACE com.paul.bank.BankPortal:90 New User paul created
+2021-07-06 17:58:41  TRACE com.paul.bank.BankPortal:90 New User paul created
+2021-07-06 17:58:47  TRACE com.paul.bank.BankPortal:53 User paul logged on
+2021-07-06 18:14:08  TRACE com.paul.bank.BankPortal:53 User paul logged on
+2021-07-06 18:14:14  TRACE com.paul.model.Client:158 User paul applied for a bank account
+2021-07-06 18:14:21  TRACE com.paul.model.Client:158 User paul applied for a bank account
+2021-07-06 18:14:52  TRACE com.paul.bank.BankPortal:90 New User admin created
+2021-07-06 18:14:58  TRACE com.paul.bank.BankPortal:53 User admin logged on
+2021-07-06 18:15:32  TRACE com.paul.bank.BankPortal:53 User paul logged on
+2021-07-06 18:15:41  INFO com.paul.model.Client:178 User paul deposited 200.0
+2021-07-06 18:15:52  TRACE com.paul.bank.BankPortal:53 User admin logged on

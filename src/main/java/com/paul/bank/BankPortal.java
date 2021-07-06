@@ -1,6 +1,16 @@
 package com.paul.bank;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.util.Base64;
 import java.util.Scanner;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +24,15 @@ public class BankPortal {
 	static Scanner in = new Scanner(System.in);
 	private static final Logger LOG = LogManager.getLogger(BankPortal.class);
 	
-	static void signOn() {
+	public static String hashPasswd(String passwd) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(passwd.getBytes());
+		byte[] digest = md.digest();
+		String hash = new String(digest, StandardCharsets.UTF_8);
+		return hash;
+	}
+	
+	static void signOn() throws NoSuchAlgorithmException {
 		String uname;
 		String passwd;
 		int type;
@@ -29,7 +47,7 @@ public class BankPortal {
 		System.out.print("Please enter your password: ");
 		passwd = in.nextLine();
 		
-		loggedOnUser = dao.verifyUser(uname, passwd, type);
+		loggedOnUser = dao.verifyUser(uname, hashPasswd(passwd), type);
 		if (loggedOnUser != null) {
 			System.out.println("Welcome, " + loggedOnUser.getUsername());
 			LOG.trace("User " + loggedOnUser.getUsername() + " logged on");
@@ -39,7 +57,7 @@ public class BankPortal {
 		}
 	}
 	
-	static void createNewUser() {
+	static void createNewUser() throws NoSuchAlgorithmException {
 		String uname;
 		String passwd = "";
 		int type;
@@ -67,7 +85,7 @@ public class BankPortal {
 		}
 		
 		BankDAO dao = new BankDAOImpl();
-		dao.commitUser(uname, passwd, type);
+		dao.commitUser(uname, hashPasswd(passwd), type);
 		System.out.println("Welcome to the system, " + uname);
 		LOG.trace("New User " + uname + " created");
 	}
@@ -81,7 +99,7 @@ public class BankPortal {
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoSuchAlgorithmException {
 		boolean running = true;
 		while (running) {
 			System.out.println("What would you like to do?");

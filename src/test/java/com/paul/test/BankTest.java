@@ -2,7 +2,7 @@ package com.paul.test;
 
 import static org.junit.Assert.*;
 
-
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import org.junit.Before;
@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.paul.dao.*;
 import com.paul.model.*;
+import com.paul.bank.*;
 
 public class BankTest {
 	private static BankDAO dao = new BankDAOImpl();
@@ -34,8 +35,8 @@ public class BankTest {
 	}
 	
 	@Test
-	public void getMyAccountsTest() {
-		Client cli = (Client) dao.verifyUser("paul", "based", 1);
+	public void getMyAccountsTest() throws NoSuchAlgorithmException {
+		Client cli = (Client) dao.verifyUser("paul", BankPortal.hashPasswd("based"), 1);
 		cli.getMyAccounts();
 		assertTrue(2 >= cli.accounts.size());
 	}
