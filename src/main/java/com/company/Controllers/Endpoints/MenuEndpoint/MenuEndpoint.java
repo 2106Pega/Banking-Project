@@ -36,16 +36,17 @@ public class MenuEndpoint implements Endpoint {
     }
     @Override
     public String preData(){
+        this.menuItems.clear();
         User user = this.getCurrentUser();
         System.out.println(user.getUsername());
         UserDAOImpl userDAO = new UserDAOImpl();
         User userDb = userDAO.getUserByUsername(user.getUsername());
         MenuBuilderHelper menuBuilderHelper = new MenuBuilderHelper();
-        if ( userDb.getAccessLevel() == 1 && !access_level_one_added){
+        if ( userDb.getAccessLevel() == 1){
             access_level_one_added = true;
             menuItems.addAll(menuBuilderHelper.access_level_one());
         }
-        if ( userDb.getAccessLevel() == 2 && !access_level_two_added){
+        if ( userDb.getAccessLevel() == 2){
             access_level_two_added = true;
             menuItems.addAll(menuBuilderHelper.access_level_two());
         }

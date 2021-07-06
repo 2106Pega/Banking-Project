@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class AccountDAOImpl implements AccountDAO {
 
@@ -114,5 +115,79 @@ public class AccountDAOImpl implements AccountDAO {
         }
         return false;
     }
+
+    @Override
+    public boolean generateAccount(User user, double initialValue) {
+        try {
+            Connection connection = this.getConnect();
+
+            Random random = new Random();
+            int routingNumber = Math.abs(random.nextInt());
+            int accountNumber = Math.abs(random.nextInt());
+
+            while ( true ){
+                Account accountExistCheck = this.accountByAccountRoutingNumber(routingNumber,accountNumber);
+                if ( accountExistCheck == null){
+                    break;
+                }
+                routingNumber = Math.abs(random.nextInt());
+                accountNumber = Math.abs(random.nextInt());
+            }
+            String query = "INSERT INTO account(user_id,routing_number,account_number,balance,approved) values(?,?,?,?,?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1,user.getId());
+            statement.setInt(2,routingNumber);
+            statement.setInt(3,accountNumber);
+            statement.setDouble(4,initialValue);
+            statement.setBoolean(5,false);
+            return statement.execute();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+
+    }
+
+    @Override
+    public Account accountByAccountRoutingNumber(int routingNumber, int accountNumber) {
+        Account account = null;
+        try {
+            Connection connection = this.getConnect();
+            String query = "SELECT * FROM account WHERE routing_number= ? AND account_number=?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, routingNumber);
+            statement.setInt(2,accountNumber);
+            ResultSet rs = statement.executeQuery();
+            if ( rs.next() ){
+                int account_id = rs.getInt("id");
+                int user_id = rs.getInt("user_id");
+                int routing_number = rs.getInt("routing_number");
+                int account_number= rs.getInt("account_number");
+                double balance = rs.getInt("balance");
+                boolean approved = rs.getBoolean("approved");
+
+                account = new Account();
+                account.setAccount_id(account_id);
+                account.setUser_id(user_id);
+                account.setRouting_number(routing_number);
+                account.setAccount_number(account_number);
+                account.setBalance(balance);
+                account.setApproved(approved);
+
+
+            }
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return account;
+    }
+
 
 }

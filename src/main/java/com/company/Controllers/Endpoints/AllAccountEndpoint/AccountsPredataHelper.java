@@ -11,6 +11,7 @@ public class AccountsPredataHelper {
     public String allAccountsToPredataString(ArrayList<Account> allAccounts){
         StringBuilder builder = new StringBuilder();
         UserDAOImpl userDAO = new UserDAOImpl();
+        
         builder.append(" \t" + "Account Number");
         builder.append(" \t" + "Balance ");
         builder.append(" \t" + "Is Approved");

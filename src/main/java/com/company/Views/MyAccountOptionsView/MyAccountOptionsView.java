@@ -1,28 +1,26 @@
-package com.company.Views.WithdrawlDepositView;
+package com.company.Views.MyAccountOptionsView;
 
 import com.company.Controllers.Endpoints.Endpoint;
+import com.company.Controllers.Endpoints.MyAccountOptionsEndpoint.MyAccountOptionsEndpoint;
 import com.company.Models.ModelTemplates.User;
 import com.company.Views.View;
 
-public class WithdrawlDepositView implements View {
+public class MyAccountOptionsView implements View {
     @Override
     public String[] body() {
         return new String[]{
-                "Please select an account you wish to withdrawl or deposit to",
-                "Would you like to withdrawl? (1 for yes 0 for no)",
-                "Would you like to deposit? (1 for yes 0 fro no)",
-                "Please enter an amount"
+            "Please select an option"
         };
     }
 
     @Override
     public Endpoint getEndpoint() {
-        return null;
+        return this.endpoint;
     }
 
     @Override
     public String getViewName() {
-        return null;
+        return "my_account_options";
     }
 
     @Override
@@ -34,4 +32,6 @@ public class WithdrawlDepositView implements View {
     public User getUser() {
         return null;
     }
+    
+    private Endpoint endpoint = new MyAccountOptionsEndpoint();
 }

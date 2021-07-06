@@ -1,27 +1,26 @@
-package com.company.Views.TransferFundView;
+package com.company.Views.DepositView;
 
+import com.company.Controllers.Endpoints.DepositEndpoint.DepositEndpoint;
 import com.company.Controllers.Endpoints.Endpoint;
 import com.company.Models.ModelTemplates.User;
 import com.company.Views.View;
 
-public class TransferFundsView implements View {
+public class DepositView implements View {
     @Override
     public String[] body() {
         return new String[]{
-                "Please select the account you would like to sends from from",
-                "Please enter the routing number of the account you would like to send funds to",
-                "Please enter the account number of the account you would like to send funds to "
+                "Please enter a deposit amount"
         };
     }
 
     @Override
     public Endpoint getEndpoint() {
-        return null;
+        return endpoint;
     }
 
     @Override
     public String getViewName() {
-        return null;
+        return "deposit_view";
     }
 
     @Override
@@ -33,4 +32,6 @@ public class TransferFundsView implements View {
     public User getUser() {
         return null;
     }
+    
+    private Endpoint endpoint = new DepositEndpoint();
 }

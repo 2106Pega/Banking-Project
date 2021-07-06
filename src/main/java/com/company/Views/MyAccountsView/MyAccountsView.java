@@ -1,28 +1,26 @@
-package com.company.Views.AccountApplyView;
+package com.company.Views.MyAccountsView;
 
-import com.company.Controllers.Endpoints.AccountApplyEndpoint.AccountApplyEndpoint;
-import com.company.Controllers.Endpoints.AccountsEnpoint.AccountsEndpoint;
 import com.company.Controllers.Endpoints.Endpoint;
+import com.company.Controllers.Endpoints.MyAccountsEndpoint.MyAccountsEndpoint;
 import com.company.Models.ModelTemplates.User;
 import com.company.Views.View;
 
-public class AccountApplyView implements View {
+public class MyAccountsView implements View {
     @Override
     public String[] body() {
         return new String[]{
-                "Please enter a starting amount",
+                "Please select an account you would like to manage"
         };
-
     }
 
     @Override
     public Endpoint getEndpoint() {
-        return endpoint;
+        return this.endpoint;
     }
 
     @Override
     public String getViewName() {
-        return "account_apply_view";
+        return "my_account_options";
     }
 
     @Override
@@ -34,5 +32,5 @@ public class AccountApplyView implements View {
     public User getUser() {
         return null;
     }
-    private Endpoint endpoint = new AccountApplyEndpoint();
+    private Endpoint endpoint = new MyAccountsEndpoint();
 }
