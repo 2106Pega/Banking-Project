@@ -58,7 +58,7 @@ public class UsersDaoImpl implements UsersDao {
 						rs.getInt(1),
 						rs.getString(2), 
 						rs.getString(3), 
-						rs.getString(4),null)
+						rs.getString(4))
 						);
 			}
 			
@@ -73,7 +73,6 @@ public class UsersDaoImpl implements UsersDao {
 	@Override
 	public Users selectUserByUsername(String userName) {
 		Users dbUser = null;
-		List<Accounts> accountList = null;
 		
 		String sql = "select * from users where user_name = ? ;";
 		
@@ -89,7 +88,7 @@ public class UsersDaoImpl implements UsersDao {
 			// we want to convert those columns and rows into objects.
 			while(rs.next()) {
 				dbUser = new Users(rs.getInt(1), rs.getString(2),
-						rs.getString(3),rs.getString(4), accountList);
+						rs.getString(3),rs.getString(4));
 			}
 		} catch(SQLException e) {
 			e.printStackTrace();
@@ -118,7 +117,7 @@ public class UsersDaoImpl implements UsersDao {
 			// we want to convert those columns and rows into objects.
 			while(rs.next()) {
 				dbUser = new Users(rs.getInt(1), rs.getString(2),
-						rs.getString(3),rs.getString(4), null);
+						rs.getString(3),rs.getString(4));
 			}
 		} catch(SQLException e) {
 			e.printStackTrace();

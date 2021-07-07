@@ -1,7 +1,10 @@
 package com.revature.presentation;
 
 import java.util.List;
+
 import java.util.Scanner;
+
+import org.apache.log4j.Logger;
 
 import com.revature.dao.AccountsDao;
 import com.revature.dao.AccountsDaoImpl;
@@ -17,6 +20,9 @@ import com.revature.service.TransactionsProcess;
 public class BankFrontImpl implements BankFront {
 
 	static Scanner sc = new Scanner(System.in);
+	
+	
+	final static Logger logger = Logger.getLogger(BankFrontImpl.class.getName());
 
 	@Override
 	public void displayLogin() {
@@ -124,10 +130,7 @@ public class BankFrontImpl implements BankFront {
 			
 			
 			
-			
 
-			// TransactionsProcess.transfer(list.get(input-1),
-			// userDao.selectUserByUsername(anotherAccount));
 
 		}
 
@@ -144,6 +147,7 @@ public class BankFrontImpl implements BankFront {
 
 			else if (num.equals("1")) {
 				boolean successful = LogProcess.userRegistration();
+				logger.info("");
 				while (!successful) {
 					successful = LogProcess.userRegistration();
 				}

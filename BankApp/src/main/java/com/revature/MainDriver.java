@@ -2,6 +2,8 @@ package com.revature;
 
 
 
+import org.apache.log4j.Logger;
+
 import com.revature.presentation.BankFrontImpl;
 
 
@@ -11,7 +13,7 @@ public class MainDriver {
 	
 	
 	
-	//public static Logger logger = LoggerFactory.getLogger(MainDriver.class);
+	//final static Logger logger = Logger.getLogger(MainDriver.class);
 
 	public static void main(String[] args) {
 

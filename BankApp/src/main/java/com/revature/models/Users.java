@@ -8,15 +8,14 @@ public class Users {
 	private String user_name;
 	private String firstName;
 	private String lastName; 
-	private List<Accounts> accountList;
 	
-	public Users(int iD, String user_name, String firstName, String lastName, List<Accounts> accountList) {
+	
+	public Users(int iD, String user_name, String firstName, String lastName) {
 		super();
 		ID = iD;
 		this.user_name = user_name;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.accountList = accountList;
 	}
 	@Override
 	public String toString() {
@@ -46,12 +45,7 @@ public class Users {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public List<Accounts> getAccountList() {
-		return accountList;
-	}
-	public void setAccountList(List<Accounts> accountList) {
-		this.accountList = accountList;
-	}
+
 
 	
 	

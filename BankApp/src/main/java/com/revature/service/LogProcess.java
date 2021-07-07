@@ -3,15 +3,18 @@ package com.revature.service;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.revature.dao.UsersDao;
 import com.revature.dao.UsersDaoImpl;
 import com.revature.models.Users;
+import com.revature.presentation.BankFrontImpl;
 
 public class LogProcess {
 	
 	
 	static Scanner sc = new Scanner(System.in);
-	
+	final static Logger logger = Logger.getLogger(BankFrontImpl.class.getName());
 	
 	public static boolean userRegistration() {
 		
@@ -31,7 +34,7 @@ public class LogProcess {
 			String firstName = sc.nextLine();
 			System.out.println("please input your last name!");
 			String lastName = sc.nextLine();
-			userDao.createUser(new Users(1,input,firstName,lastName, null));
+			userDao.createUser(new Users(1,input,firstName,lastName));
 			return true;
 		}
 	}

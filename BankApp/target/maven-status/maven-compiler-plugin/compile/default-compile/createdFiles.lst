@@ -1,8 +1,10 @@
 com\revature\dao\AccountsDaoImpl.class
+com\revature\service\EmployeeProcess.class
+com\revature\dao\EmployeesDaoImpl.class
 com\revature\presentation\BankFrontImpl.class
 com\revature\dao\AccountsDao.class
 com\revature\models\Transactions.class
-com\revature\service\AccountTransactions.class
+com\revature\dao\EmployeesDao.class
 com\revature\service\TransactionsProcess.class
 com\revature\util\ConnectionDriver.class
 com\revature\models\Accounts.class
