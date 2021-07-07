@@ -49,7 +49,7 @@ public class BankSystemTests {
 		String invalidUsername = "badUsername";
 		String invalidPassword = "badPassword";
 	
-		User u = new User(0, "Tom", "Nook", "Customer", validUsername, validPassword);
+		User u = new User(0, "Tom", "Nook", "Customer", validUsername, validPassword, true);
 		
 		when(mockBank.login(null, null)).thenReturn(null);
 		when(mockBank.login(null, validPassword)).thenReturn(null);
@@ -117,20 +117,20 @@ public class BankSystemTests {
 //		assertTrue(testBankSystem.authenticateLoginPassword("password"));
 //	}
 	
-	@Test
+	@Test  ////////////////////FIX
 	public void withdrawTest() {		
 		Account a = new Account(0, 120.30, "Nickname", true);
 		Account badA = new Account(0, 0.0, "", true); //balance is 0. Can't withdraw anything.
 		Account badATwo = new Account(0, 100.0, "", false); //not approved, no operations can be done
 		
-		when(mockBank.withdraw(badA, 5.0)).thenReturn(false);
-		when(mockBank.withdraw(badA, 0.0)).thenReturn(false);
-		when(mockBank.withdraw(badATwo, 10.0)).thenReturn(false); 
-		when(mockBank.withdraw(badATwo, 0.0)).thenReturn((false));
-		when(mockBank.withdraw(a, -5.0)).thenReturn(false); //can't withdraw negative values
-		when(mockBank.withdraw(a,  200.10)).thenReturn(false); // can't be more than the balance
-		when(mockBank.withdraw(a, 120.30)).thenReturn(true);		
-		when(mockBank.withdraw(a, 20.30)).thenReturn(true);
+//		when(mockBank.withdraw(badA, 5.0)).thenReturn(false);
+//		when(mockBank.withdraw(badA, 0.0)).thenReturn(false);
+//		when(mockBank.withdraw(badATwo, 10.0)).thenReturn(false); 
+//		when(mockBank.withdraw(badATwo, 0.0)).thenReturn((false));
+//		when(mockBank.withdraw(a, -5.0)).thenReturn(false); //can't withdraw negative values
+//		when(mockBank.withdraw(a,  200.10)).thenReturn(false); // can't be more than the balance
+//		when(mockBank.withdraw(a, 120.30)).thenReturn(true);		
+//		when(mockBank.withdraw(a, 20.30)).thenReturn(true);
 		
 		assertFalse(testBankSystem.withdraw(badA, 5.0));
 		assertFalse(testBankSystem.withdraw(badA, 0.0));
@@ -143,20 +143,20 @@ public class BankSystemTests {
 		
 	}
 	
-	@Test
+	@Test /////////////////////FIX
 	public void depositTest() {
 		Account a = new Account(0, 120.30, "Nickname", true);
 		Account badA = new Account(0, Double.MAX_VALUE, "", true); //balance is 0. Can't withdraw anything.
 		Account badATwo = new Account(0, 100.0, "", false); //not approved, no operations can be done
 		
-		when(mockBank.deposit(a, -5.0)).thenReturn(false);
-		when(mockBank.deposit(a, Double.MAX_VALUE+1.0)).thenReturn(false); //can't deposit values more than double max
-		when(mockBank.deposit(a, 0.001)).thenReturn(false); //can't deposit smaller than a penny
-		when(mockBank.deposit(badATwo, 10.0)).thenReturn(false); //not approved account
-		when(mockBank.deposit(badA, 0.01)).thenReturn(false);
-		when(mockBank.deposit(a, 10.0)).thenReturn(true);
+//		when(mockBank.deposit(a, -5.0)).thenReturn(false);
+//		when(mockBank.deposit(a, Double.MAX_VALUE+1.0)).thenReturn(false); //can't deposit values more than double max
+//		when(mockBank.deposit(a, 0.001)).thenReturn(false); //can't deposit smaller than a penny
+//		when(mockBank.deposit(badATwo, 10.0)).thenReturn(false); //not approved account
+//		when(mockBank.deposit(badA, 0.01)).thenReturn(false);
+//		when(mockBank.deposit(a, 10.0)).thenReturn(true);
 		double x = Double.MAX_VALUE - a.getBalance() + 1;
-		when(mockBank.deposit(a, x)).thenReturn(false);		
+//		when(mockBank.deposit(a, x)).thenReturn(false);		
 		
 		assertFalse(testBankSystem.deposit(a, -5.0));
 		assertFalse(testBankSystem.deposit(a, Double.MAX_VALUE+1.0));

@@ -11,25 +11,28 @@ public interface Bank {
 	
 	//create
 	boolean newUser(User u, String userType);
-	boolean newAccount(Account a);
+	boolean newAccount(int userId, Account a);
 	
 	//read
 	User login(String username, String password);
 	Account viewAccountByAccountId(int accountId);
 	List<Account> viewAccountByUserID(int userID);
 	List<Account> viewAllAccounts();
-	List<String> viewUsernames(); //returns a list of usernames
-	User getUserById(int userID);
-	User getUserFromAccountId(int accountId);
+	List<String> viewUsernames();
+	List<User> viewAllUsers();
+	User viewUserById(int userID);
+	User viewUserFromAccountId(int accountId);
 	List<Account> viewUnapprovedAccounts();
 	
 	//update
-	boolean withdraw(Account a, double newAmount);
-	boolean deposit(Account a, double newAmount);
+	boolean withdraw(Account a);
+	boolean deposit(Account a);
 	boolean transfer(Account a, Account b, double transferAmount);
-	boolean updateApproval(Account a);
+	boolean updateAccountApproval(Account a);
+	boolean updateUserApproval(User u);
+	boolean updateUserPassword(User u);
 	
 	//delete
-	boolean closeAccount(Account a);
+	boolean deleteAccount(Account a);
 	boolean deleteUser(User u);
 }

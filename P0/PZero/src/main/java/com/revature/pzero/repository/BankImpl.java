@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.pzero.models.Account;
@@ -20,7 +21,7 @@ public class BankImpl implements Bank{
 	public boolean newUser(User u, String userType) {
 		boolean success = false;
 		
-		String sqlQuery = "insert into user_table(first_name, last_name, user_type, account_username, account_password) values (?, ?, ?, ?, ?);";
+		String sqlQuery = "insert into user_table(first_name, last_name, user_type, account_username, account_password, user_approved) values (?, ?, ?, ?, ?, ?);";
 		
 		try(Connection conn = ConnectionPoint.getConnection()){
 			
@@ -30,6 +31,7 @@ public class BankImpl implements Bank{
 			cStatement.setString(3, userType);
 			cStatement.setString(4, u.getUserName());
 			cStatement.setString(5,  u.getUserPassword());
+			cStatement.setBoolean(6,  false); //upon creation all users are frozen until approval
 			
 			cStatement.execute();
 			success = true;
@@ -41,20 +43,36 @@ public class BankImpl implements Bank{
 	}
 
 	@Override
-	public boolean newAccount(Account a) {
+	public boolean newAccount(int userId, Account a) {
 		boolean success = false;
 		
-		String sqlQuery = "insert into account_table(account_balance, account_name, account_approved) values (?, ?, ?);";
+		String sqlQuery = "insert into account_table values (?, ?, ?, ?);";
+		String sqlQueryJunctionTable = "insert into account_to_user values (?,?);";
+		String sqlQueryFindID = "select count(*) from account_table;";
 		
 		try(Connection conn = ConnectionPoint.getConnection()){
+			CallableStatement cStatement = conn.prepareCall(sqlQueryFindID);
+			ResultSet result = cStatement.executeQuery();
 			
-			CallableStatement cStatement = conn.prepareCall(sqlQuery);
-			cStatement.setDouble(1, a.getBalance());
-			cStatement.setString(2, a.getNickName());
-			cStatement.setBoolean(3, a.isApproved());
+			if(result.next()) {
+				int accountID = result.getInt("count");
+				a.setId(accountID+1);
+				
+				cStatement = conn.prepareCall(sqlQuery);
+				cStatement.setInt(1, a.getId());
+				cStatement.setDouble(2, a.getBalance());
+				cStatement.setString(3, a.getNickName());
+				cStatement.setBoolean(4, a.isApproved());
+				cStatement.execute();
+				
+				cStatement = conn.prepareCall(sqlQueryJunctionTable);
+				cStatement.setInt(1, userId);
+				cStatement.setInt(2, a.getId());
+				cStatement.execute();
+				
+				success = true;
+			}
 			
-			cStatement.execute();
-			success = true;
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -71,7 +89,7 @@ public class BankImpl implements Bank{
 			
 			CallableStatement cStatement = conn.prepareCall(sqlQuery);
 			cStatement.setString(1, username);
-			cStatement.setString(1, password);
+			cStatement.setString(2, password);
 			
 			ResultSet result = cStatement.executeQuery();
 			
@@ -81,7 +99,8 @@ public class BankImpl implements Bank{
 						result.getString("last_Name"),
 						result.getString("user_type"),
 						result.getString("account_username"),
-						result.getString("account_password"));
+						result.getString("account_password"),
+						result.getBoolean("user_approved"));
 			}
 			
 		}catch(Exception e) {
@@ -128,9 +147,15 @@ public class BankImpl implements Bank{
 			cStatement.setInt(1, userID);
 			
 			ResultSet result = cStatement.executeQuery();
+			listOfAccounts = new ArrayList<Account>();
 			
 			while(result.next()) {
-				Account a = new Account(); //need to populate account
+				Account a = new Account(
+						result.getInt("account_id"),
+						result.getDouble("account_balance"),
+						result.getString("account_name"),
+						result.getBoolean("account_approved"));
+				
 				listOfAccounts.add(a);
 			}
 			
@@ -145,17 +170,53 @@ public class BankImpl implements Bank{
 	public List<Account> viewAllAccounts() {
 		List<Account> listOfAccounts = null;
 		String sqlQuery = "select * from account_table;";
-		
+
 		try(Connection conn = ConnectionPoint.getConnection()){
 			
 			CallableStatement cStatement = conn.prepareCall(sqlQuery);
-//			cStatement.setString(1, u.getFirstName());
 			
 			ResultSet result = cStatement.executeQuery();
+			listOfAccounts = new ArrayList<Account>();
 			
 			while(result.next()) {
-				Account a = new Account(); //need to populate account
+				Account a = new Account(
+						result.getInt("account_id"),
+						result.getDouble("account_balance"),
+						result.getString("account_name"),
+						result.getBoolean("account_approved"));
+				
 				listOfAccounts.add(a);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return listOfAccounts;
+	}
+	
+	@Override
+	public List<User> viewAllUsers() {
+		List<User> listOfAccounts = null;
+		String sqlQuery = "select * from user_table;";
+
+		try(Connection conn = ConnectionPoint.getConnection()){
+			
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			
+			ResultSet result = cStatement.executeQuery();
+			listOfAccounts = new ArrayList<User>();
+			
+			while(result.next()) {
+				User user = new User(result.getInt("user_id"),
+						result.getString("first_Name"),
+						result.getString("last_Name"),
+						result.getString("user_type"),
+						result.getString("account_username"),
+						result.getString("account_password"),
+						result.getBoolean("user_approved"));
+				
+				listOfAccounts.add(user);
 			}
 			
 		}catch(Exception e) {
@@ -166,16 +227,16 @@ public class BankImpl implements Bank{
 	}
 
 	@Override
-	public boolean withdraw(Account a, double newAmount) {
-		return moneyAdjustment(a, newAmount);
+	public boolean withdraw(Account a) {
+		return moneyAdjustment(a);
 	}
 
 	@Override
-	public boolean deposit(Account a, double newAmount) {
-		return moneyAdjustment(a, newAmount);
+	public boolean deposit(Account a) {
+		return moneyAdjustment(a);
 	}
 	
-	private boolean moneyAdjustment(Account a, double newAmount) {
+	private boolean moneyAdjustment(Account a) {
 		boolean success = false;
 		
 		String sqlQuery = "update account_table set account_balance = ? where account_id = ?;";
@@ -200,14 +261,20 @@ public class BankImpl implements Bank{
 	public boolean transfer(Account a, Account b, double transferAmount) {
 		boolean success = false;
 		
-		String sqlQuery = "";
+		String sqlQuery = "update account_table set account_balance = ? where account_id = ?;";
 		
 		try(Connection conn = ConnectionPoint.getConnection()){
 			
-			CallableStatement cStatement = conn.prepareCall(sqlQuery);
-//			cStatement.setString(1, "");
+			CallableStatement cStatementAccountOne = conn.prepareCall(sqlQuery);
+			cStatementAccountOne.setDouble(1, a.getBalance());
+			cStatementAccountOne.setInt(2, a.getId());
 			
-			cStatement.execute();
+			CallableStatement cStatementAccountTwo = conn.prepareCall(sqlQuery);
+			cStatementAccountTwo.setDouble(1, b.getBalance());
+			cStatementAccountTwo.setInt(2, b.getId());
+			
+			cStatementAccountOne.execute();
+			cStatementAccountTwo.execute();
 			success = true;
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -217,7 +284,7 @@ public class BankImpl implements Bank{
 	}
 
 	@Override
-	public boolean closeAccount(Account a) {
+	public boolean deleteAccount(Account a) {
 		boolean success = false;
 		
 		String sqlQuery = "delete from account_to_user where account_id = ?;";
@@ -271,32 +338,185 @@ public class BankImpl implements Bank{
 
 	@Override
 	public List<String> viewUsernames() {  //returns list of usernames
-		// TODO Auto-generated method stub
-		return null;
+		boolean success = false;
+		List<String> usernameList = null;
+		
+		String sqlQuery = "select account_username from user_table;";
+		
+		try(Connection conn = ConnectionPoint.getConnection()){
+			
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			
+			ResultSet result = cStatement.executeQuery();
+			usernameList = new ArrayList();
+			
+			while(result.next()) {
+				usernameList.add(result.getString("account_username"));
+			}
+			
+			success = true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return usernameList;
 	}
 
 	@Override
-	public User getUserById(int userID) {
-		// TODO Auto-generated method stub
-		return null;
+	public User viewUserById(int userID) {
+		boolean success = false;
+		User user = null;
+		
+		String sqlQuery = "select * from user_table where user_id = ?;";
+		
+		try(Connection conn = ConnectionPoint.getConnection()){
+			
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			cStatement.setInt(1, userID);
+			
+			ResultSet result = cStatement.executeQuery();
+			
+			if(result.next()) {
+				user = new User(result.getInt("user_id"),
+						result.getString("first_name"),
+						result.getString("last_name"),
+						result.getString("user_type"),
+						result.getString("account_username"),
+						result.getString("account_password"),
+						result.getBoolean("user_approved"));
+			}
+			
+			success = true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return user;
 	}
 
 	@Override
-	public User getUserFromAccountId(int accountId) {
-		// TODO Auto-generated method stub
-		return null;
+	public User viewUserFromAccountId(int accountId) {
+		boolean success = false;
+		User user = null;
+		
+		String sqlQuery = "select * from user_table where user_id = (select user_id from account_to_user where account_id = ?);";
+		
+		try(Connection conn = ConnectionPoint.getConnection()){
+			
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			cStatement.setInt(1, accountId);
+			
+			ResultSet result = cStatement.executeQuery();
+			
+			if(result.next()) {
+				user = new User(result.getInt("user_id"),
+						result.getString("first_name"),
+						result.getString("last_name"),
+						result.getString("user_type"),
+						result.getString("account_username"),
+						result.getString("account_password"),
+						result.getBoolean("user_approved"));
+			}
+			
+			success = true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return user;
 	}
 
 	@Override
 	public List<Account> viewUnapprovedAccounts() {
-		// TODO Auto-generated method stub
-		return null;
+		boolean success = false;
+		List<Account> usernameList = null;
+		
+		String sqlQuery = "select * from account_table where account_approved = false;";
+		
+		try(Connection conn = ConnectionPoint.getConnection()){
+			
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			
+			ResultSet result = cStatement.executeQuery();
+			usernameList = new ArrayList();
+			
+			while(result.next()) {
+				usernameList.add(new Account(
+						result.getInt("account_id"),
+						result.getDouble("account_balance"),
+						result.getString("account_name"),
+						result.getBoolean("account_approved")));
+			}
+			
+			success = true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return usernameList;
 	}
 
 	@Override
-	public boolean updateApproval(Account a) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateAccountApproval(Account a) {
+		boolean success = false;
+		
+		String sqlQuery = "update account_table set account_approved = ? where account_id = ?;";
+		
+		try(Connection conn = ConnectionPoint.getConnection()){
+			
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			cStatement.setBoolean(1, a.isApproved());
+			cStatement.setInt(2, a.getId());
+			
+			cStatement.execute();
+			success = true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return success;
+	}
+	
+	@Override
+	public boolean updateUserApproval(User u) {
+		boolean success = false;
+		
+		String sqlQuery = "update user_table set user_approved = ? where user_id = ?;";
+		
+		try(Connection conn = ConnectionPoint.getConnection()){
+			
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			cStatement.setBoolean(1, u.isUserApproved());
+			cStatement.setInt(2, u.getId());
+			
+			cStatement.execute();
+			success = true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return success;
+	}
+	
+	@Override
+	public boolean updateUserPassword(User u) {
+		boolean success = false;
+		
+		String sqlQuery = "update user_table set user_password = ? where user_id = ?;";
+		
+		try(Connection conn = ConnectionPoint.getConnection()){
+			
+			CallableStatement cStatement = conn.prepareCall(sqlQuery);
+			cStatement.setString(1, u.getUserPassword());
+			cStatement.setInt(2, u.getId());
+			
+			cStatement.execute();
+			success = true;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return success;
 	}
 
 

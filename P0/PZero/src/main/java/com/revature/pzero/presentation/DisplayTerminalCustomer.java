@@ -11,29 +11,22 @@ import com.revature.pzero.repository.BankImpl;
 import com.revature.pzero.service.BankSystemImpl;
 
 public class DisplayTerminalCustomer extends DisplayTerminal{
-	
-	/*
-	 * 
-	 * protected void displayLogin()
-	 * protected User checkLogin()
-	 * protected boolean quitDecision()
-	 * protected boolean yesOrNoDecision(String prompt)
-	 * protected boolean areYouSure()
-	 * protected void logout()
-	 * 
-	 */
-	
+
 	public DisplayTerminalCustomer() {
+		Bank bank = new BankImpl();
 		bankSystem = new BankSystemImpl(bank);
 		userType = "Customer";
 	}
 	
-//	public void welcomeCustomer() {
-//		System.out.println("CUSTOMER WELCOME");
-//	}	
-	
+	//Beginning of customer side. 
 	@Override
 	protected void accessAccount(User user) {
+		if(user.getUserType().equals("Employee")) {
+			System.out.println("Invalid credentials. Are you using the wrong page?\n"
+					+ "Make sure you press [2] to enter the employee portal. Thank you!\n");
+			return;
+		}
+		
 		List<Account> listOfCustomerAccounts = bankSystem.getCustomerAccounts(user.getId());
 		String prompt = "";
 		
@@ -46,13 +39,7 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 				boolean yesOrNo = yesOrNoDecision(prompt);
 	
 				if(yesOrNo == true) {
-					boolean accountCreated = displayNewAccountCreation(user);
-					if(accountCreated == true) {
-						break;
-					}else {
-						System.out.println("Account creation stopped.");
-						quit = quitDecision();
-					}
+					displayNewAccountCreation(user);
 				}
 			}
 			if(quit == true) {
@@ -63,58 +50,80 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 		}
 	}	
 	
-	//differs from Employee at this point
+	//Differs from Employee at this point -> displays customer accounts
 	public void displayAccounts(User user, List<Account> listOfCustomerAccounts) {
+		boolean noActionCanBeDone = true;
 		System.out.println("\nAccounts for " + user.getFirstName() + " " + user.getLastName());
 		System.out.println(divider);
 		
-		int i = 0;
+		int i = 1;
 		String prompt = "";
+		
+		System.out.println("\nSelect [0] to Create a New Account\n");
 		for(Account a : listOfCustomerAccounts) {
 			prompt += "[" + i + "]: " + a.toString() + "\n";
 			System.out.println("[" + i++ + "]: " + a.toString());
+			if(a.isApproved() == true) { noActionCanBeDone = false; }
 		}
 		
-		//select an account
-		int decision = numberDecisions(prompt);
-		
-		displayUserAccount(user, listOfCustomerAccounts.get(decision));		
-	}
-	
-	///////////////REDO
-	public boolean displayNewAccountCreation(User u) { 
-		//int id, Double balance, String nickName
-		
-		System.out.println("\nCREATING A NEW ACCOUNT\n" + divider + "\n");
-		
-		Account newAccount = new Account();
-		double startingAmount = 0.0;
-		boolean quit = false;
-		boolean successful = false;
-		
-		while(quit == false) {
-			if(startingAmount != 0.0)
-				startingAmount = addMoneyPrompt(newAccount);
-			if(startingAmount < 0.0) { //quitting
-				quit = true;
-			}else {
-				newAccount.setBalance(startingAmount);
-				System.out.println("Would you like to add a nickname to the account?");
-				String s = scanner.next();
-				if(areYouSure() == true) {
-					newAccount.setNickName(s);
-					System.out.println("All set! Your new account is waiting to be approved.");
-					successful = true;
-					break;
+		if(noActionCanBeDone == false) {
+			System.out.print("\nSelect an option: ");
+			boolean invalidInt = true;
+			int decision = -1;
+			while(invalidInt == true) {
+			//select an account
+				decision = numberDecisions(prompt + "\nSelect an option: ");
+				
+				if(decision > listOfCustomerAccounts.size()) {
+					System.out.println("Invalid number. The numbers in [] correspond to the respective prompt.");
 				}else {
-					quit = quitDecision();
+					invalidInt = false;
 				}
 			}
-		}
+			
+			if(decision == 0) {
+				displayNewAccountCreation(user);
+			}else {
+				displayUserAccount(user, listOfCustomerAccounts.get(--decision));
+			}
 		
-		return successful; 
+		}else {
+			System.out.println("\nAll accounts are either frozen or awaiting approval.\n"
+					+ "No action can be done at this time on any existing accounts."
+					+ "Please call XXX-XXX-XXXX for assistance.\n");
+		}
 	}
 	
+	//Account creation method. Sends request to "offices" for approval before customer can utilize.
+	public void displayNewAccountCreation(User u) { 
+		String prompt = "Would you like to give your account a nickname\n(i.g Tom's Savings Account)?";
+		String nickName = "";
+		
+		System.out.println("Thank you for your interest in creating an account.\n"
+				+ "We have sent a notification to our offices that will get your account\n"
+				+ "up and running in no time depending on your history with us.\n"
+				+ "In the mean time, would you like to give your account a nickname\n"
+				+ "(i.g Tom's Savings Account)? [yes/no]");
+		
+		boolean yesOrNo = yesOrNoDecision(prompt);
+		if(yesOrNo == true) {
+			prompt = "Enter your account's nickname: ";
+			System.out.println(prompt);
+			nickName = validStringInput(prompt);
+		}
+		
+		boolean success = bankSystem.createNewAccount(u.getId(), 0.0, nickName, false);
+		
+		if(success) {
+			System.out.println("Alright! The approval process takes at least a day, so\n"
+					+ "be sure to check in after 24hrs to start using your account!");
+		}else {
+			System.out.println("I'm sorry. It looks like our servers are down. Please try again later while\n"
+					+ "we try to get them back up. We are sorry for the inconvenience.");
+		}
+	}
+	
+	//Displays a specific user account. User can choose what they want to do with the account.
 	public void displayUserAccount(User user, Account account) {
 		boolean quit = false;
 		while(quit == false) {
@@ -127,7 +136,6 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 					+ "[1] Deposit\n"
 					+ "[2] Transfer\n"
 					+ "[3] Change Accounts\n"
-					+ "[4] Create a new account\n"
 					+ "[-1] Logout\n";
 					
 			System.out.println(prompt);
@@ -139,24 +147,21 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 			switch(decision) {
 				case 0: //withdraw
 					success = displayWithdraw(account);
-					displayOptionStatus("WITHDRAW", success);
+//					displayOptionStatus("WITHDRAW", success);
 					break;
 				case 1: //deposit
 					success = displayDeposit(account);
-					displayOptionStatus("DEPOSIT", success);
+//					displayOptionStatus("DEPOSIT", success);
 					break;
 				case 2: //transfer
 					success = displayTransfer(account);
-					displayOptionStatus("TRANSFER", success);
+//					displayOptionStatus("TRANSFER", success);
 					break;
 				case 3: //change accounts
 					accessAccount(user);
 					break;
-				case 4: //create a new account	
-					displayNewAccountCreation(user);
-					break;
 				case -1: //logout
-					System.out.println("Thank you for using " + bankName);
+					System.out.println("You have logged out.");
 					quit = true;
 					break;
 				default:
@@ -170,41 +175,46 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 		}
 	}
 	
-	private void displayOptionStatus(String option, boolean success) {
-		if(success == true)
-			System.out.println(option + " successful."); //make sure balance is updated
-		else
-			System.out.println(option + " failed.");
-	}
+//	private void displayOptionStatus(String option, boolean success) {
+//		if(success == true)
+//			System.out.println(option + " succeeded.");
+//		else
+//			System.out.println(option + " failed.");
+//	}
 	
+	//sets user up to transfer money to desired account. Can be owned by current user or a different user
 	public boolean displayTransfer(Account account) { 
 		boolean quit = false;
 		boolean successful = false;
 		double transferAmount = 0;
 		String userInput = "";
 		int accountToTransfer = -1;
-		String prompt = "Please input an account you wish to transfer to.\n";
+		String prompt = "Please input an account you wish to transfer to: ";
 		
 		Account accountToTransferTo = null;
 		
+		
+		//obtains account to transfer to from user
 		while(quit == false) {
 			System.out.println("TRANSFER\n" + divider + "\n");
 			account.displayBalance();
 			
-			System.out.println(prompt);
+			System.out.print(prompt);
 			accountToTransfer = numberDecisions(prompt);
-			
+		
 			accountToTransferTo = verifyAccountId(accountToTransfer);
 			
 			if(accountToTransferTo == null) {
-				System.out.println("Please input a valid id.");
 				quit = quitDecision();
+			}else {
+				break;
 			}
 		}
 			
+		//obtains amount desired to transfer to different account
 		if(accountToTransferTo != null && quit == false) {
-			prompt = "How much would you like to transfer?\nPlease input a number:";
-			while(quit == false && successful == false) {	
+			prompt = "How much would you like to transfer: ";
+			while(successful == false && quit == false) {	
 				System.out.print(prompt);
 				
 				transferAmount = moneyDecisions(prompt);
@@ -212,7 +222,7 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 				if(checkTransferAmount(account, transferAmount) == true) {
 					successful = true;
 				}else {
-					System.out.println("Please input a valid amount.");
+					System.out.println("quit decision");
 					quit = quitDecision();
 				}
 			}
@@ -242,15 +252,17 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 		return bankSystem.canDeposit(account, depositAmount);
 	}
 	
+	
+	//sets user up to withdraw money
 	public boolean displayWithdraw(Account account) {
 		boolean quit = false;
 		boolean successful = false;
 		double withdrawAmount = 0;
-		String prompt = "How much would you like to withdraw?\nPlease input a number:";
+		String prompt = "How much would you like to withdraw: $";
 		
 		while(quit == false && successful == false) {
-			System.out.println("WITHDRAW\n" + divider + "\n");
 			account.displayBalance();
+			System.out.print(divider + "\nWITHDRAW\n" + divider + "\n" + prompt);
 			
 			withdrawAmount = moneyDecisions(prompt);
 			
@@ -262,47 +274,44 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 			if(checkWithdrawAmount(account, withdrawAmount) == true) {
 				successful = true;
 			}else {
-				System.out.println("Please input a valid number.");
 				quit = quitDecision();
 			}
 		}
 		
 		if(quit != true) {
 			successful = bankSystem.withdraw(account, withdrawAmount);
-//			successful = true;
 		}
 		
 		return successful;
 	}
 	
-	/////////////////////
+	//sets user up to deposit money
 	public boolean displayDeposit(Account account) {
 		boolean successful = false;
-		System.out.println("DEPOSIT\n" + divider + "\n");
 		
 		double depositAmount = addMoneyPrompt(account);
 		
-		if(depositAmount > 0.001) {
+		if(depositAmount > 0.01) {
 			successful = bankSystem.deposit(account, depositAmount);
 		}
 		
 		return successful;
 	}
 	
+	//helper method for inputting money to an account
 	private double addMoneyPrompt(Account account) {
 		boolean quit = false;
 		boolean successful = false;
 		
 		double depositAmount = 0;
-		String prompt = "How much would you like to add?\nPlease input a number:";
+		String prompt = "How much would you like to add: $";
 		
 		while(quit == false && successful == false) {
 			if(account.getId() != -1) { //not a new account
-				System.out.println("DEPOSIT\n" + divider + "\n");
 				account.displayBalance();
+				System.out.print(divider + "\nDEPOSIT\n" + divider + "\n" + prompt);
 			}
 			
-			System.out.print(prompt);
 			depositAmount = moneyDecisions(prompt);
 			
 			if(depositAmount == -1) {
@@ -313,7 +322,6 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 			if(checkDepositAmount(account, depositAmount) == true) {
 				successful = true;
 			}else {
-				System.out.println("Please input a valid number.");
 				quit = quitDecision();
 			}
 		}
@@ -323,5 +331,14 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 		
 		return depositAmount;
 		
+	}
+	
+	@Override 
+	public void displaySignUp() {
+		super.displaySignUp();
+		System.out.println("Thank you for your interest in creating an account with us.\n"
+				+ "We have sent a notification to our offices that will get your account\n"
+				+ "up and running in no time depending on the information you have entered.\n"
+				+ "Be sure to check in after 24hrs to start using your account!");
 	}
 }

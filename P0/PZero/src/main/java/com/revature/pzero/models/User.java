@@ -8,6 +8,7 @@ public class User {
 	private String userName;
 	private String userType;
 	private String userPassword;
+	private boolean userApproved;
 	
 	public User() {
 		super();
@@ -17,9 +18,10 @@ public class User {
 		this.userType = "";
 		this.userName = "";
 		this.userPassword = "";
+		this.userApproved = false;
 	}
 
-	public User(int id, String firstName, String lastName, String userType, String userName, String password) {
+	public User(int id, String firstName, String lastName, String userType, String userName, String password, boolean userApproved) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -27,6 +29,7 @@ public class User {
 		this.userType = userType;
 		this.userName = userName;
 		this.userPassword = password;
+		this.userApproved = userApproved;
 	}
 
 	public int getId() {
@@ -76,6 +79,14 @@ public class User {
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
+	
+	public boolean isUserApproved() {
+		return userApproved;
+	}
+
+	public void setUserApproved(boolean userApproved) {
+		this.userApproved = userApproved;
+	}
 
 	@Override
 	public int hashCode() {
@@ -84,6 +95,7 @@ public class User {
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + (userApproved ? 1231 : 1237);
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		result = prime * result + ((userPassword == null) ? 0 : userPassword.hashCode());
 		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
@@ -111,6 +123,8 @@ public class User {
 				return false;
 		} else if (!lastName.equals(other.lastName))
 			return false;
+		if (userApproved != other.userApproved)
+			return false;
 		if (userName == null) {
 			if (other.userName != null)
 				return false;
@@ -128,12 +142,14 @@ public class User {
 			return false;
 		return true;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "User [id= " + id + ", firstName= " + firstName + ", lastName= " + lastName + ", userName= " + userName
-				+ ", userType= " + userType + ", userPassword= " + userPassword + "]";
+		return "User Id: " + id + " | firstName: " + firstName + " | lastName: " + lastName + " | userName: " + userName
+				+ " | userApproved: " + userApproved + " | userType: " + getUserType();
 	}
+	
+	
 
 	
 }

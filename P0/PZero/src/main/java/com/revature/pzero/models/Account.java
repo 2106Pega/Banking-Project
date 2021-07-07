@@ -99,7 +99,10 @@ public class Account {
 	
 	@Override
 	public String toString() {
-		return "Account [ id= " + id + ", balance= $" + balance + ", nickName= " + nickName + " ]";
+		if(getNickName().isBlank())
+			return "Account #: " + id + "  |  Balance: $" + balance + "  |  " + "locked? " + !isApproved();
+		else
+			return "Account #: " + id + "  |  Balance: $" + balance + "  |  nickName: " + nickName + "  |  " + "locked? " + !isApproved();
 	}
 	
 	

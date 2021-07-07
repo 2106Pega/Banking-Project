@@ -23,25 +23,13 @@ public interface BankSystem {
 	User getUserViaAccountNumber(int accountId);
 	
 	//create a valid new account
-	boolean createNewAccount(Double balance, String nickName, boolean approved);
+	boolean createNewAccount(int userID, Double balance, String nickName, boolean approved);
 	
 	//create a valid new user
 	boolean createNewUser(String fName, String lName, String userType, String username, String password);
 	
-//	//place a new user into the db
-//	boolean register(User user); // put in database
-	
-	//view history log
-	boolean viewLog(); //call serialization
-	
 	//make sure both username and password go with the same user inorder to login
 	boolean authenticate(String username, String password);
-	
-//	//check to see if username is valid
-//	boolean authenticateLoginUsername(String usernameInput);
-//	
-//	//check to see if password is valid
-//	boolean authenticateLoginPassword(String passwordInput);
 	
 	//check to see if account id is valid
 	Account verifyAccount(int accountId);
@@ -72,4 +60,19 @@ public interface BankSystem {
 	
 	//update account approval to the opposite of what it is.
 	boolean approveAccount(Account account);
+	
+	//list of users that need to be approved
+	List<User> getAllUsers();
+	
+	//update user approval to the opposite of what it is
+	boolean approveUser(User user);
+	
+	//update user password when forgotten
+	boolean updateUserPassword(User user);
+	
+	//close account when account balance = 0 and account if locked
+	boolean closeAccount(Account a);
+	
+	//get list of all accounts
+	List<Account> getAllAccounts();
 }
