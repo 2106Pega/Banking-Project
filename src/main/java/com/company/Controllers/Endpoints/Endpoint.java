@@ -1,6 +1,6 @@
 package com.company.Controllers.Endpoints;
 
-import com.company.MVCAggregate.MVCAggregate;
+import com.company.MVCAggregate;
 import com.company.Models.ModelTemplates.User;
 
 public interface Endpoint {

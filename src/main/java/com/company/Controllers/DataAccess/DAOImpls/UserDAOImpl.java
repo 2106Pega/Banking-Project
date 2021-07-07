@@ -18,11 +18,12 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public ArrayList<User> getAllUsers() {
+        ArrayList<User> users = new ArrayList<>();
+        Connection connection = null;
         try {
-            Connection connection = getConnect();
+            connection = getConnect();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM users");
             ResultSet resultSet = statement.executeQuery();
-            ArrayList<User> users = new ArrayList<>();
             while (resultSet.next()){
                 User user = new User();
                 user.setId( resultSet.getInt("id"));
@@ -36,13 +37,21 @@ public class UserDAOImpl implements UserDAO {
             return users;
         }catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
+        }finally {
+            if ( connection!= null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         return null;
     }
 
     @Override
     public User getUserByUsername(String username) {
-        Connection connection;
+        Connection connection = null;
 
         try{
             connection = getConnect();
@@ -65,6 +74,14 @@ public class UserDAOImpl implements UserDAO {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }finally {
+            if ( connection!= null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         return null;
     }
@@ -78,8 +95,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public String createUser(String username, String password, String first_name, String last_name) {
+        Connection connection = null;
         try {
-            Connection connection  = this.getConnect();
+            connection  = this.getConnect();
             if  ( this.getUserByUsername(username) != null){
                 return "User exist";
             }
@@ -96,13 +114,23 @@ public class UserDAOImpl implements UserDAO {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }finally {
+            if ( connection!= null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         return "Successfully created account";
     }
     public User accountToUser(Account account ){
-        User user = null; 
+        User user = null;
+        Connection connection = null;
+
         try {
-            Connection connection = this.getConnect();
+            connection = this.getConnect();
             String statement = "SELECT * FROM users WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(statement);
             preparedStatement.setInt(1,account.getUser_id());
@@ -122,6 +150,14 @@ public class UserDAOImpl implements UserDAO {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }finally {
+            if ( connection!= null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         
         return user;

@@ -14,8 +14,9 @@ import java.util.ArrayList;
 public class TransactionDAOImpl implements TransactionsDAO {
     @Override
     public void addTransaction(String requestType, int accountId, double amount) {
+        Connection connection = null;
         try {
-            Connection connection = this.getConnect();
+            connection = this.getConnect();
             String query = "INSERT INTO transacations(request_type,account_id,amount) values(?,?,?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1,requestType);
@@ -26,6 +27,14 @@ public class TransactionDAOImpl implements TransactionsDAO {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }finally {
+            if ( connection!= null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
 
     }
@@ -33,9 +42,10 @@ public class TransactionDAOImpl implements TransactionsDAO {
     @Override
     public ArrayList<Transaction> getAllTransacation() {
         ArrayList<Transaction> transactions = new ArrayList();
+        Connection connection = null;
         try {
-            Connection connection = this.getConnect();
-            String query = "SELECT * FROM transacations";
+            connection = this.getConnect();
+            String query = "SELECT * FROM transacations ORDER BY id DESC";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
             while (rs.next()){
@@ -53,6 +63,14 @@ public class TransactionDAOImpl implements TransactionsDAO {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }finally {
+            if ( connection!= null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
 
         return transactions;
@@ -70,9 +88,9 @@ public class TransactionDAOImpl implements TransactionsDAO {
     @Override
     public ArrayList<Transaction> accountsTransactions(Account account) {
         ArrayList<Transaction> transactions = new ArrayList<>();
-        
+        Connection connection = null;
         try {
-            Connection connection = this.getConnect();
+            connection = this.getConnect();
             String query = "SELECT * FROM transacations WHERE account_id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, account.getAccount_id());
@@ -92,6 +110,14 @@ public class TransactionDAOImpl implements TransactionsDAO {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }finally {
+            if ( connection!= null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         
         return transactions;

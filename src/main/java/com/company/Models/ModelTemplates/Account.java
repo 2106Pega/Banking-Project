@@ -51,6 +51,13 @@ public class Account {
     public void setApproved(boolean approved) {
         this.approved = approved;
     }
+    public boolean isReviewed() {
+        return reviewed;
+    }
+
+    public void setReviewed(boolean reviewed) {
+        this.reviewed = reviewed;
+    }
 
     @Override
     public String toString() {
@@ -70,6 +77,6 @@ public class Account {
     private int account_number;
     private double balance;
     private boolean approved;
-
+    private boolean reviewed;
 
 }

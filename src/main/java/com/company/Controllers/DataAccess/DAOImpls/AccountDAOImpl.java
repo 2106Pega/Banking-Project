@@ -18,7 +18,7 @@ public class AccountDAOImpl implements AccountDAO {
     @Override
     public ArrayList<Account> getAllAccounts() {
         ArrayList<Account> accounts = new ArrayList<>();
-        Connection connection;
+        Connection connection = null;
         try{
             connection = getConnect();
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM account");
@@ -29,8 +29,9 @@ public class AccountDAOImpl implements AccountDAO {
                 int user_id = result.getInt("user_id");
                 int routing_number = result.getInt("routing_number");
                 int account_number= result.getInt("account_number");
-                double balance = result.getInt("balance");
+                double balance = result.getDouble("balance");
                 boolean approved= result.getBoolean("approved");
+                boolean reviewed = result.getBoolean("reviewed");
 
                 Account account = new Account();
                 account.setAccount_id(account_id);
@@ -40,13 +41,21 @@ public class AccountDAOImpl implements AccountDAO {
                 account.setBalance(balance);
                 accounts.add(account);
                 account.setApproved(approved);
-
+                account.setReviewed(reviewed);
 
             }
 
 
         }catch (Exception e){
             e.printStackTrace();
+        }finally {
+            if ( connection!= null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         return accounts;
 
@@ -54,8 +63,10 @@ public class AccountDAOImpl implements AccountDAO {
     @Override
     public ArrayList<Account> getAccountByUser(User user) {
         ArrayList<Account> userAccounts = new ArrayList<>();
+        Connection connection = null;
         try {
-            PreparedStatement statment = this.getConnect().prepareStatement("SELECT * FROM account WHERE user_id = ?");
+            connection = this.getConnect();
+            PreparedStatement statment = connection.prepareStatement("SELECT * FROM account WHERE user_id = ?");
             statment.setInt(1,user.getId());
             ResultSet set = statment.executeQuery();
             while ( set.next() ){
@@ -63,8 +74,9 @@ public class AccountDAOImpl implements AccountDAO {
                 int user_id = set.getInt("user_id");
                 int routing_number = set.getInt("routing_number");
                 int account_number= set.getInt("account_number");
-                double balance = set.getInt("balance");
+                double balance = set.getDouble("balance");
                 boolean approved = set.getBoolean("approved");
+                boolean reviewed  =set.getBoolean("reviewed");
 
                 Account account = new Account();
                 account.setAccount_id(account_id);
@@ -73,6 +85,7 @@ public class AccountDAOImpl implements AccountDAO {
                 account.setAccount_number(account_number);
                 account.setBalance(balance);
                 account.setApproved(approved);
+                account.setReviewed(reviewed);
                 userAccounts.add(account);
 
             }
@@ -80,20 +93,30 @@ public class AccountDAOImpl implements AccountDAO {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }finally {
+            if ( connection!= null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         return userAccounts;
     }
     @Override
     public boolean saveAccount(Account account){
+        Connection connection = null;
         try {
-            Connection connection = this.getConnect();
+            connection = this.getConnect();
             String query = "UPDATE account SET " +
                     "id=" + "?,"+
                     "user_id=" + "?,"+
                     "routing_number=" + "?,"+
                     "account_number=" + "?,"+
                     "balance=" + "?,"+
-                    "approved=" + "?"+
+                    "approved=" + "?,"+
+                    "reviewed=" + "? "+
                     "WHERE id = " + "?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1,account.getAccount_id());
@@ -102,7 +125,8 @@ public class AccountDAOImpl implements AccountDAO {
             preparedStatement.setInt(4, account.getAccount_number());
             preparedStatement.setDouble(5,account.getBalance());
             preparedStatement.setBoolean(6,account.isApproved());
-            preparedStatement.setInt(7,account.getAccount_id());
+            preparedStatement.setBoolean(7,account.isReviewed());
+            preparedStatement.setInt(8,account.getAccount_id());
 
 
             return preparedStatement.execute();
@@ -112,14 +136,23 @@ public class AccountDAOImpl implements AccountDAO {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }finally {
+            if ( connection!= null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         return false;
     }
 
     @Override
     public boolean generateAccount(User user, double initialValue) {
+        Connection connection = null;
         try {
-            Connection connection = this.getConnect();
+            connection = this.getConnect();
 
             Random random = new Random();
             int routingNumber = Math.abs(random.nextInt());
@@ -133,19 +166,28 @@ public class AccountDAOImpl implements AccountDAO {
                 routingNumber = Math.abs(random.nextInt());
                 accountNumber = Math.abs(random.nextInt());
             }
-            String query = "INSERT INTO account(user_id,routing_number,account_number,balance,approved) values(?,?,?,?,?)";
+            String query = "INSERT INTO account(user_id,routing_number,account_number,balance,approved,reviewed) values(?,?,?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1,user.getId());
             statement.setInt(2,routingNumber);
             statement.setInt(3,accountNumber);
             statement.setDouble(4,initialValue);
             statement.setBoolean(5,false);
+            statement.setBoolean(6,false);
             return statement.execute();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }finally {
+            if ( connection!= null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         return false;
 
@@ -154,8 +196,9 @@ public class AccountDAOImpl implements AccountDAO {
     @Override
     public Account accountByAccountRoutingNumber(int routingNumber, int accountNumber) {
         Account account = null;
+        Connection connection = null;
         try {
-            Connection connection = this.getConnect();
+            connection = this.getConnect();
             String query = "SELECT * FROM account WHERE routing_number= ? AND account_number=?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, routingNumber);
@@ -166,8 +209,9 @@ public class AccountDAOImpl implements AccountDAO {
                 int user_id = rs.getInt("user_id");
                 int routing_number = rs.getInt("routing_number");
                 int account_number= rs.getInt("account_number");
-                double balance = rs.getInt("balance");
+                double balance = rs.getDouble("balance");
                 boolean approved = rs.getBoolean("approved");
+                boolean reviewed = rs.getBoolean("reviewed");
 
                 account = new Account();
                 account.setAccount_id(account_id);
@@ -176,7 +220,7 @@ public class AccountDAOImpl implements AccountDAO {
                 account.setAccount_number(account_number);
                 account.setBalance(balance);
                 account.setApproved(approved);
-
+                account.setReviewed(reviewed);
 
             }
 
@@ -185,6 +229,14 @@ public class AccountDAOImpl implements AccountDAO {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }finally {
+            if ( connection!= null){
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         return account;
     }
