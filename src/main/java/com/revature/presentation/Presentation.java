@@ -27,21 +27,19 @@ public interface Presentation {
 	
 	public void checkBalance(BankAccount acc);
 	
-	public void deposit(BankAccount acc);
+	public void deposit(BankAccount acc, User user);
 	
-	public void withdraw(BankAccount acc);
+	public void withdraw(BankAccount acc, User user);
 	
 	public void makeMoneyTransferToSelf(User user, BankAccount acc);
 	
-	public void makeMoneyTransferToOther(BankAccount acc);
+	public void makeMoneyTransferToOther(User user, BankAccount acc);
 	
 	// Employee Methods
 	
-	public void displayEmployeeOptions(User user);
+	public void displayEmployeeOptions(User employee);
 	
-	public void approveBankAccountsPrompt();
+	public void approveBankAccountsPrompt(User employee);
 	
-	public void viewCustomerBankAccountsPrompt();
-	
-	public void viewLog();
+	public void viewCustomerBankAccountsPrompt(User employee);
 }

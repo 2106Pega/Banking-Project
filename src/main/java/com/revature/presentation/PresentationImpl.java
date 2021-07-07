@@ -3,6 +3,7 @@ package com.revature.presentation;
 import java.util.List;
 import java.util.Scanner;
 
+import com.revature.MainDriver;
 import com.revature.models.BankAccount;
 import com.revature.models.User;
 import com.revature.service.Service;
@@ -25,6 +26,7 @@ public class PresentationImpl implements Presentation {
 	@Override
 	public User logInOrCreateNewUserPrompt() {
 		User user = null;
+		
 		while(user == null) {
 			System.out.println("How would you like to proceed?");
 			System.out.println("(1) Log In\n"
@@ -39,6 +41,7 @@ public class PresentationImpl implements Presentation {
 					createNewUserPrompt();
 					break;
 				case "3":
+					exitApplicationLog("Anonymous User");
 					System.exit(0);
 				default:
 					System.out.println("Invalid input. Please, try again.");
@@ -98,6 +101,7 @@ public class PresentationImpl implements Presentation {
 		String username, password, passwordAgain, firstName, lastName;
 		
 		while(bigLoop) {
+			loop = true;
 			System.out.println("========== CREATE NEW ACCOUNT ==========");
 			while(true) {
 				System.out.println("Enter your username:\n"
@@ -128,7 +132,7 @@ public class PresentationImpl implements Presentation {
 					}
 				}
 
-				System.out.println("Enter your password again:\n");
+				System.out.println("Enter your password again:");
 				passwordAgain = sc.nextLine().toLowerCase();
 				if (service.passwordsMatch(password, passwordAgain)) {
 					System.out.println();
@@ -221,7 +225,7 @@ public class PresentationImpl implements Presentation {
 			}
 			else if (service.isValidBankAccountName(name)) {
 				newAcc = service.createNewBankAccount(user, name, 0.00);
-				initialDeposit(newAcc);
+				initialDeposit(newAcc, user);
 				System.out.println("Your new bank account, '" + name + "', has been created with a balance of " 
 						+ MoneyUtils.toMoneyString(newAcc.getBalance()) + ". Please, await approval before trying to access it.\n");
 				return newAcc;
@@ -238,7 +242,7 @@ public class PresentationImpl implements Presentation {
 	}
 
 	@Override
-	public void deposit(BankAccount acc) {
+	public void deposit(BankAccount acc, User user) {
 		String input = null;
 		double inputNum = -1;
 		
@@ -257,7 +261,7 @@ public class PresentationImpl implements Presentation {
 					System.out.println("Cannot deposit a negative amount. Please, enter a positive amount.");
 				}
 				else {
-					service.changeBalance(acc, acc.getBalance() + inputNum);
+					service.changeBalance(acc, user, acc.getBalance() + inputNum);
 					System.out.println(MoneyUtils.toMoneyString(inputNum) + " has been successfully deposited into your "
 					+ acc.getName() + " account!");
 					return;
@@ -271,7 +275,7 @@ public class PresentationImpl implements Presentation {
 	}
 
 	@Override
-	public void withdraw(BankAccount acc) {
+	public void withdraw(BankAccount acc, User user) {
 		String input = null;
 		double inputNum = -1;
 		
@@ -293,7 +297,7 @@ public class PresentationImpl implements Presentation {
 					System.out.println("Cannot withdraw more than your account balance. Please, enter a smaller amount.");
 				}
 				else {
-					service.changeBalance(acc, acc.getBalance()-inputNum);
+					service.changeBalance(acc, user, acc.getBalance()-inputNum);
 					System.out.println("Here is your " + MoneyUtils.toMoneyString(inputNum) + "!\n");
 					return;
 				}
@@ -316,13 +320,13 @@ public class PresentationImpl implements Presentation {
 				System.out.println("Cannot make a money transfer to the same account.");
 			}
 			else {
-				moneyTransferHelper(sendingAcc, receivingAcc);
+				moneyTransferHelper(user, sendingAcc, user, receivingAcc);
 				break;
 			}
 		}
 	}
 	
-	public void makeMoneyTransferToOther(BankAccount sendingAcc) {
+	public void makeMoneyTransferToOther(User sender, BankAccount sendingAcc) {
 		int inputNum = -1;
 		BankAccount receivingAcc = null;
 		
@@ -345,12 +349,12 @@ public class PresentationImpl implements Presentation {
 							+ "Please, try again.\n");
 			}
 			else {
-				User user = service.getCustomerByUsername(username);
-				if (user == null) {
+				User receiver = service.getCustomerByUsername(username);
+				if (receiver == null) {
 					System.out.println("That user does not exist. Please, try again.\n");
 				}
 				else {
-					List<BankAccount> receiverAccs = service.getCustomerBankAccounts(user);
+					List<BankAccount> receiverAccs = service.getCustomerBankAccounts(receiver);
 					if (receiverAccs == null) {
 						System.out.println(username + " has no approved bank accounts to transfer to. Backing out...");
 						return;
@@ -367,7 +371,7 @@ public class PresentationImpl implements Presentation {
 						try {
 							inputNum = Integer.parseInt(input);
 							receivingAcc = receiverAccs.get(inputNum);
-							moneyTransferHelper(sendingAcc, receivingAcc);
+							moneyTransferHelper(sender, sendingAcc, receiver, receivingAcc);
 						}
 						catch(IndexOutOfBoundsException | NumberFormatException e) {
 							inputNum = -1;
@@ -405,8 +409,10 @@ public class PresentationImpl implements Presentation {
 				createNewBankAccountPrompt(user);
 				break;
 			case "3":
+				userLoggedOutLog(user.getUsername());
 				return;
 			case "4":
+				exitApplicationLog(user.getUsername());
 				System.exit(0);
 			default:
 				System.out.println("Invalid input. Please, try again.\n");
@@ -414,6 +420,7 @@ public class PresentationImpl implements Presentation {
 		}
 	}
 	
+
 	@Override
 	public void displayBankAccountOptions(User user, BankAccount acc) {
 		boolean loop = true;
@@ -437,10 +444,10 @@ public class PresentationImpl implements Presentation {
 				checkBalance(acc);
 				break;
 			case "2":
-				deposit(acc);
+				deposit(acc, user);
 				break;
 			case "3":
-				withdraw(acc);
+				withdraw(acc, user);
 				break;
 			case "4":
 				selectMoneyTransferType(user, acc);
@@ -502,34 +509,32 @@ public class PresentationImpl implements Presentation {
 	}
 	
 	@Override
-	public void displayEmployeeOptions(User user) {
+	public void displayEmployeeOptions(User employee) {
 		boolean loop = true;
 		
-		System.out.println("\n========== WELCOME, " + user.getFirstName().toUpperCase() + "! ==========");
+		System.out.println("\n========== WELCOME, " + employee.getFirstName().toUpperCase() + "! ==========");
 		
 		while(loop) {
 			System.out.println("Enter the index of the option you would like to pick.");
 			System.out.println("(1) View Bank Accounts Awaiting Approval\n"
 					+ "(2) View Customer's Bank Accounts\n"
-					+ "(3) View Log of Transactions\n"
-					+ "(4) Log Out\n"
-					+ "(5) Exit Application");
+					+ "(3) Log Out\n"
+					+ "(4) Exit Application");
 			
 			String input = sc.nextLine().toLowerCase();
 
 			switch(input) {
 			case "1":
-				approveBankAccountsPrompt();
+				approveBankAccountsPrompt(employee);
 				break;
 			case "2":
-				viewCustomerBankAccountsPrompt();
+				viewCustomerBankAccountsPrompt(employee);
 				break;
 			case "3":
-				viewLog();
-				break;
-			case "4":
+				userLoggedOutLog(employee.getUsername());
 				return;
-			case "5":
+			case "4":
+				exitApplicationLog(employee.getUsername());
 				System.exit(0);
 			default:
 				System.out.println("Invalid input. Please, try again.\n");
@@ -537,8 +542,9 @@ public class PresentationImpl implements Presentation {
 		}
 	}
 
+
 	@Override
-	public void approveBankAccountsPrompt() {
+	public void approveBankAccountsPrompt(User employee) {
 		String input = null;
 		int inputNum = -1;
 		List<BankAccount> awaitingApprovalList = service.getBankAccountsAwaitingApproval();
@@ -561,7 +567,7 @@ public class PresentationImpl implements Presentation {
 						System.out.println("This account has already been approved.");
 					}
 					else {
-						service.validateBankAccount(acc);
+						service.validateBankAccount(acc, employee);
 						System.out.println(acc.getName() + " has been successfully approved.");
 					}
 				}
@@ -584,7 +590,7 @@ public class PresentationImpl implements Presentation {
 	}
 	
 	@Override
-	public void viewCustomerBankAccountsPrompt() {
+	public void viewCustomerBankAccountsPrompt(User employee) {
 		User customer = null;
 		
 		
@@ -625,12 +631,6 @@ public class PresentationImpl implements Presentation {
 		}
 	}
 	
-	@Override
-	public void viewLog() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	private void printIndexedBankAccounts(List<BankAccount> accs) {
 		for(int i = 0; i < accs.size(); i++) {
 			System.out.println("(" + i + ")" + accs.get(i).toTabbedString());
@@ -643,7 +643,7 @@ public class PresentationImpl implements Presentation {
 		}
 	}
 	
-	private void initialDeposit(BankAccount newAcc) {
+	private void initialDeposit(BankAccount newAcc, User user) {
 		boolean loop = true;
 		
 		System.out.println("Would you like to make an initial deposit into your new bank account? (y/n)");
@@ -654,7 +654,7 @@ public class PresentationImpl implements Presentation {
 			switch(input) {
 			case "y":
 				loop = false;
-				deposit(newAcc);
+				deposit(newAcc, user);
 				break;
 			case "n":
 				return;
@@ -691,7 +691,7 @@ public class PresentationImpl implements Presentation {
 			makeMoneyTransferToSelf(user, acc);
 			break;
 		case "2":
-			makeMoneyTransferToOther(acc);
+			makeMoneyTransferToOther(user, acc);
 			break;
 		case "back":
 			return;
@@ -701,7 +701,7 @@ public class PresentationImpl implements Presentation {
 		}
 	}
 	
-	private void moneyTransferHelper(BankAccount sendingAcc, BankAccount receivingAcc) {
+	private void moneyTransferHelper(User sender, BankAccount sendingAcc, User receiver, BankAccount receivingAcc) {
 		double amount = -1.00;
 		
 		while(true) {
@@ -717,7 +717,7 @@ public class PresentationImpl implements Presentation {
 					amount = Double.parseDouble(input);
 					if(amount > 0) {
 						if (sendingAcc.getBalance() >= amount) {
-							service.makeMoneyTransfer(sendingAcc, receivingAcc, amount);
+							service.makeMoneyTransfer(sender, sendingAcc, receiver, receivingAcc, amount);
 							break;
 						}
 						else {
@@ -747,5 +747,13 @@ public class PresentationImpl implements Presentation {
 			}
 		}
 		return false;
+	}
+
+	private void userLoggedOutLog(String username) {
+		MainDriver.loggy.info("User '" + username + "' logged out.");
+	}
+	
+	private void exitApplicationLog(String username) {
+		MainDriver.loggy.info("User '" + username + "' exited the application.");
 	}
 }

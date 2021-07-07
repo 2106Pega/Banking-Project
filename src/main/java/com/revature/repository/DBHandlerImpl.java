@@ -7,9 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.revature.MainDriver;
 import com.revature.models.BankAccount;
 import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
+import com.revature.util.MoneyUtils;
 
 public class DBHandlerImpl implements DBHandler{
 
@@ -25,13 +27,15 @@ public class DBHandlerImpl implements DBHandler{
 			ps.setString(4, user.getLastName());
 			
 			ps.execute();
+			MainDriver.loggy.info("User '" + user.getUsername() + "' was added to the db.");
 		} catch (SQLException e) {
+			MainDriver.loggy.warn("Failed to add User '" + user.getUsername() + "' to the db:\n" + e);
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void insertNewBankAccount(BankAccount acc) {
+	public void insertNewBankAccount(BankAccount acc, User user) {
 		String sql = "INSERT INTO bank_accounts(u_user_name, account_name, balance) VALUES (?,?,?);";
 		
 		try(Connection conn = ConnectionFactory.getConnection()) {
@@ -41,7 +45,10 @@ public class DBHandlerImpl implements DBHandler{
 			ps.setDouble(3, acc.getBalance());
 			
 			ps.execute();
+			MainDriver.loggy.info("Bank Acc '" + acc.getName() + "' was created by User '" + user.getUsername()  + "' and added to the db.");
 		} catch (SQLException e) {
+			MainDriver.loggy.warn("Failed to add Bank Acc '" + acc.getName() + "' created by User '" + user.getUsername() + "' to the db:\n" 
+					+ e);
 			e.printStackTrace();
 		}
 	}
@@ -57,6 +64,7 @@ public class DBHandlerImpl implements DBHandler{
 			
 			return selectBankAccountHelper(ps);
 		} catch (SQLException e) {
+			MainDriver.loggy.warn(e);
 			e.printStackTrace();
 		}
 		
@@ -73,6 +81,7 @@ public class DBHandlerImpl implements DBHandler{
 			
 			return selectMultipleBankAccountsHelper(ps);
 		} catch (SQLException e) {
+			MainDriver.loggy.warn(e);
 			e.printStackTrace();
 		}
 		
@@ -88,6 +97,7 @@ public class DBHandlerImpl implements DBHandler{
 			
 			return selectMultipleBankAccountsHelper(ps);
 		} catch (SQLException e) {
+			MainDriver.loggy.warn(e);
 			e.printStackTrace();
 		}
 		
@@ -104,6 +114,7 @@ public class DBHandlerImpl implements DBHandler{
 			
 			return selectUserHelper(ps);
 		} catch (SQLException e) {
+			MainDriver.loggy.warn(e);
 			e.printStackTrace();
 		}
 		
@@ -120,6 +131,7 @@ public class DBHandlerImpl implements DBHandler{
 			
 			return selectUserHelper(ps);
 		} catch (SQLException e) {
+			MainDriver.loggy.warn(e);
 			e.printStackTrace();
 		}
 		
@@ -135,6 +147,7 @@ public class DBHandlerImpl implements DBHandler{
 			
 			return selectMultipleUsersHelper(ps);
 		} catch (SQLException e) {
+			MainDriver.loggy.warn(e);
 			e.printStackTrace();
 		}
 		
@@ -151,6 +164,7 @@ public class DBHandlerImpl implements DBHandler{
 			
 			return selectUserHelper(ps);
 		} catch (SQLException e) {
+			MainDriver.loggy.warn(e);
 			e.printStackTrace();
 		}
 		
@@ -158,7 +172,7 @@ public class DBHandlerImpl implements DBHandler{
 	}
 
 	@Override
-	public void updateBalance(BankAccount acc, double newBalance) {
+	public void updateBalance(BankAccount acc, User user, double newBalance) {
 		String sql = "UPDATE bank_accounts SET balance = ? WHERE account_id = ?;";
 		
 		try(Connection conn = ConnectionFactory.getConnection()) {
@@ -167,13 +181,17 @@ public class DBHandlerImpl implements DBHandler{
 			ps.setInt(2, acc.getAccountId());
 			
 			ps.execute();
+			MainDriver.loggy.info("User '" + user.getUsername() + "' Bank Acc '" + acc.getName() + "' balance updated to " 
+					+ MoneyUtils.toMoneyString(newBalance) + " in the db.");
 		} catch (SQLException e) {
+			MainDriver.loggy.warn("Failed to update balance of Bank Acc '" + acc.getName() + "' to " + MoneyUtils.toMoneyString(newBalance) 
+			+ " for User '" + user.getUsername() + "':\n" + e);
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void updateBankAccountApproval(BankAccount acc) {
+	public void updateBankAccountApproval(BankAccount acc, User employee) {
 		String sql = "UPDATE bank_accounts SET is_approved = true WHERE account_id = ?;";
 		
 		try(Connection conn = ConnectionFactory.getConnection()) {
@@ -181,10 +199,12 @@ public class DBHandlerImpl implements DBHandler{
 			ps.setDouble(1, acc.getAccountId());
 			
 			ps.execute();
+			MainDriver.loggy.info("Bank Acc '" + acc.getName() + "' was approved by '" + employee.getUsername()  + "' and updated in the db.");
 		} catch (SQLException e) {
+			MainDriver.loggy.warn("Failed to update approval of Bank Acc '" + acc.getName() + "' as per Employee '" + employee.getUsername() 
+			+ "' request:\n");
 			e.printStackTrace();
 		}
-		
 	}
 
 //	@Override
@@ -262,6 +282,4 @@ public class DBHandlerImpl implements DBHandler{
 		}
 		return null;
 	}
-	
-
 }

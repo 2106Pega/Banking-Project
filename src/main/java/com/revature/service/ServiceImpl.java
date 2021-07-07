@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.revature.MainDriver;
 import com.revature.models.BankAccount;
 import com.revature.models.User;
 import com.revature.repository.DBHandler;
@@ -20,24 +21,23 @@ public class ServiceImpl implements Service{
 	// Customer Methods
 	
 	@Override
-	public boolean makeMoneyTransfer(BankAccount sender, BankAccount receiver, double amount) {
+	public void makeMoneyTransfer(User sender, BankAccount senderAcc, User receiver, BankAccount receiverAcc, double amount) {
 		amount = MoneyUtils.round(amount);
-		changeBalance(sender, sender.getBalance() - amount);
-		changeBalance(receiver, receiver.getBalance() + amount);
-		return false;
+		changeBalance(senderAcc, sender, senderAcc.getBalance() - amount);
+		changeBalance(receiverAcc, receiver, receiverAcc.getBalance() + amount);
+		MainDriver.loggy.info("Money transfer from User '" + sender.getUsername() + "' to User '" +  receiver.getUsername() + "' completed.");
 	}
 
 	@Override
-	public void changeBalance(BankAccount acc, double amount) {
+	public void changeBalance(BankAccount acc, User user, double amount) {
 		amount = MoneyUtils.round(amount);
 		acc.setBalance(amount);
-		dbHandler.updateBalance(acc, amount);
+		dbHandler.updateBalance(acc, user, amount);
 	}
 
 	@Override
 	public void createNewUser(String firstName, String lastName, String username, String password) {
 		dbHandler.insertNewUser(new User(username, password, firstName, lastName, false));
-		
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class ServiceImpl implements Service{
 		balance = MoneyUtils.round(balance);
 		BankAccount newBankAccount = new BankAccount(0, user.getUsername(), name, balance, false);
 		
-		dbHandler.insertNewBankAccount(newBankAccount);
+		dbHandler.insertNewBankAccount(newBankAccount, user);
 		newBankAccount = dbHandler.selectBankAccountByName(user, name);
 		
 		return newBankAccount;
@@ -53,7 +53,14 @@ public class ServiceImpl implements Service{
 	
 	@Override
 	public User logIn(String username, String password) {
-		return dbHandler.selectUserByUsernameAndPassword(username, password);
+		User user = dbHandler.selectUserByUsernameAndPassword(username, password);
+		if(user == null) {
+			MainDriver.loggy.info("Unsuccessful login on User '" + username + "'.");
+		}
+		else {
+			MainDriver.loggy.info("Successful login on User '" + username + "'.");
+		}
+		return user;
 	}
 
 	// Employee Methods
@@ -62,6 +69,7 @@ public class ServiceImpl implements Service{
 	public List<BankAccount> getBankAccountsAwaitingApproval() {
 		return dbHandler.selectBankAccountsToBeApproved();
 	}
+	
 
 	@Override
 	public List<BankAccount> getCustomerBankAccounts(User user) {
@@ -69,14 +77,13 @@ public class ServiceImpl implements Service{
 	}
 	
 	@Override
-	public void validateBankAccount(BankAccount acc) {
+	public void validateBankAccount(BankAccount acc, User employee) {
 		acc.setApproved(true);
-		dbHandler.updateBankAccountApproval(acc);
+		dbHandler.updateBankAccountApproval(acc, employee);
 	}
 
 	@Override
 	public List<User> getCustomersOrderedByLastName() {
-		
 		return dbHandler.selectCustomersOrderedByLastName();
 	}
 	

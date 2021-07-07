@@ -2,16 +2,11 @@ package com.revature.service;
 
 import java.util.List;
 import java.util.regex.Pattern;
-
-import org.apache.log4j.Logger;
-
-import com.revature.MainDriver;
 import com.revature.models.BankAccount;
 import com.revature.models.User;
 
 public interface Service {
 	
-	public static final Logger loggy = Logger.getLogger(MainDriver.class);
 	public static final int MIN_CHARACTERS = 10;
 	public static final int MAX_CHARACTERS = 30;
 	public static final Pattern GENERAL_PATTERN = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
@@ -19,9 +14,9 @@ public interface Service {
 	
 	// Customer methods
 	
-	public boolean makeMoneyTransfer(BankAccount sender, BankAccount receiver, double amount); //
+	public void makeMoneyTransfer(User sender, BankAccount senderAcc, User receiver, BankAccount receiverAcc, double amount); //
 	
-	public void changeBalance(BankAccount acc, double amount); //
+	public void changeBalance(BankAccount acc, User user, double amount); //
 	
 	public void createNewUser(String firstName, String lastName, String username, String password); //
 	
@@ -38,7 +33,7 @@ public interface Service {
 	
 	public List<BankAccount> getCustomerBankAccounts(User user);
 	
-	public void validateBankAccount(BankAccount acc);
+	public void validateBankAccount(BankAccount acc, User employee);
 	
 	public List<User> getCustomersOrderedByLastName();
 	

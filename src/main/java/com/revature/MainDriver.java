@@ -1,5 +1,7 @@
 package com.revature;
 
+import org.apache.log4j.Logger;
+
 import com.revature.models.User;
 import com.revature.presentation.Presentation;
 import com.revature.presentation.PresentationImpl;
@@ -10,6 +12,8 @@ import com.revature.service.ServiceImpl;
 
 public class MainDriver {
 
+	public static final Logger loggy = Logger.getLogger(MainDriver.class);
+	
 	public static void main(String[] args) {
 		DBHandler dbHandler = new DBHandlerImpl();
 		Service service = new ServiceImpl(dbHandler);

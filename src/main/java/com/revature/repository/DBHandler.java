@@ -11,7 +11,7 @@ public interface DBHandler {
 	//Create
 	public void insertNewUser(User user);
 	
-	public void insertNewBankAccount(BankAccount acc);
+	public void insertNewBankAccount(BankAccount acc, User user);
 	
 	//Read
 	public BankAccount selectBankAccountByName(User user, String name);
@@ -31,9 +31,9 @@ public interface DBHandler {
 	//Update
 //	public void updatePassword(BankAccount acc);
 	
-	public void updateBalance(BankAccount acc, double newBalance);
+	public void updateBalance(BankAccount acc, User user, double newBalance);
 	
-	public void updateBankAccountApproval(BankAccount acc);
+	public void updateBankAccountApproval(BankAccount acc, User employee);
 	
 	//Delete
 //	public void deleteBankAccount(BankAccount acc);
