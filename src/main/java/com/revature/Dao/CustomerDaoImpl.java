@@ -76,34 +76,16 @@ public class CustomerDaoImpl implements CustomerDao {
 	@Override
 	
 	public void view_balance(Account a) {
-		double balance = 0.0;
-		boolean approval = false;
-		String sql = "SELECT balance, approval FROM bank WHERE username = ? AND account_name = ?;";
-		try(Connection conn = ConnectionFactory.getConnection())
+		init(a);
+		if(a.isApproval() == false)
 		{
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, a.getUsername());
-			ps.setString(2, a.getAccount_name());
-			ResultSet rs = ps.executeQuery();
-			while(rs.next())
-			{
-				balance = rs.getDouble("balance");
-				approval = rs.getBoolean("approval");
-			}
-			
-			if(!approval)
-			{
-				a.setBalance(balance);
-			}
-			else
-			{
-				System.out.println("This account is not approved yet, please wait employee to approve it.");
-			}
-			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("This account " + a.getUsername() + " not approved yet, please wait employee to approve it.");
+			return;
 		}
+		else
+		{
+			System.out.println("The current balance of account " + a.getAccount_name() + "is " + a.getBalance());
+		}		
 	}
 
 	@Override
@@ -115,7 +97,12 @@ public class CustomerDaoImpl implements CustomerDao {
 			return;		
 		}
 		
-		view_balance(a);
+		init(a);
+		if(a.isApproval() == false)
+		{
+			System.out.println("This account " + a.getUsername() + " not approved yet, please wait employee to approve it.");
+			return;
+		}
 		
 		balance = a.getBalance() + amount;
 		String sql = "UPDATE bank SET balance = ? WHERE username = ? AND account_name = ?;";
@@ -126,6 +113,8 @@ public class CustomerDaoImpl implements CustomerDao {
 			ps.setString(2, a.getUsername());
 			ps.setString(3, a.getAccount_name());
 			ps.executeUpdate();
+			a.setBalance(balance);
+			System.out.println("The current balance of account " + a.getAccount_name() + "is " + a.getBalance());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -135,13 +124,22 @@ public class CustomerDaoImpl implements CustomerDao {
 	@Override
 	public void withdraw(Account a, double amount) {
 		double balance;
+		
+		init(a);
+		
+		if(a.isApproval() == false)
+		{
+			System.out.println("This account " + a.getUsername() + " not approved yet, please wait employee to approve it.");
+			return;
+		}
+		
 		if(amount < 0 || amount > a.getBalance())
 		{
 			System.out.println("Invalid input!");
 			return;		
 		}
 		
-		view_balance(a);
+		
 		balance = a.getBalance() - amount;
 		String sql = "UPDATE bank SET balance = ? WHERE username = ? AND account_name = ?;";
 		try(Connection conn = ConnectionFactory.getConnection())
@@ -151,6 +149,8 @@ public class CustomerDaoImpl implements CustomerDao {
 			ps.setString(2, a.getUsername());
 			ps.setString(3, a.getAccount_name());
 			ps.executeUpdate();
+			a.setBalance(balance);
+			System.out.println("The current balance of account " + a.getAccount_name() + "is " + a.getBalance());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -162,13 +162,27 @@ public class CustomerDaoImpl implements CustomerDao {
 	public void post(Account a, Account b, double amount) {
 		double balance_a;
 		double balance_b;
+		init(a);
+		init(b);
+		
+		if(a.isApproval() == false)
+		{
+			System.out.println("This account " + a.getUsername() + " not approved yet, please wait employee to approve it.");
+			return;
+		}
+		
+		if(b.isApproval() == false)
+		{
+			System.out.println("This account " + b.getUsername() + " not approved yet, please wait employee to approve it.");
+			return;
+		}
+		
 		if(amount < 0 || amount > a.getBalance())
 		{
 			System.out.println("Invalid input!");
 			return;		
 		}
 		
-		view_balance(a);
 		balance_a = a.getBalance() - amount;
 		String sql_a = "UPDATE bank SET balance = ? WHERE username = ? AND account_name = ?;";
 		try(Connection conn = ConnectionFactory.getConnection())
@@ -178,11 +192,12 @@ public class CustomerDaoImpl implements CustomerDao {
 			ps.setString(2, a.getUsername());
 			ps.setString(3, a.getAccount_name());
 			ps.executeUpdate();
+			a.setBalance(balance_a);
+			System.out.println("The current balance of account " + a.getAccount_name() + "is " + a.getBalance());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		view_balance(b);
 		balance_b = b.getBalance() + amount;
 		String sql_b = "UPDATE bank SET balance = ? WHERE username = ? AND account_name = ?;";
 		try(Connection conn = ConnectionFactory.getConnection())
@@ -203,13 +218,29 @@ public class CustomerDaoImpl implements CustomerDao {
 	public void accept(Account a, Account b, double amount) {
 		double balance_a;
 		double balance_b;
+		
+		init(a);
+		init(b);
+		
+		if(a.isApproval() == false)
+		{
+			System.out.println("This account " + a.getUsername() + " not approved yet, please wait employee to approve it.");
+			return;
+		}
+		
+		if(b.isApproval() == false)
+		{
+			System.out.println("This account " + b.getUsername() + " not approved yet, please wait employee to approve it.");
+			return;
+		}
+		
 		if(amount < 0 || amount > b.getBalance())
 		{
 			System.out.println("Invalid input!");
 			return;		
 		}
 
-		view_balance(a);
+
 		balance_a = a.getBalance() + amount;
 		String sql_a = "UPDATE bank SET balance = ? WHERE username = ? AND account_name = ?;";
 		try(Connection conn = ConnectionFactory.getConnection())
@@ -219,11 +250,13 @@ public class CustomerDaoImpl implements CustomerDao {
 			ps.setString(2, a.getUsername());
 			ps.setString(3, a.getAccount_name());
 			ps.executeUpdate();
+			a.setBalance(balance_a);
+			System.out.println("The current balance of account " + a.getAccount_name() + "is " + a.getBalance());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		view_balance(b);
+
 		balance_b = b.getBalance() - amount;
 		String sql_b = "UPDATE bank SET balance = ? WHERE username = ? AND account_name = ?;";
 		try(Connection conn = ConnectionFactory.getConnection())

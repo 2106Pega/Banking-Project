@@ -61,7 +61,7 @@ public class Account {
 
 	@Override
 	public String toString() {
-		return "Account [username=" + username + ", account_name=" + account_name + ", balance=" + balance + "]";
+		return "Username: " + username + "Account name: " + account_name + "Approval status: " + approval + "Balance: " + balance;
 	}
 
 	public boolean isApproval() {
