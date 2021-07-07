@@ -2,21 +2,28 @@ package com.revature.models;
 
 public class User {
 	
-	private int userId;
 	private String firstName, lastName, username, password;
-	public User(int userId, String firstName, String lastName, String username, String password) {
+	private boolean isEmployee;
+	public User(String username, String password, String firstName, String lastName, boolean isEmployee) {
 		super();
-		this.userId = userId;
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.isEmployee = isEmployee;
 	}
-	public int getUserId() {
-		return userId;
+
+	public String getUsername() {
+		return username;
 	}
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -30,25 +37,29 @@ public class User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public String getUsername() {
-		return username;
+	public boolean isEmployee() {
+		return isEmployee;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmployee(boolean isEmployee) {
+		this.isEmployee = isEmployee;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	
 	@Override
 	public String toString() {
-		return "User #: " + userId + "\n"
-				+ "Name: " + firstName + lastName + "\n"
+		return "Name: " + firstName + lastName + "\n"
+				+ "Username: " + username + "\n"
+				+ "Password: " + password + "\n"
+				+ "Employee? " + isEmployee + "\n";
+	}
+	public String toTabbedString() {
+		return "\tName: " + firstName + " " + lastName + "\n"
+				+ "\tUsername: " + username + "\n"
+				+ "\tPassword: " + password + "\n"
+				+ "\tEmployee? " + isEmployee + "\n";
+	}
+	public String toStringCustomers() {
+		return "Name: " + firstName + " " + lastName + "\n"
 				+ "Username: " + username + "\n"
 				+ "Password: " + password + "\n";
 	}
-	
-	
 }

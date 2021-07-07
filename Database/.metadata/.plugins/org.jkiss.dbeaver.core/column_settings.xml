@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+	<item id="NodeList/PostgreTableColumn">
+		<column name="Column Name" visible="true" order="0" width="104"/>
+		<column name="#" visible="true" order="1" width="27"/>
+		<column name="Data type" visible="true" order="2" width="73"/>
+		<column name="Length" visible="true" order="3" width="51"/>
+		<column name="Identity" visible="true" order="4" width="54"/>
+		<column name="Collation" visible="true" order="5" width="62"/>
+		<column name="Not Null" visible="true" order="6" width="59"/>
+		<column name="Default" visible="true" order="7" width="279"/>
+		<column name="Comment" visible="true" order="8" width="68"/>
+	</item>
+</items>

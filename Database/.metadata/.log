@@ -1,0 +1,66 @@
+!SESSION 2021-07-07 14:51:33.294 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=11.0.11
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\spide\Desktop\Revature Documents\Projects\Project 0\Banking-Project\Database
+
+!ENTRY org.jkiss.dbeaver.model 4 0 2021-07-07 14:54:45.483
+!MESSAGE 
+!STACK 0
+java.lang.NullPointerException
+	at org.jkiss.dbeaver.ext.postgresql.PostgreUtils.getRealSchemaName(PostgreUtils.java:693)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreStructureAssistant.findObjectsByMask(PostgreStructureAssistant.java:107)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreStructureAssistant.findObjectsByMask(PostgreStructureAssistant.java:1)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCStructureAssistant.findObjectsByMask(JDBCStructureAssistant.java:71)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCStructureAssistant.findObjectsByMask(JDBCStructureAssistant.java:1)
+	at org.jkiss.dbeaver.ui.editors.sql.syntax.SQLContextInformer$TablesFinderJob.run(SQLContextInformer.java:366)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.jkiss.dbeaver.model 4 0 2021-07-07 14:54:45.488
+!MESSAGE 
+!STACK 0
+java.lang.NullPointerException
+	at org.jkiss.dbeaver.ext.postgresql.PostgreUtils.getRealSchemaName(PostgreUtils.java:693)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreStructureAssistant.findObjectsByMask(PostgreStructureAssistant.java:107)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreStructureAssistant.findObjectsByMask(PostgreStructureAssistant.java:1)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCStructureAssistant.findObjectsByMask(JDBCStructureAssistant.java:71)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCStructureAssistant.findObjectsByMask(JDBCStructureAssistant.java:1)
+	at org.jkiss.dbeaver.ui.editors.sql.syntax.SQLContextInformer$TablesFinderJob.run(SQLContextInformer.java:366)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.jkiss.dbeaver.model 2 0 2021-07-07 14:56:16.021
+!MESSAGE Some sessions are still open: [SESSION BankingDB [Main <postgres>]]
+!SESSION 2021-07-07 14:56:16.353 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=11.0.11
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\spide\Desktop\Revature Documents\Projects\Project 0\Banking-Project\Database
+
+!ENTRY org.jkiss.dbeaver.model 4 0 2021-07-07 14:56:55.438
+!MESSAGE SQL Error [42710]: ERROR: role "java_user" already exists
+!SUBENTRY 1 org.jkiss.dbeaver.model 4 0 2021-07-07 14:56:55.438
+!MESSAGE ERROR: role "java_user" already exists
+!STACK 0
+org.postgresql.util.PSQLException: ERROR: role "java_user" already exists
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.execute(JDBCStatementImpl.java:330)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.executeStatement(JDBCStatementImpl.java:130)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeStatement(SQLQueryJob.java:510)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.lambda$0(SQLQueryJob.java:441)
+	at org.jkiss.dbeaver.model.exec.DBExecUtils.tryExecuteRecover(DBExecUtils.java:171)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeSingleQuery(SQLQueryJob.java:428)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.run(SQLQueryJob.java:220)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)

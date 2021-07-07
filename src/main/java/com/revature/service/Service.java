@@ -1,28 +1,63 @@
 package com.revature.service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
+import com.revature.MainDriver;
 import com.revature.models.BankAccount;
+import com.revature.models.User;
 
 public interface Service {
 	
-	public boolean makeMoneyTransfer(BankAccount sender, String receiverUserName);
+	public static final Logger loggy = Logger.getLogger(MainDriver.class);
+	public static final int MIN_CHARACTERS = 10;
+	public static final int MAX_CHARACTERS = 30;
+	public static final Pattern GENERAL_PATTERN = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+	public static final Pattern NAME_PATTERN = Pattern.compile("[^a-z]", Pattern.CASE_INSENSITIVE);
 	
-	public double getBalance(BankAccount acc);
+	// Customer methods
 	
-	public void addToBalance(double amount);
+	public boolean makeMoneyTransfer(BankAccount sender, BankAccount receiver, double amount); //
 	
-	public void subtractFromBalance(double amount);
+	public void changeBalance(BankAccount acc, double amount); //
 	
-	public void createNewAccount(String firstName, String lastName, String username, String password);
+	public void createNewUser(String firstName, String lastName, String username, String password); //
 	
-	public void logIn(String username, String password);
+	public User logIn(String username, String password); //
+	
+	public BankAccount createNewBankAccount(User user, String name, double balance); //
 	
 //	public boolean changePassword(BankAccount acc, String oldPassword, String newPassword);
 	
 	
 	// Employee methods
-	public List<BankAccount> getAccountsAwaitingApproval();
 	
-	public List<BankAccount> getCustomersAccounts();
+	public List<BankAccount> getBankAccountsAwaitingApproval();
+	
+	public List<BankAccount> getCustomerBankAccounts(User user);
+	
+	public void validateBankAccount(BankAccount acc);
+	
+	public List<User> getCustomersOrderedByLastName();
+	
+	public User getCustomerByUsername(String username);
+
+	
+	// Helper methods
+	
+	public boolean isValidUsername(String username);
+
+	public boolean isValidPassword(String username);
+
+	public boolean passwordsMatch(String password1, String password2);
+
+	public boolean isValidName(String name);
+
+	boolean isValidBankAccountName(String name);
+
+	boolean isValidLogIn(String username, String password);
+	
+	public boolean stringMatchesPattern(String str, Pattern p);
 }
