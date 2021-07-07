@@ -1,0 +1,28 @@
+2021-07-05 15:17:34 INFO  BankTerminal:69 - Signup Successful
+2021-07-07 01:49:07 INFO  BankTerminal:69 - Signup Successful
+2021-07-07 01:49:39 INFO  BankTerminal:69 - Signup Successful
+2021-07-07 01:56:22 ERROR BankTerminal:73 - java.lang.Exception: Unable to save user info to DB:: ERROR: duplicate key value violates unique constraint "login_user_name_key"
+  Detail: Key (user_name)=(paul) already exists.
+2021-07-07 01:57:27 ERROR BankTerminal:73 - java.lang.Exception: Unable to save user info to DB:: ERROR: duplicate key value violates unique constraint "login_user_name_key"
+  Detail: Key (user_name)=(paul) already exists.
+2021-07-07 02:01:50 ERROR BankTerminal:105 - java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because the return value of "com.revaturebank.model.User.getPassword()" is null
+2021-07-07 02:04:45 ERROR BankTerminal:105 - java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because the return value of "com.revaturebank.model.User.getPassword()" is null
+2021-07-07 02:05:22 ERROR BankTerminal:105 - java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because the return value of "com.revaturebank.model.User.getPassword()" is null
+2021-07-07 02:08:47 ERROR BankTerminal:105 - java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because the return value of "com.revaturebank.model.User.getPassword()" is null
+2021-07-07 02:09:22 ERROR BankTerminal:105 - java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because the return value of "com.revaturebank.model.User.getPassword()" is null
+2021-07-07 02:13:39 ERROR BankTerminal:105 - java.lang.NullPointerException: Cannot invoke "String.isEmpty()" because the return value of "com.revaturebank.model.User.getPassword()" is null
+2021-07-07 02:14:13 ERROR BankTerminal:105 - java.lang.NullPointerException: Cannot invoke "String.isBlank()" because the return value of "com.revaturebank.model.User.getPassword()" is null
+2021-07-07 02:15:06 ERROR BankTerminal:105 - java.lang.Exception: User Password Does not match
+2021-07-07 02:17:08 ERROR BankTerminal:105 - java.lang.Exception: User Password Does not match
+2021-07-07 02:41:50 ERROR BankTerminal:105 - java.util.NoSuchElementException
+2021-07-07 02:41:50 ERROR BankTerminal:105 - java.util.NoSuchElementException
+2021-07-07 02:41:50 ERROR BankTerminal:105 - java.util.NoSuchElementException
+2021-07-07 02:41:50 ERROR BankTerminal:105 - java.util.NoSuchElementException
+2021-07-07 02:41:50 ERROR BankTerminal:105 - java.util.NoSuchElementException
+2021-07-07 14:40:14 ERROR BankTerminal:105 - java.util.NoSuchElementException
+2021-07-07 14:42:09 ERROR BankTerminal:105 - java.lang.NullPointerException: Cannot invoke "com.revaturebank.model.Customer.getBalance()" because "payToCustomerAccount" is null
+2021-07-07 14:44:34 ERROR BankTerminal:105 - java.lang.NumberFormatException: For input string: "fhdsa"
+2021-07-07 14:47:57 ERROR BankTerminal:105 - java.lang.Exception: UserName/Password does not match
+2021-07-07 14:48:37 ERROR BankTerminal:105 - java.lang.Exception: UserName/Password does not match
+2021-07-07 14:49:46 ERROR BankTerminal:105 - java.util.NoSuchElementException
+2021-07-07 14:49:46 ERROR BankTerminal:105 - java.util.NoSuchElementException
