@@ -1,0 +1,74 @@
+2021-07-06 19:27:26  ERROR com.revature.UserInterface.MainDriver:51 Bad login from: asdf
+2021-07-06 19:30:37  INFO com.revature.UserInterface.MainDriver:71 Customer login successful: newUser
+2021-07-06 19:30:50  INFO com.revature.UserInterface.MainDriver:91 newUser viewed account 2 details
+2021-07-06 19:31:12  INFO com.revature.UserInterface.MainDriver:193 newUser logged out
+2021-07-06 19:31:24  INFO com.revature.UserInterface.MainDriver:71 Customer login successful: debugCust
+2021-07-06 19:31:30  INFO com.revature.UserInterface.MainDriver:91 debugCust viewed account 2 details
+2021-07-06 19:31:35  INFO com.revature.UserInterface.MainDriver:91 debugCust viewed account 1 details
+2021-07-06 19:32:01  INFO com.revature.UserInterface.MainDriver:193 debugCust logged out
+2021-07-06 19:33:22  INFO com.revature.UserInterface.MainDriver:71 Customer login successful: newUser
+2021-07-06 19:33:29  INFO com.revature.UserInterface.MainDriver:92 newUser viewed account 4 details
+2021-07-06 19:33:45  INFO com.revature.UserInterface.MainDriver:110 newUser withdrew from account 4500$
+2021-07-06 19:33:52  INFO com.revature.UserInterface.MainDriver:92 newUser viewed account 4 details
+2021-07-06 19:34:06  INFO com.revature.UserInterface.MainDriver:135 newUser deposited to account 42500$
+2021-07-06 19:34:10  INFO com.revature.UserInterface.MainDriver:92 newUser viewed account 4 details
+2021-07-06 19:34:24  INFO com.revature.UserInterface.MainDriver:161 newUser transfered from account 5 to 4 25$
+2021-07-06 19:34:33  INFO com.revature.UserInterface.MainDriver:92 newUser viewed account 5 details
+2021-07-06 19:34:36  INFO com.revature.UserInterface.MainDriver:194 newUser logged out
+2021-07-06 19:34:49  ERROR com.revature.UserInterface.MainDriver:51 Bad login from: debugUser
+2021-07-06 19:34:58  ERROR com.revature.UserInterface.MainDriver:51 Bad login from: debugUser
+2021-07-06 19:35:02  INFO com.revature.UserInterface.MainDriver:71 Customer login successful: debugCust
+2021-07-06 19:35:10  INFO com.revature.UserInterface.MainDriver:92 debugCust viewed account 1 details
+2021-07-06 19:35:15  INFO com.revature.UserInterface.MainDriver:194 debugCust logged out
+2021-07-06 19:35:27  INFO com.revature.UserInterface.MainDriver:218 Employee login successful: debugEmp
+2021-07-06 19:35:33  INFO com.revature.UserInterface.MainDriver:244 debugEmp viewed log of transactions
+2021-07-06 19:36:06  INFO com.revature.UserInterface.MainDriver:249 debugEmp logged out
+2021-07-06 19:37:50  INFO com.revature.UserInterface.MainDriver:218 Employee login successful: debugEmp
+2021-07-06 19:37:54  INFO com.revature.UserInterface.MainDriver:244 debugEmp viewed log of transactions
+2021-07-06 19:38:12  INFO com.revature.UserInterface.MainDriver:249 debugEmp logged out
+2021-07-06 19:39:29  INFO com.revature.UserInterface.MainDriver:39 New user registered: brandNewUser
+2021-07-06 19:39:35  INFO com.revature.UserInterface.MainDriver:71 Customer login successful: brandNewUser
+2021-07-06 19:39:46  INFO com.revature.UserInterface.MainDriver:189 brandNewUser requested new account: Checking with starting balance:  1000$
+2021-07-06 19:39:58  INFO com.revature.UserInterface.MainDriver:92 brandNewUser viewed account 3 details
+2021-07-06 19:40:01  INFO com.revature.UserInterface.MainDriver:194 brandNewUser logged out
+2021-07-06 19:40:17  INFO com.revature.UserInterface.MainDriver:218 Employee login successful: debugEmp
+2021-07-06 19:40:27  INFO com.revature.UserInterface.MainDriver:232 debugEmp viewed pending accounts
+2021-07-06 19:40:29  INFO com.revature.UserInterface.MainDriver:232 debugEmp viewed pending accounts
+2021-07-06 19:40:36  INFO com.revature.UserInterface.MainDriver:239 debugEmp viewed accounts from user: brandNewUser
+2021-07-06 19:40:41  INFO com.revature.UserInterface.MainDriver:249 debugEmp logged out
+2021-07-06 19:40:56  INFO com.revature.UserInterface.MainDriver:71 Customer login successful: brandNewUser
+2021-07-06 19:41:00  INFO com.revature.UserInterface.MainDriver:92 brandNewUser viewed account 6 details
+2021-07-06 19:41:11  INFO com.revature.UserInterface.MainDriver:110 brandNewUser withdrew from account 6100$
+2021-07-06 19:41:15  INFO com.revature.UserInterface.MainDriver:92 brandNewUser viewed account 6 details
+2021-07-06 19:41:27  INFO com.revature.UserInterface.MainDriver:135 brandNewUser deposited to account 6500$
+2021-07-06 19:41:34  INFO com.revature.UserInterface.MainDriver:92 brandNewUser viewed account 6 details
+2021-07-06 19:41:49  INFO com.revature.UserInterface.MainDriver:161 brandNewUser transfered from account 6 to 1 400$
+2021-07-06 19:41:53  INFO com.revature.UserInterface.MainDriver:194 brandNewUser logged out
+2021-07-06 19:42:10  INFO com.revature.UserInterface.MainDriver:71 Customer login successful: debugCust
+2021-07-06 19:42:14  INFO com.revature.UserInterface.MainDriver:92 debugCust viewed account 1 details
+2021-07-06 19:42:16  INFO com.revature.UserInterface.MainDriver:194 debugCust logged out
+2021-07-06 19:42:25  INFO com.revature.UserInterface.MainDriver:218 Employee login successful: debugEmp
+2021-07-06 19:42:28  INFO com.revature.UserInterface.MainDriver:244 debugEmp viewed log of transactions
+2021-07-06 19:43:03  INFO com.revature.UserInterface.MainDriver:249 debugEmp logged out
+2021-07-06 20:06:47  ERROR com.revature.UserInterface.MainDriver:34 Duplicate username: newUser
+2021-07-06 20:06:51  INFO com.revature.UserInterface.MainDriver:39 New user registered: newUser2
+2021-07-06 20:07:02  INFO com.revature.UserInterface.MainDriver:71 Customer login successful: newUser2
+2021-07-06 20:07:08  INFO com.revature.UserInterface.MainDriver:189 newUser2 requested new account: Checking with starting balance:  1000$
+2021-07-06 20:07:16  INFO com.revature.UserInterface.MainDriver:189 newUser2 requested new account: Savings with starting balance:  300$
+2021-07-06 20:07:19  INFO com.revature.UserInterface.MainDriver:194 newUser2 logged out
+2021-07-06 20:07:27  INFO com.revature.UserInterface.MainDriver:218 Employee login successful: debugEmp
+2021-07-06 20:07:34  INFO com.revature.UserInterface.MainDriver:232 debugEmp viewed pending accounts
+2021-07-06 20:07:38  INFO com.revature.UserInterface.MainDriver:232 debugEmp viewed pending accounts
+2021-07-06 20:07:43  INFO com.revature.UserInterface.MainDriver:239 debugEmp viewed accounts from user: newUser2
+2021-07-06 20:07:46  INFO com.revature.UserInterface.MainDriver:249 debugEmp logged out
+2021-07-06 20:07:54  INFO com.revature.UserInterface.MainDriver:71 Customer login successful: newUser2
+2021-07-06 20:07:58  INFO com.revature.UserInterface.MainDriver:92 newUser2 viewed account 7 details
+2021-07-06 20:08:05  INFO com.revature.UserInterface.MainDriver:110 newUser2 withdrew from account 7 200$
+2021-07-06 20:08:09  INFO com.revature.UserInterface.MainDriver:92 newUser2 viewed account 7 details
+2021-07-06 20:08:21  INFO com.revature.UserInterface.MainDriver:135 newUser2 deposited to account 7 200$
+2021-07-06 20:08:25  INFO com.revature.UserInterface.MainDriver:92 newUser2 viewed account 7 details
+2021-07-06 20:08:37  INFO com.revature.UserInterface.MainDriver:161 newUser2 transfered from account 8 to 7 300$
+2021-07-06 20:08:42  INFO com.revature.UserInterface.MainDriver:92 newUser2 viewed account 8 details
+2021-07-06 20:08:47  INFO com.revature.UserInterface.MainDriver:194 newUser2 logged out
+2021-07-06 20:10:35  INFO com.revature.UserInterface.MainDriver:218 Employee login successful: demoEmployee
+2021-07-06 20:10:36  INFO com.revature.UserInterface.MainDriver:249 demoEmployee logged out
