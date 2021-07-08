@@ -1,3 +1,7 @@
+/*************************
+ * Author: Jason Hubbs
+ * Date: 07-07-21
+ */
 package com.revature.models;
 
 public class User {
@@ -36,7 +40,4 @@ public class User {
 	public int getUser_id() {
 		return user_id;
 	}
-	
-	
-
 }

@@ -251,3 +251,5 @@
 07-07@18:22:23 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
 07-07@18:23:01 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
 07-07@18:23:12 INFO  (PresentationService.java:46)     - ERROR: Transfer between account 134 and 142 failed due to insufficient balance
+07-07@19:02:48 INFO  (PresentationService.java:175)     - ERROR: Unable to create new customer
+07-07@19:04:52 INFO  (PresentationService.java:175)     - ERROR: Unable to create new customer

@@ -1,3 +1,8 @@
+/*************************
+ * Author: Jason Hubbs
+ * Date: 07-07-21
+ */
+
 package com.revature.repo;
 
 import java.sql.Connection;
@@ -12,7 +17,7 @@ import com.revature.util.ConnectionFactory;
 public class UserDAOImpl implements UserDAO{
 
 	//Returns the user in the database via username and password.
-	public User getUserByUsernameAndPassword(String username, String password) {
+	public User GetUserByUsernameAndPassword(String username, String password) {
 		User user = null;
 		Connection conn = ConnectionFactory.getConnection();
 		try {
@@ -31,7 +36,7 @@ public class UserDAOImpl implements UserDAO{
 	}
 
 	//Inserts the user into the database
-	public boolean insertUser(User user) {
+	public boolean InsertUser(User user) {
 		Connection conn;
 		try {
 			conn = ConnectionFactory.getConnection();
@@ -41,7 +46,6 @@ public class UserDAOImpl implements UserDAO{
 			conn.close();
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 		return false;
 	}

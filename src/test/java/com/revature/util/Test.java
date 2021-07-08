@@ -1,8 +1,6 @@
 package com.revature.util; 
-import org.junit.*;
 
 import com.revature.models.Account;
-import com.revature.models.Customer;
 import com.revature.models.User;
 import com.revature.presentation.PresentationService;
 import com.revature.repo.AccountDAO;
@@ -11,11 +9,13 @@ import com.revature.repo.CustomerDAO;
 import com.revature.repo.CustomerDAOImpl;
 import com.revature.repo.UserDAO;
 import com.revature.repo.UserDAOImpl;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+
+/*****************************
+ * Tests must be manually configured based on the data present in the database
+ */
 
 
 public class Test {
@@ -71,10 +71,10 @@ public class Test {
 		Account account2 = new Account(1, 8, 100, false);
 		Account account3 = new Account(1, 8, 100, false);
 		Account account4 = new Account(1, 8, 100, false);
-		assertTrue(a.insertAccount(account1));
-		assertTrue(a.insertAccount(account2));
-		assertTrue(a.insertAccount(account3));
-		assertTrue(a.insertAccount(account4));
+		assertTrue(a.InsertAccount(account1));
+		assertTrue(a.InsertAccount(account2));
+		assertTrue(a.InsertAccount(account3));
+		assertTrue(a.InsertAccount(account4));
 	}
 	
 	@org.junit.Test
@@ -102,10 +102,9 @@ public class Test {
 		User user1 = new User("username", "password");
 		User user2 = new User("username", "password");
 		User user3 = new User("username1", "password");
-		assertFalse(u.insertUser(user1));
-		assertFalse(u.insertUser(user2));
-		assertTrue(u.insertUser(user3));
-		//assertTrue(u.insertUser(null)));
+		assertFalse(u.InsertUser(user1));
+		assertFalse(u.InsertUser(user2));
+		assertTrue(u.InsertUser(user3));
 	}
 
 	

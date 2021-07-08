@@ -1,6 +1,9 @@
+/*************************
+ * Author: Jason Hubbs
+ * Date: 07-07-21
+ */
 package com.revature.presentation;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Scanner;

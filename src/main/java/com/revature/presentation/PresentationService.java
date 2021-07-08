@@ -1,3 +1,7 @@
+/*************************
+ * Author: Jason Hubbs
+ * Date: 07-07-21
+ */
 package com.revature.presentation;
 
 import java.util.List;
@@ -37,6 +41,7 @@ public class PresentationService {
 		emailPattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
 	}
 	
+	//returns true if transfer between accounts is completed, false if not
 	public boolean TransferBetweenAccounts(double transferAmount, int targetAccountID, int sourceAccountID, Customer customer) {
 		Account account = aDao.GetAccountByAccountID(sourceAccountID);
 		if(account.getBalance() < transferAmount || transferAmount < 0 || account.getCustomer_id() != customer.getCustomerId()) {
@@ -50,6 +55,7 @@ public class PresentationService {
 		return false;
 	}
 	
+	//returns all customers in a list
 	public List<Customer> GetAllCustomers(){
 		List<Customer> customers = cDao.GetAllCustomers();
 		if(customers.size() > 0) {
@@ -60,6 +66,7 @@ public class PresentationService {
 		return customers;
 	}
 	
+	// returns true if deposit into account is successful, false if not
 	public boolean DepositIntoAccount(int accountID, double depositAmount, Customer customer) {
 		//verify deposit amount
 		if( depositAmount <= 0) {
@@ -83,12 +90,12 @@ public class PresentationService {
 		return false;
 	}
 	
+	//returns true if withdrawal from account is successful, false if not
 	public boolean WithdrawFromAccount(int accountID, double withdrawAmount, Customer customer) {
 		if( withdrawAmount <= 0) {
 			log.info("ERROR: Withdraw from account " + accountID + " failed due to invalid withdraw amount (" + withdrawAmount + ")");
 			return false;
 		}
-		
 		//verify accountID belongs to an account held by customer
 		List<Account> accountsByCustomer = GetAccountsByCustomer(customer.getCustomerId());
 	    for(Account a : accountsByCustomer){
@@ -105,8 +112,10 @@ public class PresentationService {
 		return false;
 	}
 	
+	//Returns the user associated with the username and password given as parameters
 	public User GetEmployeeByUsernameAndPassword(String username, String password) {
-		User user = eDao.getEmployeeByUsernameAndPassword(username, password);
+		//check is user is null, if not then a valid user exists
+		User user = eDao.GetEmployeeByUsernameAndPassword(username, password);
 		if(user != null) {
 			log.info("SUCCESS: Fetching user by username and password");
 			return user;
@@ -115,8 +124,10 @@ public class PresentationService {
 		return user;
 	}
 	
+	//returns a list of accounts 
 	public List<Account> GetPendingAccounts(){
-		List<Account> accounts = eDao.getPendingAccounts();
+		//check if list is populated, if not, operation was unsuccessful
+		List<Account> accounts = eDao.GetPendingAccounts();
 		if(accounts.size() > 0) {
 			log.info("SUCCESS: Fetching pending accounts");
 			return accounts;
@@ -125,11 +136,14 @@ public class PresentationService {
 		return accounts;
 	}
 	
+	//returns a customer based on the userID of the username and password. 
 	public Customer GetCustomerByUsernameAndPassword(String username, String password){
 		User user = null;
 		Customer customer = null;
-		if((user = uDao.getUserByUsernameAndPassword(username, password)) != null) {
-			if((customer = cDao.getCustomerByUser(user)) != null) {
+		//if user with matching credentials is found, the user object is used to return the 
+		//associated customer.
+		if((user = uDao.GetUserByUsernameAndPassword(username, password)) != null) {
+			if((customer = cDao.GetCustomerByUser(user)) != null) {
 				log.info("SUCCESS: Fetched customer by username and password");
 				return customer;
 			}
@@ -138,6 +152,7 @@ public class PresentationService {
 		return customer;
 	}
 	
+	//returns a list of accounts based on the customerID
 	public List<Account> GetAccountsByCustomer(int customerID) {
 		List<Account> accounts = null;
 		if((accounts = aDao.GetAccountsByCustomerID(customerID)) != null) {
@@ -148,12 +163,15 @@ public class PresentationService {
 		return accounts;
 	}
 
+	//returns a boolean based on whether an account was successfully added
 	public boolean InsertAccountByCustomer(Customer customer, double depositAmount) {
+		//validated deposit amount
 		if(depositAmount < 0) {
 			log.info("ERROR: Unable to create new account due to incorrect deposit amount (" + depositAmount + ")");
 			return false;
 		}
-		if(aDao.insertAccount(new Account(0, customer.getCustomerId(), depositAmount, false))) {
+		//if operation is successful, return true, elsewhere return false
+		if(aDao.InsertAccount(new Account(0, customer.getCustomerId(), depositAmount, false))) {
 			log.info("SUCCESS: New account created (" + depositAmount + ")");
 			return true;
 		}
@@ -161,11 +179,14 @@ public class PresentationService {
 		return false;
 	}
 	
+	//returns a boolean based on whether a customer was successfully added
 	public boolean InsertCustomer(String username, String password, String first_name, String last_name, String phoneNumber, String email) {
 		User user = new User(username, password);
-		if(uDao.insertUser(user)) {
-			Customer customer = new Customer(uDao.getUserByUsernameAndPassword(username, password).getUser_id(), first_name, last_name, phoneNumber, email);
-			if(cDao.insertCustomer(customer)) {
+		//if user is created successfully, then insert new customer
+		if(uDao.InsertUser(user)) {
+			Customer customer = new Customer(uDao.GetUserByUsernameAndPassword(username, password).getUser_id(), first_name, last_name, phoneNumber, email);
+			//returns true if operation was successful, elsewhere returns false
+			if(cDao.InsertCustomer(customer)) {
 				log.info("SUCCESS: New customer created");
 				return true;
 			}else {
@@ -176,36 +197,43 @@ public class PresentationService {
 		return false;
 	}
 	
+	//returns true if account approval is successfully changed to true
 	public boolean ApproveAccount(String substr) {
-		if(eDao.approveAccount(substr))
+		if(eDao.ApproveAccount(substr))
 			return true;
 		return false;
 	}
 	
+	//returns false is account is successfully deleted (being denied results in the
+	//account being deleted from the database
 	public boolean DenyAccount(String substr) {
-		if(eDao.denyAccount(substr))
+		if(eDao.DenyAccount(substr))
 			return true;
 		return false;
 	}
 	
+	//verifies password length
 	public boolean VerifyPassword(String password) {
 		if(password.length() > 7)
 			return true;
 		return false;
 	}
 	
+	//verifies password length
 	public boolean VerifyUsername(String username) {
 		if(username.length() > 5)
 			return true;
 		return false;
 	}
 	
+	//verifies name length
 	public boolean VerifyName(String name) {
 		if(name.length() > 1)
 			return true;
 		return false;
 	}
 	
+	//verifies email using regular expression
 	public boolean VerifyEmail(String email) {
         emailMatcher = emailPattern.matcher(email);
         if(emailMatcher.matches())
@@ -213,6 +241,7 @@ public class PresentationService {
         return false;
 	}
 	
+	//determines whether a string can be parsed into a double
 	public boolean IsDoubleParsable(String stringDouble) {
 		if(!(stringDouble.length() == 0 || stringDouble == null)) {
 			try
@@ -229,6 +258,7 @@ public class PresentationService {
 		return true;
 	}
 	
+	//returns whether a string can be parsed into an integer
 	public boolean IsIntParsable(String stringInt) {
 		if(!(stringInt.length() == 0 || stringInt == null)) {
 			try
@@ -245,6 +275,7 @@ public class PresentationService {
 		return true;
 	}
 	
+	//verifies whether a string representing a phone number can be parsed numerically and is 10 in length
 	public boolean VerifyPhoneNumber(String phoneNumber) {
 		if(phoneNumber.length() == 10) {
 			try {

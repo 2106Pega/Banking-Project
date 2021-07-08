@@ -1,3 +1,7 @@
+/*************************
+ * Author: Jason Hubbs
+ * Date: 07-07-21
+ */
 package com.revature.util;
 
 import java.sql.Connection;
@@ -17,7 +21,6 @@ public class ConnectionFactory {
 		try {
 			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

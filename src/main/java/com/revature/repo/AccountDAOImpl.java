@@ -1,3 +1,7 @@
+/*************************
+ * Author: Jason Hubbs
+ * Date: 07-07-21
+ */
 package com.revature.repo;
 
 import java.sql.Connection;
@@ -126,7 +130,7 @@ public class AccountDAOImpl implements AccountDAO{
 		return accounts;
 	}
 
-	public boolean insertAccount(Account account) {
+	public boolean InsertAccount(Account account) {
 		Connection conn = ConnectionFactory.getConnection();;
 		try {
 			String sql = "insert into accounts (customer_id, balance, approval) values ('" + account.getCustomer_id() + "', '" + account.getBalance() + "', '" + account.isApproved() + "')";

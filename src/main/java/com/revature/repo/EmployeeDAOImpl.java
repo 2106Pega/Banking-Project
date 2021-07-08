@@ -1,3 +1,7 @@
+/*************************
+ * Author: Jason Hubbs
+ * Date: 07-07-21
+ */
 package com.revature.repo;
 
 import java.sql.Connection;
@@ -15,7 +19,7 @@ import com.revature.util.ConnectionFactory;
 
 public class EmployeeDAOImpl implements EmployeeDAO{
 
-	public User getEmployeeByUsernameAndPassword(String username, String password) {
+	public User GetEmployeeByUsernameAndPassword(String username, String password) {
 		User employee = null;
 		Connection conn = ConnectionFactory.getConnection();
 		try {
@@ -33,7 +37,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 		return employee;
 	}
 
-	public List<Account> getPendingAccounts() {
+	public List<Account> GetPendingAccounts() {
 		Connection conn = ConnectionFactory.getConnection();
 		Account account;
 		List<Account> accounts = new ArrayList<Account>();
@@ -53,7 +57,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 		return null;
 	}
 
-	public List<Account> getAllAccounts() {
+	public List<Account> GetAllAccounts() {
 		Connection conn = ConnectionFactory.getConnection();
 		List<Account> accounts = new ArrayList<Account>();
 		Account account;
@@ -72,7 +76,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 		return null;
 	}
 
-	public boolean approveAccount(String account_id) {
+	public boolean ApproveAccount(String account_id) {
 		Connection conn = ConnectionFactory.getConnection();
 		try {
 			String sql = "update accounts set approval = 'TRUE' where account_id = " + account_id;
@@ -86,7 +90,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 		return false;
 	}
 
-	public boolean denyAccount(String account_id) {
+	public boolean DenyAccount(String account_id) {
 		Connection conn = ConnectionFactory.getConnection();
 		try {
 			String sql = "delete from accounts where account_id = " + account_id;
@@ -101,7 +105,7 @@ public class EmployeeDAOImpl implements EmployeeDAO{
 		return false;
 	}
 
-	public Customer getCustomerByAccountID(String account_id) {
+	public Customer GetCustomerByAccountID(String account_id) {
 		Customer customer = null;
 		Connection conn = ConnectionFactory.getConnection();
 		try {

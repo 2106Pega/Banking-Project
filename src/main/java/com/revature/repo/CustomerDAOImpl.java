@@ -1,3 +1,7 @@
+/*************************
+ * Author: Jason Hubbs
+ * Date: 07-07-21
+ */
 package com.revature.repo;
 
 import java.sql.Connection;
@@ -14,7 +18,7 @@ import com.revature.util.ConnectionFactory;
 
 public class CustomerDAOImpl implements CustomerDAO{
 
-	public Customer getCustomerByUser(User user) {
+	public Customer GetCustomerByUser(User user) {
 		Customer customer = null;
 		Connection conn = ConnectionFactory.getConnection();
 		try {
@@ -49,17 +53,7 @@ public class CustomerDAOImpl implements CustomerDAO{
 		return null;
 	}
 
-	public boolean removeCustomer(Customer customer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean updateCustomer(Customer customer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean insertCustomer(Customer customer) {
+	public boolean InsertCustomer(Customer customer) {
 		Connection conn = ConnectionFactory.getConnection();
 		try {
 			String sql = "insert into customers (customer_id, first_name, last_name, phone_number, email) values "
@@ -74,14 +68,4 @@ public class CustomerDAOImpl implements CustomerDAO{
 		}
 		return false;
 	}
-
-
-
-	public Customer GetCustomerByAccountId(int account_id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
 }
