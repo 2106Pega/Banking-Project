@@ -4,6 +4,7 @@ import com.revature.repository.BankDaoImpl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -36,10 +37,10 @@ public class BankUiImpl implements BankUi {
 	 * 	customer or employee login.
 	 */
 	@Override
-	public void displayWelcomeMenu() {
+	public int displayWelcomeMenu() {
 		
 		System.out.println("Welcome to the bank app!");
-		System.out.println("Are you a customer (1) or an employee (2)?");
+		System.out.println("Are you a customer (1) or an employee (2)? (press x to exit)");
 		
 		while (true) {
 		
@@ -53,6 +54,8 @@ public class BankUiImpl implements BankUi {
 			case "2":
 				employeeBranch();
 				break;
+			case "x":
+				return 0;
 			default:
 				System.out.println("Invalid input. Please enter 1 or 2.");
 		
@@ -85,7 +88,7 @@ public class BankUiImpl implements BankUi {
 				break;
 			case "x":
 				System.out.println("Welcome to the bank app!");
-				System.out.println("Are you a customer (1) or an employee (2)?");
+				System.out.println("Are you a customer (1) or an employee (2)? (press x to exit)");
 				return true;
 			default:
 				System.out.println("Error: Please enter 1 or 2.");
@@ -118,7 +121,7 @@ public class BankUiImpl implements BankUi {
 				break;
 			case "x":
 				System.out.println("Welcome to the bank app!");
-				System.out.println("Are you a customer (1) or an employee (2)?");
+				System.out.println("Are you a customer (1) or an employee (2)? (press x to exit)");
 				return true;
 			default:
 				System.out.println("Error: Please enter 1 or 2.");
@@ -213,7 +216,7 @@ public class BankUiImpl implements BankUi {
 	 * 	to one of the options.
 	 * @param	username - the account username
 	 */
-	private static void customerMenu(String username) {
+	private static boolean customerMenu(String username) {
 		
 		boolean stillGoing = true;
 		
@@ -248,13 +251,14 @@ public class BankUiImpl implements BankUi {
 				break;
 			case "6":
 				System.out.println("\nHave a nice day!\n");
-				ui.displayWelcomeMenu();
-				break;
+				return true;
 			default:
 				System.out.println("Error: Please enter an integer 1 through 6");
 		
 			}
 		}
+		
+		return false;
 		
 	}
 	
@@ -263,7 +267,7 @@ public class BankUiImpl implements BankUi {
 	 * 	a customer's bank accounts, view transaction log, and logout) and asks them to input
 	 * 	a number corresponding to one of the options.
 	 */
-	private static void employeeMenu() {
+	private static boolean employeeMenu() {
 		
 		boolean stillGoing = true;
 		
@@ -290,13 +294,14 @@ public class BankUiImpl implements BankUi {
 				break;
 			case "4":
 				System.out.println("\nHave a nice day!\n");
-				ui.displayWelcomeMenu();
-				break;
+				return true;
 			default:
 				System.out.println("Error: Please enter an integer 1 through 4");
 		
 			}
 		}
+		
+		return false;
 		
 	}
 	
@@ -448,16 +453,18 @@ public class BankUiImpl implements BankUi {
 			return false;
 		}
 		
+		Collections.sort(idList);
+		
 		System.out.println("Here are the accounts associated with your login:");
 		for (int id: idList) {
-			System.out.println("\tAccount" + id);
+			System.out.println("\tAccount #" + id);
 		}
 		
 		int accountNumber = -1;
 		
 		while (!idList.contains(accountNumber)) {
 			
-			System.out.println("Which account number would you like to view?");
+			System.out.print("Which account number would you like to view? ");
 			System.out.print("Enter the ID (or x to exit): ");
 			
 			try {
@@ -479,7 +486,7 @@ public class BankUiImpl implements BankUi {
 				}
 				
 			} catch (NumberFormatException e) {
-				System.out.println("Enter an integer!\n");
+				System.out.println("Enter an number!\n");
 			} catch (NoSuchAccountException e) {
 				System.out.println("Account does not exist!\n");
 			}
@@ -512,6 +519,7 @@ public class BankUiImpl implements BankUi {
 			return false;
 		}
 		
+		Collections.sort(idList);
 		
 		System.out.println("Here are the accounts associated with your login:");
 		for (int id: idList) {
@@ -534,7 +542,7 @@ public class BankUiImpl implements BankUi {
 				
 				accountNumber = Integer.parseInt(line);
 				
-				System.out.println("How much would you like to deposit?");
+				System.out.print("How much would you like to deposit? $");
 				double amount = Double.parseDouble(scan.nextLine());
 				
 				if (idList.contains(accountNumber)) {
@@ -547,7 +555,7 @@ public class BankUiImpl implements BankUi {
 				}
 				
 			} catch (NumberFormatException e) {
-				System.out.println("Enter an integer!\n");
+				System.out.println("Enter an number!\n");
 			} catch (BadInputException e) {
 				System.out.println("Amount cannot be negative or zero.\n");
 			} catch (NoSuchAccountException e) {
@@ -582,6 +590,7 @@ public class BankUiImpl implements BankUi {
 			return false;
 		}
 		
+		Collections.sort(idList);
 		
 		System.out.println("Here are the accounts associated with your login:");
 		for (int id: idList) {
@@ -617,7 +626,7 @@ public class BankUiImpl implements BankUi {
 				}
 				
 			} catch (NumberFormatException e) {
-				System.out.println("Enter an integer!\n");
+				System.out.println("Enter an number!\n");
 			} catch (BadInputException e) {
 				System.out.println("Amount cannot be negative or zero.\n");
 			} catch (NoSuchAccountException e) {
@@ -654,6 +663,7 @@ public class BankUiImpl implements BankUi {
 			return false;
 		}
 		
+		Collections.sort(idList);
 
 		System.out.println("Here are the accounts associated with your login:");
 		for (int id: idList) {
@@ -695,7 +705,7 @@ public class BankUiImpl implements BankUi {
 				}
 				
 			} catch (NumberFormatException e) {
-				System.out.println("Enter an integer!\n");
+				System.out.println("Enter an number!\n");
 			} catch (BadInputException e) {
 				System.out.println("Amount cannot be negative or zero.\n");
 			} catch (NoSuchAccountException e) {
@@ -723,6 +733,8 @@ public class BankUiImpl implements BankUi {
 			System.out.println("There are currently no accounts awaiting validation.\n");
 			return false;
 		}
+		
+		Collections.sort(idList);
 		
 		System.out.println("The following accounts are awaiting your approval: ");
 
@@ -770,7 +782,7 @@ public class BankUiImpl implements BankUi {
 				}
 				
 			} catch (NumberFormatException e) {
-				System.out.println("Enter an integer!\n");
+				System.out.println("Enter a number!\n");
 			} catch (NoSuchAccountException e) {
 				System.out.println("Account does not exist!\n");
 			}
@@ -800,6 +812,8 @@ public class BankUiImpl implements BankUi {
 		
 		try {
 			List<Integer> idList = app.getBankAccountIds(username);
+			
+			Collections.sort(idList);
 			
 			if (idList.isEmpty()) {
 				System.out.println("This customer has no bank accounts set up.\n");
@@ -846,6 +860,8 @@ public class BankUiImpl implements BankUi {
 		} catch (FileNotFoundException e) {
 			System.out.println("File does not exist.");
 		}
+		
+		System.out.println("");
 		
 	}
 

@@ -2,7 +2,7 @@ package com.revature.presentation;
 
 public interface BankUi {
 	
-	void displayWelcomeMenu();
+	int displayWelcomeMenu();
 	
 	boolean registerForCustomerAccount();
 	boolean registerForEmployeeAccount();

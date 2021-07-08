@@ -1,1 +1,9 @@
-2021-07-07 23:43:01 INFO  BankUiImpl:543 - User 'bobsmith' deposited $5.0 to account 59.
+2021-07-08 09:18:36 INFO  BankUiImpl:547 - User 'kmrazek' deposited $50.0 to account 1.
+2021-07-08 09:20:35 INFO  BankUiImpl:618 - User 'kmrazek' withdrew $10.0 from account 2.
+2021-07-08 09:21:03 INFO  BankUiImpl:696 - User 'kmrazek' transferred $10.0 from account 1 to account 2.
+2021-07-08 09:25:44 INFO  BankUiImpl:547 - User 'kmrazek' deposited $60.0 to account 1.
+2021-07-08 09:27:12 INFO  BankUiImpl:696 - User 'kmrazek' transferred $50.0 from account 2 to account 1.
+2021-07-08 09:29:32 INFO  BankUiImpl:547 - User 'kmrazek' deposited $90.0 to account 2.
+2021-07-08 10:26:31 INFO  BankUiImpl:551 - User 'johnsmith' deposited $50.0 to account 3.
+2021-07-08 10:27:04 INFO  BankUiImpl:622 - User 'kmrazek' withdrew $50.0 from account 2.
+2021-07-08 10:27:37 INFO  BankUiImpl:700 - User 'kmrazek' transferred $100.0 from account 1 to account 2.

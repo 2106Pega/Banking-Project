@@ -21,10 +21,6 @@ create table bank (
 
 );
 
-select version();
-
-insert into bank (balance, is_approved, customer_id) values (10.0, true, 1) returning account_id;
-
 create or replace function transfer(sender_id int, receiver_id int, amount decimal) returns void
 	language sql 
 	as $$
