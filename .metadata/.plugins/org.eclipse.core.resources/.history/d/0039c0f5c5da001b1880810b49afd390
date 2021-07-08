@@ -1,0 +1,26 @@
+package com.revature;
+
+import java.util.ArrayList;
+
+import com.revature.models.BankAccount;
+import com.revature.models.CustomerAccount;
+import com.revature.repository.BankDao;
+import com.revature.repository.BankDaoImpl;
+
+public class MainDriver {
+	
+	public static void main(String[] args) {
+		
+		BankDao bDao = new BankDaoImpl();
+		
+		CustomerAccount c = new CustomerAccount(0, new ArrayList<>(), "Bob", "Miller", "bobmiller", "kjoozi?9283");
+		
+		bDao.insertCustomerAccount(c);
+		
+		BankAccount b = new BankAccount(0, 0, c.getId());
+		
+		bDao.insertBankAccount(b);
+		
+	}
+
+}

@@ -1,0 +1,25 @@
+package com.revature.repository;
+
+import java.util.List;
+
+import com.revature.models.BankAccount;
+import com.revature.models.CustomerAccount;
+
+public interface BankDao {
+
+	// Create
+	boolean insertBankAccount(BankAccount account);
+	boolean insertCustomerAccount(CustomerAccount account);
+	
+	// Read
+	BankAccount selectBankAccountById(int id);
+	List<BankAccount> selectBankAccountsByOwner(int id);
+	List<BankAccount> selectAllBankAccounts(BankAccount account);
+	
+	// Update
+	void updateAccount(BankAccount account);
+	
+	// Delete
+	void deleteAccount(BankAccount account);
+	
+}

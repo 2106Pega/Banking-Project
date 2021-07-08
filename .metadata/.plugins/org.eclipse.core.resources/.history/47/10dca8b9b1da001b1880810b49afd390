@@ -1,0 +1,10 @@
+package com.revature.models;
+
+import java.util.List;
+
+public class CustomerAccount {
+
+	private List<BankAccount> listOfAccounts;
+	private String password;
+	
+}

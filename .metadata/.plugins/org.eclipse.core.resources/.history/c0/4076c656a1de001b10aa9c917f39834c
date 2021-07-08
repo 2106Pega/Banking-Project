@@ -1,0 +1,22 @@
+package com.revature;
+
+import java.util.ArrayList;
+
+import com.revature.models.BankAccount;
+import com.revature.models.CustomerAccount;
+import com.revature.presentation.BankUi;
+import com.revature.presentation.BankUiImpl;
+import com.revature.repository.BankDao;
+import com.revature.repository.BankDaoImpl;
+
+public class MainDriver {
+	
+	public static void main(String[] args) {
+		
+		BankUi ui = new BankUiImpl();
+		
+		ui.displayWelcomeMenu();
+		
+	}
+
+}

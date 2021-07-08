@@ -1,0 +1,18 @@
+package com.revature;
+
+import java.util.ArrayList;
+
+import com.revature.models.BankAccount;
+import com.revature.models.CustomerAccount;
+
+public class MainDriver {
+	
+	public static void main(String[] args) {
+		
+		CustomerAccount c = new CustomerAccount(0, new ArrayList<>(), "Bob", "Miller", "bobmiller", "kjoozi?9283");
+		
+		BankAccount b = new BankAccount(0, 0, 0);
+		
+	}
+
+}

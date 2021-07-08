@@ -1,0 +1,83 @@
+package com.revature.service.test;
+
+import static org.hamcrest.CoreMatchers.any;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import com.revature.models.BankAccount;
+import com.revature.models.CustomerAccount;
+import com.revature.models.EmployeeAccount;
+import com.revature.repository.BankDaoImpl;
+import com.revature.service.BankApp;
+import com.revature.service.BankAppImpl;
+
+public class BankDaoTest {
+	
+	BankApp a = new BankAppImpl();
+	
+	@Mock
+	private DriverManager dm;
+	
+	@Mock
+	private Connection fakeConnection;
+	
+	@Mock
+	private PreparedStatement fakePrepStatement;
+	
+	@Mock
+	private ResultSet fakeResultSet;
+	
+	private CustomerAccount cAccount;
+	private EmployeeAccount eAccount;
+	private BankAccount bAccount;
+	
+	@Before
+	public void setUp() throws Exception {
+		
+		fakeConnection = mock(Connection.class);
+		fakePrepStatement = mock(PreparedStatement.class);
+		fakeResultSet = mock(ResultSet.class);
+		
+		assertNotNull(fakeConnection);
+		when(fakeConnection.prepareStatement(Mockito.anyString())).thenReturn(fakePrepStatement);
+		
+		cAccount = new CustomerAccount(1, "johnsmith", "jsmith72");
+		bAccount = new BankAccount(1, 50, true, 1);
+		
+		when(fakeResultSet.getInt(1)).thenReturn(bAccount.getId());
+		when(fakeResultSet.getDouble(2)).thenReturn(bAccount.getBalance());
+		when(fakeResultSet.getBoolean(3)).thenReturn(bAccount.isApproved());
+		when(fakeResultSet.getInt(4)).thenReturn(bAccount.getId());
+		when(fakePrepStatement.executeQuery()).thenReturn(fakeResultSet);
+		
+		
+	}
+	
+	@Test
+	public void createBankAccount() {
+		new BankDaoImpl().insertBankAccount(bAccount);
+	}
+	
+	@Test
+	public void createCustomerAccount() {
+		new BankDaoImpl().insertCustomerAccount(null);
+	}
+	
+	@Test
+	public void createEmployeeAccount() {
+		
+	}
+	
+
+}

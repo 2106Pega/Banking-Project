@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="com.revature.util.ConnectionFactory"/>
+    <fullyQualifiedTypeName name="java.util.Scanner"/>
+    <fullyQualifiedTypeName name="com.revature.exceptions.AccountNotFoundException"/>
+    <fullyQualifiedTypeName name="javax.security.auth.login.AccountNotFoundException"/>
+    <fullyQualifiedTypeName name="com.revature.presentation.BankUi"/>
+    <fullyQualifiedTypeName name="com.revature.presentation.BankUiImpl"/>
+    <fullyQualifiedTypeName name="com.revature.exceptions.OverdrawnException"/>
+    <fullyQualifiedTypeName name="java.lang.Integer"/>
+    <fullyQualifiedTypeName name="org.apache.log4j.Logger"/>
+    <fullyQualifiedTypeName name="org.apache.log4j.Level"/>
+    <fullyQualifiedTypeName name="java.io.File"/>
+    <fullyQualifiedTypeName name="java.io.FileNotFoundException"/>
+    <fullyQualifiedTypeName name="java.lang.System"/>
+    <fullyQualifiedTypeName name="org.junit.Test"/>
+    <fullyQualifiedTypeName name="com.revature.exceptions.UsernameAlreadyExistsException"/>
+    <fullyQualifiedTypeName name="java.sql.CallableStatement"/>
+    <fullyQualifiedTypeName name="com.revature.service.BankAppImpl"/>
+    <fullyQualifiedTypeName name="com.revature.service.BankApp"/>
+    <fullyQualifiedTypeName name="com.revature.models.BankAccount"/>
+    <fullyQualifiedTypeName name="org.mockito.Mock"/>
+    <fullyQualifiedTypeName name="java.sql.ResultSet"/>
+    <fullyQualifiedTypeName name="java.sql.Connection"/>
+    <fullyQualifiedTypeName name="java.sql.DriverManager"/>
+    <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
+    <fullyQualifiedTypeName name="org.mockito.Mockito"/>
+    <fullyQualifiedTypeName name="com.revature.repository.BankDao"/>
+    <fullyQualifiedTypeName name="org.mockito.runners.MockitoJUnitRunner"/>
+    <fullyQualifiedTypeName name="org.junit.runner.RunWith"/>
+    <fullyQualifiedTypeName name="java.sql.SQLException"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="org.junit.Before"/>
+    <fullyQualifiedTypeName name="com.revature.models.CustomerAccount"/>
+    <fullyQualifiedTypeName name="com.revature.repository.BankDaoImpl"/>
+    <fullyQualifiedTypeName name="com.revature.exceptions.NoSuchAccountException"/>
+    <fullyQualifiedTypeName name="com.revature.models.EmployeeAccount"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="java.util.Arrays"/>
+    <fullyQualifiedTypeName name="org.checkerframework.checker.units.qual.A"/>
+    <fullyQualifiedTypeName name="com.revature.exceptions.BadInputException"/>
+</qualifiedTypeNameHistroy>

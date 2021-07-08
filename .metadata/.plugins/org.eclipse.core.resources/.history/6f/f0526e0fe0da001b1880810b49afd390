@@ -1,0 +1,11 @@
+package com.revature.service;
+
+public interface BankApp {
+	
+	boolean validateLogin(String username, String password);
+	
+	void createNewAccount();
+	
+	
+
+}

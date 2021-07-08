@@ -1,0 +1,21 @@
+package com.revature.service;
+
+import java.util.List;
+
+import com.revature.exceptions.NoSuchAccountException;
+
+public interface BankApp {
+	
+	boolean validateLogin(String username, String password) throws NoSuchAccountException;
+	
+	void createNewCustomerAccount(String firstName, String lastName, String username, String password);
+	
+	List<Integer> getBankAccountIds(String username);
+	
+	double getBalance(int id);
+	
+	void makeDeposit(int id, double amount);
+	
+	void makeWithdrawal(int id, double amount);
+
+}

@@ -1,0 +1,30 @@
+package com.revature.service;
+
+import java.util.List;
+
+import com.revature.exceptions.NoSuchAccountException;
+import com.revature.exceptions.OverdrawnException;
+
+public interface BankApp {
+	
+	boolean validateLogin(String username, String password) throws NoSuchAccountException;
+	
+	void createNewCustomerAccount(String username, String password);
+	
+	void createNewBankAccount(double balance, int customerId);
+	
+	List<Integer> getBankAccountIds(String username);
+	
+	List<Integer> getUnvalidatedAccountIds();
+	
+	double getBalance(int id);
+	
+	void makeDeposit(int id, double amount);
+	
+	void makeWithdrawal(int id, double amount) throws OverdrawnException;
+	
+	void approveAccount(int id);
+	
+	void rejectAccount(int id);
+
+}

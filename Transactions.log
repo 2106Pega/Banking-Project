@@ -1,0 +1,24 @@
+2021-07-06 17:09:49 INFO  BankUiImpl:508 - User 'bobsmith' deposited $50.0 to account 1.
+2021-07-06 17:14:15 INFO  BankUiImpl:572 - User 'bobsmith' withdrew $50.0 from account 1.
+2021-07-06 17:14:59 INFO  BankUiImpl:641 - User 'bobsmith' transferred $25.0 from account 1 to account 1.
+2021-07-06 17:15:30 INFO  BankUiImpl:641 - User 'bobsmith' transferred $50.0 from account 1 to account 2.
+2021-07-06 20:45:51 INFO  BankUiImpl:714 - User 'bobsmith' transferred $10.0 from account 3 to account 1.
+2021-07-06 20:48:47 INFO  BankUiImpl:714 - User 'bobsmith' transferred $10.0 from account 3 to account 1.
+2021-07-06 20:53:35 INFO  BankUiImpl:714 - User 'bobsmith' transferred $10.0 from account 3 to account 1.
+2021-07-06 20:58:36 INFO  BankUiImpl:714 - User 'bobsmith' transferred $10.0 from account 3 to account 1.
+2021-07-06 21:00:50 INFO  BankUiImpl:714 - User 'bobsmith' transferred $5.0 from account 1 to account 3.
+2021-07-06 21:07:36 INFO  BankUiImpl:714 - User 'bobsmith' transferred $5.0 from account 3 to account 1.
+2021-07-06 21:11:07 INFO  BankUiImpl:714 - User 'bobsmith' transferred $5.0 from account 3 to account 1.
+2021-07-06 21:13:08 INFO  BankUiImpl:714 - User 'bobsmith' transferred $5.0 from account 1 to account 3.
+2021-07-06 21:16:01 INFO  BankUiImpl:714 - User 'bobsmith' transferred $5.0 from account 1 to account 3.
+2021-07-06 21:18:05 INFO  BankUiImpl:714 - User 'bobsmith' transferred $5.0 from account 3 to account 1.
+2021-07-06 21:19:38 INFO  BankUiImpl:714 - User 'bobsmith' transferred $5.0 from account 1 to account 3.
+2021-07-06 21:21:30 INFO  BankUiImpl:714 - User 'bobsmith' transferred $5.0 from account 3 to account 1.
+2021-07-07 17:02:39 INFO  BankUiImpl:638 - User 'bobsmith' transferred $20.0 from account 3 to account 5.
+2021-07-07 22:29:03 INFO  BankUiImpl:512 - User 'johnsmith' deposited $5.0 to account 69.
+2021-07-07 22:29:41 INFO  BankUiImpl:576 - User 'johnsmith' withdrew $5.0 from account 69.
+2021-07-07 22:29:55 INFO  BankUiImpl:512 - User 'johnsmith' deposited $10.0 to account 69.
+2021-07-07 22:30:03 INFO  BankUiImpl:576 - User 'johnsmith' withdrew $7.0 from account 5.
+2021-07-07 22:30:49 INFO  BankUiImpl:576 - User 'johnsmith' withdrew $5.0 from account 50.
+2021-07-07 22:32:27 INFO  BankUiImpl:642 - User 'johnsmith' transferred $8.0 from account 13 to account 69.
+2021-07-07 22:38:46 INFO  BankUiImpl:646 - User 'johnsmith' transferred $20.0 from account 69 to account 46.

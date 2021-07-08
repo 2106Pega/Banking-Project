@@ -1,0 +1,72 @@
+package com.revature.service.test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+
+import com.revature.exceptions.NoSuchAccountException;
+import com.revature.models.BankAccount;
+import com.revature.models.CustomerAccount;
+import com.revature.repository.BankDao;
+import com.revature.service.BankApp;
+import com.revature.service.BankAppImpl;
+
+public class BankAppTest {
+	
+	BankApp app;
+	
+	@Mock
+	BankDao fakeDao;
+	
+	@Mock
+	CustomerAccount account;
+	
+	@Before
+	public void setUp() {
+		
+		when(fakeDao.selectCustomerAccountByUsername("johnsmith")).thenReturn(account);
+		when(account.getPassword()).thenReturn("imgeneric7");
+		
+		BankApp app = new BankAppImpl(fakeDao);
+		
+	}
+	
+	@Test
+	public void testValidateCustomerLogin() throws NoSuchAccountException {
+		
+		assertTrue(app.validateCustomerLogin("johnsmith", "imgeneric7"));
+		assertFalse(app.validateCustomerLogin("johnsmith", "imgeneric"));
+		assertThrows(NoSuchAccountException.class, () -> app.validateCustomerLogin("jonsmith", "imgeneric7"));
+		assertThrows(NoSuchAccountException.class, () -> app.validateCustomerLogin("will", "bigbadbi11"));
+		
+	}
+	
+	@Test
+	public void testMakeDeposit() {
+		
+		
+		
+	}
+	
+	@Test
+	public void makeWithdrawal() {
+		
+	}
+	
+	@Test
+	public void makeTransfer() {
+		
+	}
+	
+
+}

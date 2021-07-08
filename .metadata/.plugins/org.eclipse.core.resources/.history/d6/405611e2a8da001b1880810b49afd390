@@ -1,0 +1,10 @@
+package com.revature.models;
+
+public class BankAccount {
+	
+	private int id;
+	private String ownerFirstName;
+	private String ownerLastName;
+	private double balance;
+
+}

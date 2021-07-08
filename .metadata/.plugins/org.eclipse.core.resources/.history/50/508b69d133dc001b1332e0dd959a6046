@@ -1,0 +1,27 @@
+package com.revature.presentation;
+
+public interface BankUi {
+	
+	void displayWelcomeMenu();
+	
+	void registerForNewAccount();
+	
+	void applyForNewBankAccount();
+	
+	void viewBalance(String username);
+	
+	void deposit();
+	
+	void withdraw();
+	
+	void transferMoney();
+	
+	void acceptTransfer();
+	
+	void validateNewAccount();
+	
+	void viewCustomerAccounts();
+	
+	void viewTransactionLog();
+
+}

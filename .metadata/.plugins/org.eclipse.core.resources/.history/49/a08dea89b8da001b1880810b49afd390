@@ -1,0 +1,37 @@
+package com.revature.models;
+
+public class BankAccount {
+	
+	private int id;
+	private double balance;
+	private int customerId;
+	
+	
+	public BankAccount(int id, String ownerFirstName, String ownerLastName, double balance, int customerId) {
+		super();
+		this.id = id;
+		this.ownerFirstName = ownerFirstName;
+		this.ownerLastName = ownerLastName;
+		this.balance = balance;
+		this.customerId = customerId;
+	}
+
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public double getBalance() {
+		return balance;
+	}
+	
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+	
+	
+
+}
