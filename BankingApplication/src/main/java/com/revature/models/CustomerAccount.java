@@ -80,6 +80,21 @@ public class CustomerAccount {
 		
 	}
 	
+	public BankAccount loadCustomerInfoByAccount(int accountNumber) {
+		BankAccount  bankAccount = null;
+		
+		try {
+			bankAccount = customerDao.selectCustomerByAccountNumber(accountNumber);
+
+			return bankAccount;
+		}
+		catch (Exception e){
+			System.out.println("Cannot find the customer account");
+			return bankAccount;
+		}
+		
+	}
+	
 	public BankAccount addMoney(BankAccount bankAccount, double depositAmount) {
 		
 		if(depositAmount >= 0 ) {
@@ -88,11 +103,10 @@ public class CustomerAccount {
 			customerDao.updateAccountBalance(bankAccount.getCustomerID(), bankAccount.getAccountNumber(), totalBalance);
 			
 			if (customerDao.updateAccountBalance(bankAccount.getCustomerID(), bankAccount.getAccountNumber(), totalBalance)) {
-				bankAccount = loadCustomerInfoByID(bankAccount.getCustomerID());
-				
+				bankAccount = loadCustomerInfoByAccount(bankAccount.getAccountNumber());			
 				return bankAccount;
 			}
-			bankAccount = loadCustomerInfoByID(bankAccount.getCustomerID());
+		//	bankAccount = loadCustomerInfoByAccount(bankAccount.getCustomerID());
 			
 			return bankAccount;
 		}
@@ -108,7 +122,7 @@ public class CustomerAccount {
 			
 			if(totalBalance > 0) {
 				customerDao.updateAccountBalance(bankAccount.getCustomerID(), bankAccount.getAccountNumber(), totalBalance);
-				bankAccount = loadCustomerInfoByID(bankAccount.getCustomerID());
+				bankAccount = loadCustomerInfoByAccount(bankAccount.getAccountNumber());
 				
 				return bankAccount;	
 			}

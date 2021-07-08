@@ -174,16 +174,60 @@ public class BankingUI {
             
         	System.out.print("\nLogin Successfully !!, Welcome " + bankAccount.getFirstName() + " " + bankAccount.getLastName() + "\n");
         	logger.info("Customer login Successfully !! , customer_id = " + bankAccount.getCustomerID());
-        	if(bankAccount.isAccountApproved()) {
-            	customerMenu(bankAccount);
+        	
+        	List < BankAccount > bankAccountList = customerAccount.loadAllAccounts(bankAccount.getCustomerID());
+            for (BankAccount account: bankAccountList) {
+            	account.displayAccountDetails();            
             }
-            else {
-            	bankAccount.displayAccountDetails();
-            	System.out.println("\n***** Note: The Bank Employee Have To Approve Your Account For Full Functionalities. *****");
-            	logger.warn("Customer login Successfully !! but disabled fuctions due to unapproved account, customer_id = " + bankAccount.getCustomerID());
+            
+            System.out.print("\nEnter Bank Account Number You Like To Use: ");
+        	String accountInput = scanner.next().trim(); 
+        	int accountNumber;
+        	try {
+        		if(accountInput.replace(" ", "").length() == 8) {
+            		accountNumber = Integer.parseInt(accountInput);
+            		
+            		BankAccount account = customerAccount.loadCustomerInfoByAccount(accountNumber);
+                	if(account !=null) {
+                		bankAccount = account;
+                		
+                		if(bankAccount.isAccountApproved()) {
+                        	customerMenu(bankAccount);
+                        }
+                        else {
+                        	bankAccount.displayAccountDetails();
+                        	System.out.println("\n***** Note: The Bank Employee Have To Approve Your Account For Full Functionalities. *****");
+                        	logger.warn("Customer login Successfully !! but disabled fuctions due to unapproved account, customer_id = " + bankAccount.getCustomerID());
 
-            	welcomeMenu();
-            }
+                        	welcomeMenu();
+                        }
+                		customerMenu(bankAccount);
+                	}
+                	else {
+                		System.out.println("\nNo bank account with this account number !! \n");
+                		customerMenu(bankAccount);
+                	}
+        		}
+        		else {
+            		System.out.println("\n***** Note: Account Number must have 8 digits *****");
+            		customerLogin();
+            	}
+     		
+        	} catch(Exception e) {
+        		System.out.println("\nInvalid Account Number !! ");
+        	}
+            
+        	
+//        	if(bankAccount.isAccountApproved()) {
+//            	customerMenu(bankAccount);
+//            }
+//            else {
+//            	bankAccount.displayAccountDetails();
+//            	System.out.println("\n***** Note: The Bank Employee Have To Approve Your Account For Full Functionalities. *****");
+//            	logger.warn("Customer login Successfully !! but disabled fuctions due to unapproved account, customer_id = " + bankAccount.getCustomerID());
+//
+//            	welcomeMenu();
+//            }
         } else {
             System.out.print("\nCustomer Login Failed !!");
         	logger.error("Customer login Failed !! , employee_id = " + loginUsername);
@@ -200,9 +244,8 @@ public class BankingUI {
             System.out.println("1 Deposit Money");
             System.out.println("2 Withdraw Money");
             System.out.println("3 Transfer Money");
-            System.out.println("4 Check Balance");
-            System.out.println("5 Display Account Details");
-            System.out.println("6 Apply for Another BankAccount");
+            System.out.println("4 Display Account Details");
+            System.out.println("5 Apply for Another BankAccount");
             System.out.println("9 Previous Menu (Log Out)");
             System.out.println("0 Exit From Banking Application\n");
             System.out.print("Enter Your Choice : ");
@@ -221,17 +264,14 @@ public class BankingUI {
                 case "3":
                     transferMoney(bankAccount);
                     break;
-                case "4":
-                    displayAccountBalance(bankAccount);
-                    break;
-                case "5":  	
+                case "4":  	
                 	List < BankAccount > bankAccountList = customerAccount.loadAllAccounts(bankAccount.getCustomerID());
                     for (BankAccount account: bankAccountList) {
                     	account.displayAccountDetails();            
                     }
                     customerMenu(bankAccount);
                     break;
-                case "6":
+                case "5":
                     createAnotherAccount(bankAccount);
                     break;
                 case "9":
@@ -487,6 +527,7 @@ public class BankingUI {
         String anotherCustomer = null;
         boolean accountApproved = false;
         boolean continueAnotherAccount = false;
+        boolean exitLoop = false;
 
         System.out.println("------------------------------\n");
         System.out.printf("%-5s %-5s %-5s\n", "Customer ID	", ":", account.getCustomerID());
@@ -520,21 +561,28 @@ public class BankingUI {
             	approveORrejectAccount(account);
             }
 
+            
             System.out.print("\n\nDo you want to continue with another account? (yes/no) ");
             anotherCustomer = scanner.next();
-
+            
             if((validateYesNo(anotherCustomer) == 1)){
             	continueAnotherAccount = true;
+            	exitLoop =false;
             }
+            else if((validateYesNo(anotherCustomer) == 0)) {
+            	exitLoop = true;
+            }
+            
             else {
             	continueAnotherAccount = false;
             	System.out.print("\nInvalid User input \n");
             	continueAnotherAccount = false;
+            	exitLoop = true;
             }
 
             return continueAnotherAccount;
 
-        } while (continueAnotherAccount);
+        } while ((continueAnotherAccount = true) || (exitLoop = false));
     }
 
     private int validateYesNo(String input) {
@@ -578,8 +626,8 @@ public class BankingUI {
         bankAccount = customerAccount.addMoney(bankAccount, depositAmount);
 
         if (bankAccount != null) {
-            System.out.println("Deposit of $" + depositAmount + " added successfully to your account");
-        	logger.info("customer deposited $" + depositAmount + " successfully to the account , customer_id = " + bankAccount.getCustomerID());
+            System.out.println("Deposit of $" + depositAmount + " added successfully to your account " + bankAccount.getAccountNumber());
+        	logger.info("customer deposited $" + depositAmount + " successfully to the account " + bankAccount.getAccountNumber() + " , " + " customer_id = " + bankAccount.getCustomerID());
 
         }
         customerMenu(bankAccount);
@@ -619,8 +667,8 @@ public class BankingUI {
         } while ((withdrawAmount <= 0) || (withdrawAmount >= bankAccount.getAccountBalance()) || (!(validNumber(amount))));
 
         if (customerAccount.withdrawMoney(bankAccount, withdrawAmount) != null) {
-            System.out.println("\nSuccessfully withdraw the $" + withdrawAmount + " from your bank account");
-        	logger.info("customer withdraw $" + withdrawAmount + " successfully from the account , customer_id = " + bankAccount.getCustomerID());
+            System.out.println("\nSuccessfully withdraw the $" + withdrawAmount + " from your bank account " + bankAccount.getAccountNumber() + " , " + " customer_id = " + bankAccount.getCustomerID());
+        	logger.info("customer withdraw $" + withdrawAmount + " successfully from the account " + bankAccount.getAccountNumber() + " , " + " customer_id = " + bankAccount.getCustomerID());
 
         } else {
             System.out.println("\nFailed to withdraw the $" + withdrawAmount + " from your bank account");
@@ -687,11 +735,11 @@ public class BankingUI {
         BankAccount transferToAccount = customerAccount.transferingMoney(bankAccount, transferAccountNumber, transferAmount);
 
         if (transferToAccount != null) {
-            System.out.println("\nSuccessfully transfered $" + transferAmount + " from your bank account");
+            System.out.println("\nSuccessfully transfered $" + transferAmount + " from your bank account " + bankAccount.getAccountNumber() + " to account " + transferAccountNumber);
         	logger.info("customer transfered $" + transferAmount + " successfully from account " + bankAccount.getAccountNumber() + " to account " + transferAccountNumber);
 
         } else {
-            System.out.println("\nFailed to transfer the $" + transferAmount + " from your bank account");
+            System.out.println("\nFailed to transfer the $" + transferAmount + " from your bank account " + bankAccount.getAccountNumber() + " to account " + transferAccountNumber);
         	logger.error("customer failed to transfer $" + transferAmount + " from account " + bankAccount.getAccountNumber() + " to account " + transferAccountNumber);
 
         }
@@ -709,7 +757,6 @@ public class BankingUI {
 
         customerMenu(bankAccount);
     }
-
     
     private boolean isValidUsernamePswd(String input)
     {
