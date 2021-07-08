@@ -12,7 +12,7 @@ public class MainDriver {
 		boolean ans = false;
 		Display d = new Display();
 		do {
-			d.user_menu();
+			d.main_menu();
 			System.out.println("Do you want to exit: ");
 			System.out.println("1. Yes");
 			System.out.println("2. No");
@@ -29,7 +29,7 @@ public class MainDriver {
 			{
 				System.out.println("Invalid option! Program ends.");
 				break;
-			}	
+			}
 		}while(ans);
 		
 	}

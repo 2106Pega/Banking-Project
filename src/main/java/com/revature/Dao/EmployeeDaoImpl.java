@@ -5,12 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 import com.revature.connection.ConnectionFactory;
 import com.revature.models.Account;
 import com.revature.models.Employee;
 
 public class EmployeeDaoImpl implements EmployeeDao {
 	
+	final static Logger loggy = Logger.getLogger(EmployeeDaoImpl.class);
 	@Override
 	public boolean login(Employee employee)
 	{
@@ -22,9 +25,19 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			ps.setString(1, employee.getUsername());
 			ps.setString(2, employee.getPasscode());
 			ResultSet rs = ps.executeQuery();
-			if(rs.getInt(1) != 0)
+			while(rs.next())
 			{
-				valid = true;
+				if(rs.getInt(1) != 0)
+				{
+					valid = true;
+					String status_t = "User log in sucesses with username: " + employee.getUsername() + " and passcode: " + employee.getPasscode();
+					loggy.info(status_t);
+				}
+				else
+				{
+					String status_f = "User fault to login with username: " + employee.getUsername() + " and passcode: " + employee.getPasscode();
+					loggy.info(status_f);
+				}
 			}
 			
 		} catch (SQLException e) {
@@ -36,7 +49,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	
 	@Override
 	public void approve(Account a) {
-		String sql_v = "SELECT COUNT(*) FROM employee WHERE username = ? AND account_name = ?; ";
+		String sql_v = "SELECT COUNT(*) FROM account WHERE username = ? AND account_name = ?; ";
 		
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
@@ -49,6 +62,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 				if(rs.getInt(1) == 0)
 				{
 					System.out.println("This account dose not exist!");
+					String status_f = "Employee can not find the account with username: " + a.getUsername() + " and account name: " + a.getAccount_name();
+					loggy.info(status_f);
 					return;
 				}
 			}
@@ -57,7 +72,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			e.printStackTrace();
 		}
 		
-		String sql = "UPDATE bank SET approval = ? WHERE username = ? AND account_name = ?;";
+		String sql = "UPDATE account SET approval = ? WHERE username = ? AND account_name = ?;";
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -65,8 +80,10 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			ps.setString(2, a.getUsername());
 			ps.setString(3, a.getAccount_name());
 			ps.executeUpdate();
-			a.setApproval(true);;
-			System.out.println("The current balance of account " + a.getAccount_name() + "approval status is " + a.isApproval());
+			a.setApproval(true);
+			String status_t = "The current account " + a.getAccount_name() + " approval status is " + a.isApproval();
+			System.out.println(status_t);
+			loggy.info(status_t);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -74,8 +91,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public void reject(Account a) {
-String sql_v = "SELECT COUNT(*) FROM employee WHERE username = ? AND account_name = ?; ";
-		
+		String sql_v = "SELECT COUNT(*) FROM account WHERE username = ? AND account_name = ?; ";	
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
 			PreparedStatement ps = conn.prepareStatement(sql_v);
@@ -87,6 +103,8 @@ String sql_v = "SELECT COUNT(*) FROM employee WHERE username = ? AND account_nam
 				if(rs.getInt(1) == 0)
 				{
 					System.out.println("This account dose not exist!");
+					String status_f = "Employee can not find the account with username: " + a.getUsername() + " and account name: " + a.getAccount_name();
+					loggy.info(status_f);
 					return;
 				}
 			}
@@ -95,7 +113,7 @@ String sql_v = "SELECT COUNT(*) FROM employee WHERE username = ? AND account_nam
 			e.printStackTrace();
 		}
 		
-		String sql = "UPDATE bank SET approval = ? WHERE username = ? AND account_name = ?;";
+		String sql = "UPDATE account SET approval = ? WHERE username = ? AND account_name = ?;";
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -103,8 +121,10 @@ String sql_v = "SELECT COUNT(*) FROM employee WHERE username = ? AND account_nam
 			ps.setString(2, a.getUsername());
 			ps.setString(3, a.getAccount_name());
 			ps.executeUpdate();
-			a.setApproval(false);;
-			System.out.println("The current balance of account " + a.getAccount_name() + "approval status is " + a.isApproval());
+			a.setApproval(false);
+			String status_t = "The current account " + a.getAccount_name() + " approval status is " + a.isApproval();
+			System.out.println(status_t);
+			loggy.info(status_t);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -113,7 +133,7 @@ String sql_v = "SELECT COUNT(*) FROM employee WHERE username = ? AND account_nam
 
 	@Override
 	public void view_customer(Account a) {
-		String sql_v = "SELECT COUNT(*) FROM employee WHERE username = ? AND account_name = ?; ";
+		String sql_v = "SELECT COUNT(*) FROM account WHERE username = ? AND account_name = ?; ";
 		
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
@@ -126,6 +146,8 @@ String sql_v = "SELECT COUNT(*) FROM employee WHERE username = ? AND account_nam
 				if(rs.getInt(1) == 0)
 				{
 					System.out.println("This account dose not exist!");
+					String status_f = "Employee can not find the account with username: " + a.getUsername() + " and account name: " + a.getAccount_name();
+					loggy.info(status_f);
 					return;
 				}
 			}
@@ -134,7 +156,7 @@ String sql_v = "SELECT COUNT(*) FROM employee WHERE username = ? AND account_nam
 			e.printStackTrace();
 		}
 		
-		String sql = "SELECT * FROM bank WHERE username = ? AND account_name = ?;";
+		String sql = "SELECT * FROM account WHERE username = ? AND account_name = ?;";
 		
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
@@ -148,6 +170,7 @@ String sql_v = "SELECT COUNT(*) FROM employee WHERE username = ? AND account_nam
 				a.setBalance(rs.getDouble("balance"));
 			}
 			System.out.println(a);
+			loggy.info(a.toString());
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

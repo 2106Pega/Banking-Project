@@ -3,7 +3,7 @@ package com.revature.Dao;
 import com.revature.models.Account;
 
 public interface CustomerDao {
-	public void init(Account a);
+	public boolean init(Account a);
 	public boolean apply_account(Account a);
 	public void view_balance(Account a);
 	public void deposite(Account a, double amount);

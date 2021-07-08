@@ -101,6 +101,7 @@ public class Display {
 		System.out.println("Do you have an account?");
 		System.out.println("1. Yes");
 		System.out.println("2. No");
+		System.out.println("Please enter the number of the options.");
 		String ans = sc.nextLine();
 		if(ans.equals("1") || ans.toLowerCase().equals("yes"))
 		{
@@ -171,10 +172,19 @@ public class Display {
 		switch(option.toLowerCase())
 		{
 		case "1":
+			double amount = 0;
 			System.out.println("Please enter the account name you want to name: ");
 			String account_name_a = sc.nextLine();
 			System.out.println("Please enter the initial amount you want to put in this account: ");
-			double amount = sc.nextDouble();
+			if(sc.hasNextDouble())
+			{
+				amount = sc.nextDouble();
+			}
+			else
+			{
+				System.out.println("Invalid input, return to customer menu.");
+				customer_menu(u);
+			}
 			Account account_a = new Account(u.getUsername(), account_name_a, false, amount);
 			c.apply_account(account_a);
 			break;
@@ -187,49 +197,85 @@ public class Display {
 			break;
 		
 		case "3":
+			double amount_d = 0;
 			System.out.println("Please enter the account name you want to deposit: ");
 			String account_name_d = sc.nextLine();
 			Account account_d = new Account(u.getUsername(), account_name_d, false, 0);
 			System.out.println("Please enter the amount you want to deposit: ");
-			double amount_d = sc.nextDouble();
+			if(sc.hasNextDouble())
+			{
+				amount_d = sc.nextDouble();
+			}
+			else
+			{
+				System.out.println("Invalid input, return to customer menu.");
+				customer_menu(u);
+			}
 			c.deposite(account_d, amount_d);
 			break;
 			
 		case "4":
+			double amount_w = 0;
 			System.out.println("Please enter the account name you want to withdraw: ");
 			String account_name_w = sc.nextLine();
 			Account account_w = new Account(u.getUsername(), account_name_w, false, 0);
 			System.out.println("Please enter the amount you want to withdraw: ");
-			double amount_w = sc.nextDouble();
-			c.deposite(account_w, amount_w);
+			if(sc.hasNextDouble())
+			{
+				amount_w = sc.nextDouble();
+			}
+			else
+			{
+				System.out.println("Invalid input, return to customer menu.");
+				customer_menu(u);
+			}
+			c.withdraw(account_w, amount_w);
 			break;
 		
 		case "5":
+			double amount_t = 0;
 			System.out.println("Please enter the account name you want to make transfer: ");
 			String account_name_t = sc.nextLine();
 			Account account_t = new Account(u.getUsername(), account_name_t, false, 0);
-			System.out.println("Please enter the amount you want to transfer: ");
-			double amount_t = sc.nextDouble();
 			System.out.println("Please enter the username of another party: ");
 			String username_r = sc.nextLine();
 			System.out.println("Please enter the account name of another party: ");
 			String account_name_r = sc.nextLine();
 			Account account_r = new Account(username_r, account_name_r, false, 0);
+			System.out.println("Please enter the amount you want to transfer: ");
+			if(sc.hasNextDouble())
+			{
+				amount_t = sc.nextDouble();
+			}
+			else
+			{
+				System.out.println("Invalid input, return to customer menu.");
+				customer_menu(u);
+			}
 			c.post(account_t, account_r, amount_t);
 			break;
 			
 		case "6":
+			double amount_rs = 0;
 			System.out.println("Please enter the account name you want to make transfer: ");
 			String account_name_rs = sc.nextLine();
 			Account account_rs = new Account(u.getUsername(), account_name_rs, false, 0);
-			System.out.println("Please enter the amount you want to receive: ");
-			double amount_rs = sc.nextDouble();
 			System.out.println("Please enter the username of another party: ");
 			String username_ta = sc.nextLine();
 			System.out.println("Please enter the account name of another party: ");
 			String account_name_ta = sc.nextLine();
 			Account account_ta = new Account(username_ta, account_name_ta, false, 0);
-			c.post(account_rs, account_ta, amount_rs);
+			System.out.println("Please enter the amount you want to receive: ");
+			if(sc.hasNextDouble())
+			{
+				amount_rs = sc.nextDouble();
+			}
+			else
+			{
+				System.out.println("Invalid input, return to customer menu.");
+				customer_menu(u);
+			}
+			c.accept(account_rs, account_ta, amount_rs);
 			break;
 			
 		default:
