@@ -42,18 +42,21 @@ public class BankServiceTest {
 	@Test
 	public void test_customerLogin_success() throws Exception {
 		//Given	
+		
 		User mockedUser = new User();
 		mockedUser.setPassword("123");
 		mockedUser.setUserType("customer");
 		Mockito.when(userDao.getUser(Mockito.anyString())).thenReturn(mockedUser);
 		
+		
 		//When
 		User user = bs.customerLogIn("test", "123");
 	
 		//Then
-		Assert.assertEquals(user.getPassword(), "123");
+	    Assert.assertEquals(user.getPassword(), "123");
 		Assert.assertEquals(user.getUserType(),"customer");
 	}
+	
 	
 	@Test
 	public void test_customerLogin_failure() throws Exception {
@@ -63,8 +66,9 @@ public class BankServiceTest {
 		mockedUser.setUserType("customer");
 		Mockito.when(userDao.getUser(Mockito.anyString())).thenReturn(mockedUser);
 		
+		
 		//When
-		User user = bs.customerLogIn("234", "employee");
+		User user = bs.customerLogIn("123", "employee");
 	
 		//Then
 		Assert.assertEquals(user, null);
@@ -96,10 +100,11 @@ public class BankServiceTest {
 		Mockito.when(userDao.getUser(Mockito.anyString())).thenReturn(mockedUser);
 		
 		//When
-		User user = bs.customerLogIn("234", "customer");
+		User user = bs.employeeLogIn("234", "customer");
 	
 		//Then
-		Assert.assertEquals(user, null);
+	Assert.assertEquals(user, null);
+
 	}
 		
 	@Test
@@ -148,5 +153,6 @@ public class BankServiceTest {
 		Mockito.verify(customerDao, VerificationModeFactory.atLeast(2)).updateCustomerBalance(Mockito.any(), Mockito.any());
 	}
 	
-
+	
+	
 }

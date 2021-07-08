@@ -17,6 +17,8 @@ public class BankTerminal {
 	
 	final static Logger loggy = Logger.getLogger(BankTerminal.class);
 	
+
+	
 	public void welcomePage() {
 		Scanner scan = new Scanner(System.in);
 		boolean isExit = false;
@@ -66,11 +68,12 @@ public class BankTerminal {
 			
 			System.out.print("User successfully signed up");
 			System.out.println("\n--------------------------------------\n");
-			
-			loggy.info("Signup Successful");
 			loggy.setLevel(Level.INFO);
+			loggy.info("Signup Successful");
+		   
 		} catch (Exception e) {
 			loggy.error(e);
+			
 		}	
 	}
 
@@ -171,8 +174,11 @@ public class BankTerminal {
 			} else {
 				bankService.updatePendingAccounts("inactive", accountNumber);
 			}
-			System.out.print("Status successfully updated");
+			
+			loggy.setLevel(Level.INFO);
+			loggy.info("Status successfully updated");
 		}
+		
 	}
 
 	private void viewAccountsByCustomerId() {
@@ -261,6 +267,9 @@ public class BankTerminal {
 							System.out.print("Insufficient amount!!!");
 						}else {
 							bankService.transfer(customer.getAccountNumber(), amount, customer.getBalance(), transferAccountNumber);
+							
+						loggy.setLevel(Level.INFO);
+						loggy.info(amount  + " transferred to account number: " + transferAccountNumber + " from account number: " + customer.getAccountNumber());
 						}
 						
 					}
@@ -296,13 +305,17 @@ public class BankTerminal {
 							System.out.print("Insufficient amount!!!");
 						}else {
 							bankService.withdraw(customer.getAccountNumber(), amount, customer.getBalance());
+							
+						loggy.setLevel(Level.INFO);
+						loggy.info("Money withdrawn:" + amount + " from account number " + customer.getAccountNumber());
 						}
 						
 					}
 					count++;
 				} else {
 					System.out.println("Your "+ customer.getAccountType() + " account with account number " + customer.getAccountNumber()  + " is not active. Please wait for approval.");
-				}
+			
+					}
 				
 			}
 		}
@@ -327,19 +340,21 @@ public class BankTerminal {
 						System.out.print("Please enter an amount you want to deposit: ");
 						Double amount = Double.parseDouble(scan.next());
 						if(amount <= 0) {
-							System.out.print("Please enter a valid amount!!!");
+							System.out.println("Please enter a valid amount!!!");
 		
 						} else {
 							bankService.deposit(customer.getAccountNumber(), amount, customer.getBalance());
-							loggy.setLevel(Level.INFO);
-							loggy.info("Money Deposited." + amount);
-						}	
+								
+						loggy.setLevel(Level.INFO);
+						loggy.info("Money deposited: " + amount + " to account number " + customer.getAccountNumber());
+						}
 					}
 					count++;
 				} else {
 					System.out.println("Your "+ customer.getAccountType() + " account with account number " + customer.getAccountNumber()  + " is not active. Please wait for approval.");
 				}	
-			}	
+			
+			}
 		}
 		
 	}

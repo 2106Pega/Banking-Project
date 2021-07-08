@@ -2,6 +2,8 @@ package com.revaturebank.service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.revaturebank.dao.CustomerDao;
 import com.revaturebank.dao.CustomerDaoImpl;
 import com.revaturebank.dao.UserDao;
@@ -22,6 +24,8 @@ public class BankService {
 		this.userDao = userDao;
 		this.customerDao = customerDao;
 	}
+	
+
 
 	private static final String CUSTOMER_USER = "customer";
 	private static final String EMPLOYEE_USER = "employee";
@@ -33,6 +37,7 @@ public class BankService {
 			throw new Exception("UserName/Password does not match");
 		} else if(user.getUserName() == null) {
 			throw new Exception("UserName/Password does not match");
+	
 		} else if(user.getPassword().equals(password) && user.getUserType().equals(CUSTOMER_USER)){
 			return user;
 		} else {

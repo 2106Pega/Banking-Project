@@ -26,3 +26,24 @@
 2021-07-07 14:48:37 ERROR BankTerminal:105 - java.lang.Exception: UserName/Password does not match
 2021-07-07 14:49:46 ERROR BankTerminal:105 - java.util.NoSuchElementException
 2021-07-07 14:49:46 ERROR BankTerminal:105 - java.util.NoSuchElementException
+2021-07-07 22:14:39 INFO  BankTerminal:70 - Signup Successful
+2021-07-07 22:25:42 INFO  BankTerminal:70 - Signup Successful
+2021-07-07 22:27:50 INFO  BankTerminal:70 - Signup Successful
+2021-07-07 22:29:26 INFO  BankTerminal:70 - Signup Successful
+2021-07-07 22:32:01 INFO  BankTerminal:70 - Signup Successful
+2021-07-07 22:36:07 INFO  BankTerminal:70 - Signup Successful
+2021-07-07 22:38:14 INFO  BankTerminal:70 - Signup Successful
+2021-07-07 22:41:19 INFO  BankTerminal:70 - Signup Successful
+2021-07-07 22:45:09 ERROR BankTerminal:73 - java.lang.Exception: Unable to save user info to DB:: ERROR: duplicate key value violates unique constraint "login_user_name_key"
+  Detail: Key (user_name)=(maya3) already exists.
+2021-07-07 22:45:41 INFO  BankTerminal:70 - Signup Successful
+2021-07-07 22:53:00 INFO  BankTerminal:335 - Money Deposited.200.0
+2021-07-07 23:12:11 INFO  BankTerminal:70 - Signup Successful
+2021-07-07 23:12:34 ERROR BankTerminal:73 - java.lang.Exception: Unable to save user info to DB:: ERROR: duplicate key value violates unique constraint "login_user_name_key"
+  Detail: Key (user_name)=(maya) already exists.
+2021-07-07 23:14:24 ERROR BankTerminal:105 - java.lang.Exception: UserName/Password does not match
+2021-07-07 23:35:51 INFO  BankTerminal:335 - Money Deposited.100.0
+2021-07-07 23:45:36 ERROR BankTerminal:105 - java.lang.Exception: UserName/Password does not match
+2021-07-07 23:46:38 ERROR BankTerminal:73 - java.lang.Exception: Unable to save user info to DB:: ERROR: duplicate key value violates unique constraint "login_user_name_key"
+  Detail: Key (user_name)=(ram) already exists.
+2021-07-07 23:48:07 INFO  BankTerminal:335 - Money Deposited.100.0

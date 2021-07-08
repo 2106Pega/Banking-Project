@@ -1,0 +1,36 @@
+2021-07-08 00:35:09 INFO  BankTerminal:180 - Status successfully update
+2021-07-08 00:39:53 ERROR BankTerminal:108 - java.lang.Exception: UserName/Password does not match
+2021-07-08 00:40:56 ERROR BankTerminal:75 - java.lang.Exception: Unable to save user info to DB:: ERROR: duplicate key value violates unique constraint "login_user_name_key"
+  Detail: Key (user_name)=(maya) already exists.
+2021-07-08 00:45:03 ERROR BankTerminal:108 - java.lang.Exception: UserName/Password does not match
+2021-07-08 00:52:39 INFO  BankTerminal:343 - Money deposited: 50000.0
+2021-07-08 00:54:21 ERROR BankTerminal:108 - java.lang.Exception: UserName/Password does not match
+2021-07-08 00:56:34 INFO  BankTerminal:343 - Money deposited: 250000.0
+2021-07-08 01:06:31 INFO  BankTerminal:347 - Money deposited: 5000.0
+2021-07-08 01:06:48 INFO  BankTerminal:309 - Money withdrawn:10000.0from account number1000003
+2021-07-08 01:10:08 INFO  BankTerminal:309 - Money withdrawn:5000.0 from account number 1000003
+2021-07-08 01:12:21 INFO  BankTerminal:309 - Money withdrawn:-50.0 from account number 1000003
+2021-07-08 01:18:55 INFO  BankTerminal:349 - Money deposited: 15000.0
+2021-07-08 01:21:12 INFO  BankTerminal:349 - Money deposited: 100000.0 to 1000000
+2021-07-08 01:38:27 ERROR BankTerminal:108 - java.util.NoSuchElementException
+2021-07-08 07:54:36 INFO  BankTerminal:72 - Signup Successful
+2021-07-08 07:55:03 ERROR BankTerminal:75 - java.lang.Exception: Unable to save user info to DB:: ERROR: duplicate key value violates unique constraint "login_user_name_key"
+  Detail: Key (user_name)=(wayne) already exists.
+2021-07-08 07:55:26 INFO  BankTerminal:72 - Signup Successful
+2021-07-08 08:00:49 INFO  BankTerminal:179 - Status successfully updated
+2021-07-08 08:01:27 INFO  BankTerminal:179 - Status successfully updated
+2021-07-08 08:02:57 INFO  BankTerminal:349 - Money deposited: 250.0 to account number 1000004
+2021-07-08 08:03:29 INFO  BankTerminal:310 - Money withdrawn:475.0 from account number 1000004
+2021-07-08 08:04:50 INFO  BankTerminal:272 - 245.0 transferred to account number: 1000005 from account number: 1000004
+2021-07-08 08:16:10 ERROR BankTerminal:75 - java.lang.Exception: Unable to save user info to DB:: ERROR: duplicate key value violates unique constraint "login_user_name_key"
+  Detail: Key (user_name)=(paul) already exists.
+2021-07-08 08:26:04 ERROR BankTerminal:108 - java.lang.Exception: UserName/Password does not match
+2021-07-08 09:08:46 ERROR BankTerminal:75 - java.lang.Exception: Unable to save user info to DB:: ERROR: duplicate key value violates unique constraint "login_user_name_key"
+  Detail: Key (user_name)=(wayne) already exists.
+2021-07-08 09:09:39 ERROR BankTerminal:108 - java.lang.Exception: UserName/Password does not match
+2021-07-08 09:12:42 ERROR BankTerminal:108 - java.lang.NullPointerException: Cannot invoke "com.revaturebank.model.Customer.getBalance()" because "payToCustomerAccount" is null
+2021-07-08 11:07:37 INFO  BankTerminal:72 - Signup Successful
+2021-07-08 12:27:39 INFO  BankTerminal:179 - Status successfully updated
+2021-07-08 12:29:04 INFO  BankTerminal:349 - Money deposited: 100.0 to account number 1000006
+2021-07-08 12:29:18 INFO  BankTerminal:310 - Money withdrawn:200.0 from account number 1000006
+2021-07-08 12:30:17 INFO  BankTerminal:272 - 250.0 transferred to account number: 1000004 from account number: 1000006
