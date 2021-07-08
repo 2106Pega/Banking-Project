@@ -13,7 +13,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean login(User u) {
 		boolean valid = false;
-		String sql = "SELECT COUNT(*) FROM bank WHERE username = ? AND passcode = ?; ";
+		String sql = "SELECT COUNT(*) FROM users WHERE username = ? AND passcode = ?; ";
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -33,20 +33,40 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public boolean apply(User u) {
-		String sql = "INSERT INTO bank (username, passcode, validcustomer, account_name, balance) VALUES(?,?,?,?,?);";
+		boolean result = false;
+		
+		String sql_v = "SELECT COUNT(*) FROM users WHERE username = ?; ";
+		try(Connection conn = ConnectionFactory.getConnection())
+		{
+			PreparedStatement ps = conn.prepareStatement(sql_v);
+			ps.setString(1, u.getUsername());
+			ResultSet rs = ps.executeQuery();
+			if(rs.getInt(1) == 0)
+			{
+				result = true;
+			}
+			else
+			{
+				System.out.println("This account is already exist.");
+				return result;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		String sql = "INSERT INTO users (username, passcode) VALUES(?,?);";
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, u.getUsername());
 			ps.setString(2, u.getPasscode());
-			ps.setBoolean(3, u.isValid_c());
-			ps.setString(4, null);
-			ps.setDouble(5, 0.0);
 			ps.executeUpdate();
+			System.out.println("The customer account creation successes");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return true;
+		return result;
 	}
 
 }

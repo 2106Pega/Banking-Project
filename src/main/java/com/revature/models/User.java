@@ -5,7 +5,6 @@ import java.util.Objects;
 public class User {
 	private String username;
 	private String passcode;
-	private boolean valid_c = false;
 	
 	public User(String username, String passcode) {
 		super();
@@ -14,13 +13,9 @@ public class User {
 	}
 	
 
-
-
 	public String getUsername() {
 		return username;
 	}
-
-
 
 
 	public void setUsername(String username) {
@@ -28,13 +23,9 @@ public class User {
 	}
 
 
-
-
 	public String getPasscode() {
 		return passcode;
 	}
-
-
 
 
 	public void setPasscode(String passcode) {
@@ -42,27 +33,10 @@ public class User {
 	}
 
 
-
-
-	public boolean isValid_c() {
-		return valid_c;
-	}
-
-
-
-
-	public void setValid_c(boolean valid_c) {
-		this.valid_c = valid_c;
-	}
-
-
-
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(passcode, username);
 	}
-
 
 
 	@Override
@@ -77,13 +51,5 @@ public class User {
 		return Objects.equals(passcode, other.passcode) && Objects.equals(username, other.username);
 	}
 
-
-
-	@Override
-	public String toString() {
-		return "UserImpl [username=" + username + "]";
-	}
-	
-	
 
 }

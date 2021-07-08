@@ -12,7 +12,28 @@ public class CustomerDaoImpl implements CustomerDao {
 	
 	@Override
 	public void init(Account a)
-	{
+	{		
+		String sql_v = "SELECT COUNT(*) FROM account WHERE username = ? AND account_name = ?; ";
+		
+		try(Connection conn = ConnectionFactory.getConnection())
+		{
+			PreparedStatement ps = conn.prepareStatement(sql_v);
+			ps.setString(1, a.getUsername());
+			ps.setString(2, a.getAccount_name());
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				if(rs.getInt(1) == 0)
+				{
+					System.out.println("This account does not exist!");
+					return;
+				}
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		String sql = "SELECT * FROM bank WHERE username = ? AND account_name = ?;";
 		
 		try(Connection conn = ConnectionFactory.getConnection())
@@ -67,6 +88,7 @@ public class CustomerDaoImpl implements CustomerDao {
 			ps.setBoolean(3, a.isApproval());
 			ps.setDouble(4, a.getBalance());
 			ps.execute();
+			System.out.println("Please wait the employee to approve your new account.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -79,7 +101,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		init(a);
 		if(a.isApproval() == false)
 		{
-			System.out.println("This account " + a.getUsername() + " not approved yet, please wait employee to approve it.");
+			System.out.println("This account " + a.getUsername() + " is not approved yet, please wait employee to approve it.");
 			return;
 		}
 		else
@@ -100,12 +122,12 @@ public class CustomerDaoImpl implements CustomerDao {
 		init(a);
 		if(a.isApproval() == false)
 		{
-			System.out.println("This account " + a.getUsername() + " not approved yet, please wait employee to approve it.");
+			System.out.println("This account " + a.getUsername() + " is not approved yet, please wait employee to approve it.");
 			return;
 		}
 		
 		balance = a.getBalance() + amount;
-		String sql = "UPDATE bank SET balance = ? WHERE username = ? AND account_name = ?;";
+		String sql = "UPDATE account SET balance = ? WHERE username = ? AND account_name = ?;";
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -129,7 +151,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		
 		if(a.isApproval() == false)
 		{
-			System.out.println("This account " + a.getUsername() + " not approved yet, please wait employee to approve it.");
+			System.out.println("This account " + a.getUsername() + " is not approved yet, please wait employee to approve it.");
 			return;
 		}
 		
@@ -141,7 +163,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		
 		
 		balance = a.getBalance() - amount;
-		String sql = "UPDATE bank SET balance = ? WHERE username = ? AND account_name = ?;";
+		String sql = "UPDATE account SET balance = ? WHERE username = ? AND account_name = ?;";
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -167,13 +189,13 @@ public class CustomerDaoImpl implements CustomerDao {
 		
 		if(a.isApproval() == false)
 		{
-			System.out.println("This account " + a.getUsername() + " not approved yet, please wait employee to approve it.");
+			System.out.println("This account " + a.getUsername() + " is not approved yet, please wait employee to approve it.");
 			return;
 		}
 		
 		if(b.isApproval() == false)
 		{
-			System.out.println("This account " + b.getUsername() + " not approved yet, please wait employee to approve it.");
+			System.out.println("This account " + b.getUsername() + " is not approved yet, please wait employee to approve it.");
 			return;
 		}
 		
@@ -184,7 +206,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
 		
 		balance_a = a.getBalance() - amount;
-		String sql_a = "UPDATE bank SET balance = ? WHERE username = ? AND account_name = ?;";
+		String sql_a = "UPDATE account SET balance = ? WHERE username = ? AND account_name = ?;";
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
 			PreparedStatement ps = conn.prepareStatement(sql_a);
@@ -199,7 +221,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
 		
 		balance_b = b.getBalance() + amount;
-		String sql_b = "UPDATE bank SET balance = ? WHERE username = ? AND account_name = ?;";
+		String sql_b = "UPDATE account SET balance = ? WHERE username = ? AND account_name = ?;";
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
 			PreparedStatement ps = conn.prepareStatement(sql_b);
@@ -224,13 +246,13 @@ public class CustomerDaoImpl implements CustomerDao {
 		
 		if(a.isApproval() == false)
 		{
-			System.out.println("This account " + a.getUsername() + " not approved yet, please wait employee to approve it.");
+			System.out.println("This account " + a.getUsername() + " is not approved yet, please wait employee to approve it.");
 			return;
 		}
 		
 		if(b.isApproval() == false)
 		{
-			System.out.println("This account " + b.getUsername() + " not approved yet, please wait employee to approve it.");
+			System.out.println("This account " + b.getUsername() + " is not approved yet, please wait employee to approve it.");
 			return;
 		}
 		
@@ -242,7 +264,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
 
 		balance_a = a.getBalance() + amount;
-		String sql_a = "UPDATE bank SET balance = ? WHERE username = ? AND account_name = ?;";
+		String sql_a = "UPDATE account SET balance = ? WHERE username = ? AND account_name = ?;";
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
 			PreparedStatement ps = conn.prepareStatement(sql_a);
@@ -258,7 +280,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		
 
 		balance_b = b.getBalance() - amount;
-		String sql_b = "UPDATE bank SET balance = ? WHERE username = ? AND account_name = ?;";
+		String sql_b = "UPDATE account SET balance = ? WHERE username = ? AND account_name = ?;";
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
 			PreparedStatement ps = conn.prepareStatement(sql_b);

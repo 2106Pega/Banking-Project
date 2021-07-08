@@ -7,12 +7,36 @@ import java.sql.SQLException;
 
 import com.revature.connection.ConnectionFactory;
 import com.revature.models.Account;
+import com.revature.models.Employee;
 
 public class EmployeeDaoImpl implements EmployeeDao {
-
+	
+	@Override
+	public boolean login(Employee employee)
+	{
+		boolean valid = false;
+		String sql = "SELECT COUNT(*) FROM employee WHERE username = ? AND passcode = ?; ";
+		try(Connection conn = ConnectionFactory.getConnection())
+		{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, employee.getUsername());
+			ps.setString(2, employee.getPasscode());
+			ResultSet rs = ps.executeQuery();
+			if(rs.getInt(1) != 0)
+			{
+				valid = true;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return valid;
+	}
+	
+	
 	@Override
 	public void approve(Account a) {
-		String sql_v = "SELECT COUNT(*) FROM account WHERE username = ? AND account_name = ?; ";
+		String sql_v = "SELECT COUNT(*) FROM employee WHERE username = ? AND account_name = ?; ";
 		
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
@@ -22,9 +46,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
-				if(rs.getInt(1) != 0)
+				if(rs.getInt(1) == 0)
 				{
-					System.out.println("This account is already exist!");
+					System.out.println("This account dose not exist!");
 					return;
 				}
 			}
@@ -50,7 +74,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public void reject(Account a) {
-		String sql_v = "SELECT COUNT(*) FROM account WHERE username = ? AND account_name = ?; ";
+String sql_v = "SELECT COUNT(*) FROM employee WHERE username = ? AND account_name = ?; ";
 		
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
@@ -60,9 +84,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			ResultSet rs = ps.executeQuery();
 			while(rs.next())
 			{
-				if(rs.getInt(1) != 0)
+				if(rs.getInt(1) == 0)
 				{
-					System.out.println("This account is already exist!");
+					System.out.println("This account dose not exist!");
 					return;
 				}
 			}
@@ -89,7 +113,45 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
 	@Override
 	public void view_customer(Account a) {
-		// TODO Auto-generated method stub
+		String sql_v = "SELECT COUNT(*) FROM employee WHERE username = ? AND account_name = ?; ";
+		
+		try(Connection conn = ConnectionFactory.getConnection())
+		{
+			PreparedStatement ps = conn.prepareStatement(sql_v);
+			ps.setString(1, a.getUsername());
+			ps.setString(2, a.getAccount_name());
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				if(rs.getInt(1) == 0)
+				{
+					System.out.println("This account dose not exist!");
+					return;
+				}
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		String sql = "SELECT * FROM bank WHERE username = ? AND account_name = ?;";
+		
+		try(Connection conn = ConnectionFactory.getConnection())
+		{
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, a.getUsername());
+			ps.setString(2, a.getAccount_name());
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+			{
+				a.setApproval(rs.getBoolean("approval"));
+				a.setBalance(rs.getDouble("balance"));
+			}
+			System.out.println(a);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
 	}
 
