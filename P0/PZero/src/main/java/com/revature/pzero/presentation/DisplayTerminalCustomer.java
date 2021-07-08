@@ -30,18 +30,19 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 		List<Account> listOfCustomerAccounts = bankSystem.getCustomerAccounts(user.getId());
 		String prompt = "";
 		
-		if(listOfCustomerAccounts.equals(null)) {
+		if(listOfCustomerAccounts == null || listOfCustomerAccounts.size() == 0) {
 			prompt = "Would you like to create one? [yes/no]";
 			boolean quit = false;
 			
 			while(quit == false) {
-				System.out.println("There are no accounts under this name." + prompt);
+				System.out.println("There are no accounts under this name. " + prompt);
 				boolean yesOrNo = yesOrNoDecision(prompt);
 	
-				if(yesOrNo == true) {
-					displayNewAccountCreation(user);
-				}
+				if(yesOrNo == true)
+					displayNewAccountCreation(user);	
+				quit = quitDecision();
 			}
+			
 			if(quit == true) {
 				return;
 			}
@@ -59,38 +60,58 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 		int i = 1;
 		String prompt = "";
 		
-		System.out.println("\nSelect [0] to Create a New Account\n");
+		System.out.println("\nSelect [0] to Create a New Account");
+		
 		for(Account a : listOfCustomerAccounts) {
-			prompt += "[" + i + "]: " + a.toString() + "\n";
-			System.out.println("[" + i++ + "]: " + a.toString());
+			prompt += "  [" + i + "]:  " + a.toString() + "\n";
+			System.out.println("  [" + i++ + "]:  " + a.toString());
 			if(a.isApproved() == true) { noActionCanBeDone = false; }
 		}
-		
+			
 		if(noActionCanBeDone == false) {
-			System.out.print("\nSelect an option: ");
-			boolean invalidInt = true;
+			boolean validInt = false;
 			int decision = -1;
-			while(invalidInt == true) {
+			while(validInt == false) {
 			//select an account
+				System.out.print("\nSelect an option: ");
 				decision = numberDecisions(prompt + "\nSelect an option: ");
 				
-				if(decision > listOfCustomerAccounts.size()) {
+				if(decision == -1) {
+					break;
+				}
+					
+				if(decision > listOfCustomerAccounts.size() || decision < 0) {
 					System.out.println("Invalid number. The numbers in [] correspond to the respective prompt.");
 				}else {
-					invalidInt = false;
+					if(decision != 0) {
+						Account a = listOfCustomerAccounts.get(decision-1);
+						if(a.isApproved() == false) {
+							if(a.getBalance() == 0)
+								System.out.println("Account has yet to be approved. No tranactions can be done at this time.");
+							else{
+								System.out.println("Account is frozen. No transactions can be done at this time on this account.");
+							}
+						}else {
+							validInt = true;
+						}
+					}else {
+						validInt = true;
+					}
 				}
 			}
-			
+				
 			if(decision == 0) {
 				displayNewAccountCreation(user);
-			}else {
+			}else if(decision == -1){
+				return;
+			} else {
 				displayUserAccount(user, listOfCustomerAccounts.get(--decision));
 			}
-		
+			
 		}else {
 			System.out.println("\nAll accounts are either frozen or awaiting approval.\n"
-					+ "No action can be done at this time on any existing accounts."
-					+ "Please call XXX-XXX-XXXX for assistance.\n");
+					+ "No action can be done at this time on any existing accounts.\n"
+					+ "Please call " +  bankCustomerServiceNumber + " for assistance.\n");
 		}
 	}
 	
@@ -126,6 +147,7 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 	//Displays a specific user account. User can choose what they want to do with the account.
 	public void displayUserAccount(User user, Account account) {
 		boolean quit = false;
+		boolean success = false;
 		while(quit == false) {
 			System.out.println("\n" + divider);
 			account.displayBalance();
@@ -135,52 +157,41 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 					+ "[0] Withdraw\n"
 					+ "[1] Deposit\n"
 					+ "[2] Transfer\n"
-					+ "[3] Change Accounts\n"
+//					+ "[3] Change Accounts\n"
 					+ "[-1] Logout\n";
 					
 			System.out.println(prompt);
 			
 			int decision = numberDecisions(prompt);
-			
-			boolean success = false;
-			
 			switch(decision) {
 				case 0: //withdraw
 					success = displayWithdraw(account);
-//					displayOptionStatus("WITHDRAW", success);
 					break;
 				case 1: //deposit
 					success = displayDeposit(account);
-//					displayOptionStatus("DEPOSIT", success);
 					break;
 				case 2: //transfer
 					success = displayTransfer(account);
-//					displayOptionStatus("TRANSFER", success);
 					break;
-				case 3: //change accounts
-					accessAccount(user);
-					break;
+//				case 3: //change accounts
+//					return;
+					//accessAccount(user);
+//					break;
 				case -1: //logout
 					System.out.println("You have logged out.");
 					quit = true;
 					break;
 				default:
-					System.out.println("ERROR");
+				 	System.out.println("Please input a valid option.");
 					break;
-			}	
-		}
-		
-		if(quit == true) {
-			welcome(); 
+			}
+				
+			if(quit == true) {
+				break; 
+			}
 		}
 	}
 	
-//	private void displayOptionStatus(String option, boolean success) {
-//		if(success == true)
-//			System.out.println(option + " succeeded.");
-//		else
-//			System.out.println(option + " failed.");
-//	}
 	
 	//sets user up to transfer money to desired account. Can be owned by current user or a different user
 	public boolean displayTransfer(Account account) { 
@@ -201,6 +212,11 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 			
 			System.out.print(prompt);
 			accountToTransfer = numberDecisions(prompt);
+			
+			if(accountToTransfer == -1) {
+				quit = true;
+				break;
+			}
 		
 			accountToTransferTo = verifyAccountId(accountToTransfer);
 			
@@ -213,7 +229,7 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 			
 		//obtains amount desired to transfer to different account
 		if(accountToTransferTo != null && quit == false) {
-			prompt = "How much would you like to transfer: ";
+			prompt = "How much would you like to transfer: $";
 			while(successful == false && quit == false) {	
 				System.out.print(prompt);
 				
@@ -222,15 +238,17 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 				if(checkTransferAmount(account, transferAmount) == true) {
 					successful = true;
 				}else {
-					System.out.println("quit decision");
 					quit = quitDecision();
 				}
 			}
 		}
 		
 		if(quit != true) {
-			if(areYouSure())
+			if(areYouSure()) {
 				successful = bankSystem.transfer(account, accountToTransferTo, transferAmount);
+				if(successful == true)
+					System.out.println("Transfer Successful.");
+			}
 		}
 		
 		return successful; 
@@ -280,6 +298,8 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 		
 		if(quit != true) {
 			successful = bankSystem.withdraw(account, withdrawAmount);
+			if(successful)
+				System.out.println("WITHDRAW successful.");
 		}
 		
 		return successful;
@@ -293,6 +313,8 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 		
 		if(depositAmount > 0.01) {
 			successful = bankSystem.deposit(account, depositAmount);
+			if(successful)
+				System.out.println("Deposit successful.");
 		}
 		
 		return successful;
@@ -307,10 +329,9 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 		String prompt = "How much would you like to add: $";
 		
 		while(quit == false && successful == false) {
-			if(account.getId() != -1) { //not a new account
-				account.displayBalance();
-				System.out.print(divider + "\nDEPOSIT\n" + divider + "\n" + prompt);
-			}
+			account.displayBalance();
+			System.out.print(divider + "\nDEPOSIT\n" + divider + "\n" + prompt);
+			
 			
 			depositAmount = moneyDecisions(prompt);
 			
@@ -322,6 +343,8 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 			if(checkDepositAmount(account, depositAmount) == true) {
 				successful = true;
 			}else {
+				depositAmount = 0;
+				System.out.println("Invalid transaction.");
 				quit = quitDecision();
 			}
 		}
@@ -339,6 +362,7 @@ public class DisplayTerminalCustomer extends DisplayTerminal{
 		System.out.println("Thank you for your interest in creating an account with us.\n"
 				+ "We have sent a notification to our offices that will get your account\n"
 				+ "up and running in no time depending on the information you have entered.\n"
-				+ "Be sure to check in after 24hrs to start using your account!");
+				+ "Be sure to check in after 24hrs to start using your account!\n"
+				+ "If you need any assistance, please call our customer service line at " + bankCustomerServiceNumber);
 	}
 }

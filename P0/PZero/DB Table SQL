@@ -1,0 +1,111 @@
+Database Schema
+
+--PZero Script
+
+drop table if exists account_to_user;
+drop table if exists user_table;
+drop table if exists account_table;
+
+-- keeps track of the users that are registered
+create table user_table(
+	user_id serial primary key, 
+	first_name varchar(30) not null,
+	last_name varchar(30) not null,
+	user_type varchar(30) not null,
+	account_username varchar(30) not null unique,
+	account_password varchar(30) not null,
+	user_approved boolean not null
+);
+insert into user_table values (0, 'DummyFirstName', 'DummyLastName', 'Employee', 'admin', 'adminPassword', true);
+
+-- keeps track of the accounts that are created
+create table account_table(
+	account_id int primary key unique not null,
+	account_balance decimal not null,	--default zero
+	account_name varchar(30),			--to make it more readable
+	account_approved boolean not null
+);
+
+-- keeps track of which account is associated with which user
+-- one user to many accounts (junction table)
+create table account_to_user(
+	user_id int references user_table(user_id),
+	account_id int references account_table(account_id)
+);
+
+
+-- newUser(User u)
+insert into user_table(first_name, last_name, user_type, account_username, account_password, user_approved) values ('FirstName', 'LastName', 'Customer', 'username', 'password', true);
+insert into user_table(first_name, last_name, user_type,  account_username, account_password, user_approved) values ('Bob', 'Sad', 'Customer', 'username2', 'password2', true);
+insert into user_table(first_name, last_name, user_type,  account_username, account_password, user_approved) values ('Helen', 'Smith', 'Employee', 'helen1234', 'helenIsGreat', true);
+insert into user_table(first_name, last_name, user_type,  account_username, account_password, user_approved) values ('Agnus', 'Blaien', 'Employee', 'agnus1234', 'terriblePassword', true);
+insert into user_table(first_name, last_name, user_type,  account_username, account_password, user_approved) values ('Wyatt', 'Hicks', 'Customer', 'wyatt1009', 'wyattpassword', true);
+insert into user_table(first_name, last_name, user_type,  account_username, account_password, user_approved) values ('Janice', 'Stone', 'Customer', 'janice08', 'janicepassword', false);
+insert into user_table(first_name, last_name, user_type,  account_username, account_password, user_approved) values ('Henry', 'Russel', 'Employee', 'hRussel23', 'hPassword', false);
+insert into user_table(first_name, last_name, user_type,  account_username, account_password, user_approved) values ('q', 'R', 'Customer', 'h', 'word', false);
+
+-- newAccount(Account a) (accounts are always connected to a user)
+
+insert into account_table values (1, 219.20, '', false);
+insert into account_to_user values (1,1);
+
+insert into account_table values (3, 10.20, '', false);
+insert into account_to_user values (1,2);
+
+insert into account_table values (2, 0.20, 'sad account', true);
+insert into account_to_user values (2,2);
+
+insert into account_table values (4, 0.20, 'other sad account', true);
+
+-- User login(String username, String password)
+
+select * from user_table where account_username = 'username2' and account_password = 'password2';
+
+-- viewAccountByAccountId(int accountId)
+
+select * from account_table where account_id = 2;
+
+-- viewAccountByUserID(int userID)
+
+select * from account_table where account_id in (select account_id from account_to_user where user_id = 1);
+
+-- viewAllAccounts()
+
+select * from account_table;
+
+-- withdraw(Account a) / deposit(Account a)
+
+update account_table set account_balance = 20.20 where account_id = 9;
+
+-- transfer(Account a, Account b)
+update account_table set account_balance = 10 where account_id = 3;
+
+-- closeAccount()
+
+delete from account_to_user where account_id = 4;
+delete from account_table where account_id = 4;
+
+-- deleteUser()   NEED TO DELETE ALL INSTANCES OF THE USER (ALSO IN ACCOUNTS)
+
+delete from account_to_user where user_id = 2;
+delete from user_table where user_id = 2;
+
+
+-- viewUsernames()
+select account_username from user_table;
+
+-- getUserById
+select * from user_table where user_id = 1;
+
+-- getUserFromAccountId
+select * from user_table where user_id = (select user_id from account_to_user where account_id = 3);
+
+-- viewUnapprovedAccounts
+select * from account_table where account_approved = false;
+
+-- updateApproval
+update account_table set account_approved = true where account_id = 2;
+
+select count(*) from account_table;
+
+

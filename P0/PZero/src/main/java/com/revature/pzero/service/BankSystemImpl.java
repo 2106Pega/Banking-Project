@@ -19,10 +19,7 @@ public class BankSystemImpl implements BankSystem{
 	public BankSystemImpl(Bank bank) {
 		this.bank = bank;
 		
-//		loggy.setLevel(Level.DEBUG);
-//		loggy.info("User viewed the Display menu");
-//		loggy.setLevel(Level.WARN);
-//		loggy.debug("");
+		loggy.setLevel(Level.WARN);
 		
 		
 	}
@@ -31,16 +28,17 @@ public class BankSystemImpl implements BankSystem{
 	public User login(String username, String password) {
 		User user = null;
 		
-		if(username.isBlank() || username == null) {
-			System.out.println("Username is invalid. -> login(BankSystemImpl)");
+		if(username == null || username.isBlank()) {
+			loggy.warn("Username is invalid. -> login(BankSystemImpl)");
 			return null;
-		}else if(password.isBlank() || password == null) {
-			System.out.println("Password is invalid. -> login(BankSystemImpl)");
+		}else if(password == null || password.isBlank()) {
+			loggy.warn("Password is invalid. -> login(BankSystemImpl)");
 			return null;
 		}
 		
 		user = bank.login(username, password);
-//		loggy.info("USER LOGIN: " + user.toString());	//must check to see if null
+		if(user != null)
+			loggy.info("USER LOGIN: " + user.toString());
 		
 		return user;
 	}
@@ -48,14 +46,14 @@ public class BankSystemImpl implements BankSystem{
 	@Override
 	public boolean createNewAccount(int userId, Double balance, String nickName, boolean approved) {
 		boolean success = false;
-		if(balance != 0.00 || balance == null) {
-			System.out.println("Balance is invalid." + balance + "  -> createNewAccount(BankSystemImpl)"); //inputting a value of 0.001?
+		if(balance == null || balance != 0.00) {
+			loggy.warn("Balance is invalid." + balance + "  -> createNewAccount(BankSystemImpl)"); //inputting a value of 0.001?
 			return false;
 		}	
 		
 		Account account = new Account(-1, balance, nickName, approved);
 		success = bank.newAccount(userId, account);
-//		loggy.info("");
+		loggy.info("ACCOUNT CREATED LOGIN: " + userId);
 		
 		return success;
 	}
@@ -67,33 +65,34 @@ public class BankSystemImpl implements BankSystem{
 		User user = new User(-1, fName, lName, userType, username, password, false);
 
 		if(fName == null || fName.isBlank()) {
-			System.out.println("FirstName invalid. -> createNewUser (BankSystemImpl)");
+			loggy.warn("FirstName invalid. -> createNewUser (BankSystemImpl)");
 			return false;
 		}else if(lName == null || lName.isBlank()) {
-			System.out.println("LastName invalid -> createNewUser (BankSystemImpl)");
+			loggy.warn("LastName invalid -> createNewUser (BankSystemImpl)");
 			return false;
-		}else if(userType.isBlank() || userType == null) {
-			System.out.println("Usertype invalid -> createNewUser (BankSystemImpl)");
+		}else if(userType == null || userType.isBlank()) {
+			loggy.warn("Usertype invalid -> createNewUser (BankSystemImpl)");
 			return false;
 		}else if(username == null || username.isBlank()) {
-			System.out.println("Username invalid -> createNewUser (BankSystemImpl)");
+			loggy.warn("Username invalid -> createNewUser (BankSystemImpl)");
 			return false;
 		}else if(password == null || password.isBlank()) {
-			System.out.println("Password invalid -> createNewUser (BankSystemImpl)");
+			loggy.warn("Password invalid -> createNewUser (BankSystemImpl)");
 			return false;
 		}
 		
 		//check to see if username is already being used
 		List<String> listOfAllUserNames = bank.viewUsernames();
-		if(listOfAllUserNames != null || listOfAllUserNames.isEmpty() != true) {
+		
+		if(listOfAllUserNames != null && listOfAllUserNames.isEmpty() != true) {
 			if(listOfAllUserNames.contains(username)) {
-				System.out.println("Username is already taken. Please choose another. -> createNewUser (BankSystemImpl)");
+				loggy.warn("Username is already taken. Please choose another. -> createNewUser (BankSystemImpl)");
 				return false;
 			}
 		}
 		
 		success = bank.newUser(user, userType);
-//		loggy.info("");
+		loggy.info("CREATE NEW USER: " + username + " : " + success);
 		
 		return success;
 	}
@@ -101,10 +100,10 @@ public class BankSystemImpl implements BankSystem{
 	@Override
 	public boolean authenticate(String username, String password) {
 		if(username == null || username.isBlank()) {
-			System.out.println("Username invalid -> authenticate (BankSystemImpl)");
+			loggy.warn("Username invalid -> authenticate (BankSystemImpl)");
 			return false;
 		}else if(password == null || password.isBlank()) {
-			System.out.println("Password invalid -> authenticate (BankSystemImpl)");
+			loggy.warn("Password invalid -> authenticate (BankSystemImpl)");
 			return false;
 		}
 		
@@ -113,34 +112,24 @@ public class BankSystemImpl implements BankSystem{
 		User user = bank.login(username, password);
 		if(user != null) {
 			success = true;
-//			loggy.debug("");
+			loggy.info("USER: " + username + " AUTHENTICATED");
 		}
 		
 		return success;
 	}
 
-//	@Override
-//	public boolean authenticateLoginUsername(String usernameInput) {
-//		
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean authenticateLoginPassword(String passwordInput) {
-//		
-//		return false;
-//	}
 	
-//	@Override ///////////////////////
+	@Override
 	public Account verifyAccount(int accountId) {
-		if(accountId == -1) {
-			System.out.println("Account id is invalid. -> verifyAccount (BankSystemImpl)");
+		if(accountId <= -1) {
+			loggy.warn("Account id is invalid. -> verifyAccount (BankSystemImpl)");
 			return null;
 		}
 		
 		Account account = null;
 		account = bank.viewAccountByAccountId(accountId);
-//		loggy.debug("");
+		if(account != null)
+			loggy.info("ACCOUNT " + accountId + " VERIFIED.");
 		
 		return account;
 	}
@@ -149,18 +138,18 @@ public class BankSystemImpl implements BankSystem{
 	public List<Account> getCustomerAccounts(int userId) {
 		List<Account> listOfCustomerAccounts = null;
 		if(userId == -1) {
-			System.out.println("Not a valid ID. -> getCustomerAccounts (BankSystemImpl)");
+			loggy.warn("Not a valid ID. -> getCustomerAccounts (BankSystemImpl)");
 		}
 		
 		listOfCustomerAccounts = bank.viewAccountByUserID(userId);
-//		loggy.info("");
+		if(listOfCustomerAccounts != null)
+			loggy.info("RETRIEVED CUSTOMER #" + userId + " ACCOUNT");
 		
 		return listOfCustomerAccounts;
 	}
 	
 	public boolean canWithdraw(Account account, double withdrawAmount) {
 		if(account == null || account.isApproved() == false) {
-//			System.out.println("Account is invalid. -> canWithdraw (BankSystemImpl)");
 			if(account == null)
 				System.out.println("Account = null.");
 			if(account.isApproved() == false) {
@@ -175,11 +164,10 @@ public class BankSystemImpl implements BankSystem{
 			return false;
 		}
 		if(withdrawAmount > account.getBalance() || withdrawAmount <= 0.0) {
-//			System.out.println("Withdraw amount is invalid. -> canWithdraw (BankSystemImpl)");
 			if(withdrawAmount > account.getBalance())
-				System.out.println("Invalid balance. Withdraw amount must be lower then account balance.");
+				loggy.warn("Invalid balance. Withdraw amount must be lower then account balance.");
 			if(withdrawAmount <= 0.0) {
-				System.out.println("Withdraw amount in ivalid. Please enter a valid amount.");
+				loggy.warn("Withdraw amount in invalid. Please enter a valid amount.");
 			}
 			return false;
 		}
@@ -192,31 +180,28 @@ public class BankSystemImpl implements BankSystem{
 	public boolean withdraw(Account account, double withdrawAmount) {
 		account.setBalance(account.getBalance() - withdrawAmount);
 		boolean success = bank.withdraw(account);
-//		loggy.info("");
+		loggy.info("WITHDRAW FROM ACCOUNT #" + account.getId() + " OF AMOUNT " + withdrawAmount);
 		return success;
 	}
 	
 	public boolean canDeposit(Account account, double depositAmount) {
 		if(account == null || account.isApproved() == false) {
-//			System.out.println("Account is invalid. -> canDeposit (BankSystemImpl)");
 			if(account == null)
-				System.out.println("Account is NULL -> canDeposit (BankSystemImpl)");
+				loggy.warn("Account is NULL -> canDeposit (BankSystemImpl)");
 			else if(account.isApproved() == false)
-				System.out.println("Account not approved -> canDeposit (BankSystemImpl)");
+				loggy.warn("Account not approved -> canDeposit (BankSystemImpl)");
 			
 			return false;
 		}
 		if(depositAmount <= 0.0) {
-//			System.out.println("Deposit amount is invalid. -> canDeposit (BankSystemImpl)");
-//			if(depositAmount  account.getBalance())
-//				System.out.println("-> canDeposit (BankSystemImpl)");
 			if(depositAmount <= 0.0)
-				System.out.println("Deposit amount is invalid -> canDeposit (BankSystemImpl)");
+				loggy.warn("Deposit amount is invalid -> canDeposit (BankSystemImpl)");
 			return false;
 		}
 		
 		if(depositAmount + account.getBalance() > 500000.00) {
-			System.out.println("An account max if $500,000.00. Please create a new account if and splint the amount between two accounts.");
+			loggy.info("An account max if $500,000.00. Please create a new account if and splint the amount between two accounts.");
+			return false;
 		}
 		
 		return true;
@@ -226,18 +211,18 @@ public class BankSystemImpl implements BankSystem{
 	public boolean deposit(Account account, double depositAmount) {
 		account.setBalance(account.getBalance() + depositAmount);
 		boolean success = bank.deposit(account);
-//		loggy.info("");
+		loggy.info("DEPOSIT FROM ACCOUNT #" + account.getId() + " OF AMOUNT " + depositAmount);
 		return success;
 	}
 	
 	//check to make sure not a negative amount and etc
 	public boolean canTransfer(Account transferingFrom, double transferAmount) {
 		if(transferingFrom == null || transferingFrom.isApproved() == false) {
-			System.out.println("Account is invalid. -> canTransfer (BankSystemImpl)");
+			loggy.warn("Account is invalid. -> canTransfer (BankSystemImpl)");
 			return false;
 		}
 		if(transferAmount <= 0.0) {
-			System.out.println("Transfer amount is invalid. -> canTransfer (BankSystemImpl)");
+			loggy.warn("Transfer amount is invalid. -> canTransfer (BankSystemImpl)");
 			return false;
 		}
 		
@@ -246,30 +231,37 @@ public class BankSystemImpl implements BankSystem{
 
 	@Override
 	public boolean transfer(Account originAccount, Account transferToAccount, double transferAmount) {
-		if(originAccount.getId() == transferToAccount.getId()) {
-			System.out.println("Transfering to the same account. Ending.");
+		if(transferToAccount == null) {
+			loggy.warn("Desired account to transfer to is invalid. -> transfer (BankSystemImpl)");
 			return false;
 		}
 		
-		if(transferToAccount == null) {
-			System.out.println("Desired account to transfer to is invalid. -> transfer (BankSystemImpl)");
+		if(originAccount == null) {
+			loggy.warn("Account given is invalid. -> transfer (BankSystemImpl)");
+			return false;
+		}
+		
+		if(originAccount.getId() == transferToAccount.getId()) {
+			loggy.warn("Transfering to the same account. Transaction voided.");
 			return false;
 		}
 		
 		if(transferToAccount.isApproved() == false) {
-			System.out.println("Account to transfer to is locked. Transaction voided.");
+			loggy.warn("Account to transfer to is locked. Transaction voided.");
 			return false;
 		}
 		
 		if(transferAmount + transferToAccount.getBalance() > 500000.00) {
-			System.out.println("An account max if $500,000.00. Please create a new account if and splint the amount between two accounts.");
+			loggy.info("An account max if $500,000.00. Please create a new account if and splint the amount between two accounts.");
 		}
 		
 		originAccount.setBalance(originAccount.getBalance() - transferAmount);
 		transferToAccount.setBalance(transferToAccount.getBalance() + transferAmount);
 		
 		boolean success = bank.transfer(originAccount, transferToAccount, transferAmount);
-//		loggy.info("");
+		if(success)
+			loggy.info("TRANSFER FROM ACCOUNT #" + originAccount.getId() + " OF AMOUNT " +transferAmount + " TO ACCOUNT #" + transferToAccount.getId());
+		
 		return success;
 	}
 	
@@ -277,12 +269,13 @@ public class BankSystemImpl implements BankSystem{
 	public User getUserById(int userId) {
 		User user = null;
 		if(userId == -1) {
-			System.out.println("Userid invalid. -> getUserById (BankSystemImpl)");
+			loggy.warn("Userid invalid. -> getUserById (BankSystemImpl)");
 			return null;
 		}
 			
 		user = bank.viewUserById(userId);
-//		loggy.info("");
+		if(user != null)
+			loggy.info("USER #" + userId + " WAS RETRIEVED");
 		
 		return user;
 	}
@@ -290,12 +283,13 @@ public class BankSystemImpl implements BankSystem{
 	@Override
 	public Account getAccountById(int accountId) {
 		if(accountId == -1) {
-			System.out.println("Account id is invalid. -> getAccountById (BankSystemImpl)");
+			loggy.warn("Account id is invalid. -> getAccountById (BankSystemImpl)");
 			return null;
 		}
 		
 		Account account = bank.viewAccountByAccountId(accountId);
-//		loggy.info("");
+		if(account != null)
+			loggy.info("ACCOUNT #" + accountId + " WAS RETRIEVED");
 		
 		return account;
 	}
@@ -303,12 +297,13 @@ public class BankSystemImpl implements BankSystem{
 	@Override
 	public User getUserViaAccountNumber(int accountId) {
 		if(accountId == -1) {
-			System.out.println("Account id is invalid. -> getUserViaAccountNumber (BankSystemImpl)");
+			loggy.warn("Account id is invalid. -> getUserViaAccountNumber (BankSystemImpl)");
 			return null;
 		}
 		
 		User user = bank.viewUserFromAccountId(accountId);
-//		loggy.info("");
+		if(user != null)
+			loggy.info("USER #" + user.getId() + " WAS RETRIEVED");
 		
 		return user;
 	}
@@ -319,11 +314,11 @@ public class BankSystemImpl implements BankSystem{
 		
 		User user = bank.viewUserById(userId);
 		if(user == null || user.getUserType().equals("Customer")) {
-			System.out.println("User doesn't exist. Can not approve account. -> accountsToBeApproved (BankSystemImpl)");
+			loggy.warn("User doesn't exist. Can not approve account. -> accountsToBeApproved (BankSystemImpl)");
 			return null;
 		}
 		
-		unapprovedAccounts = bank.viewUnapprovedAccounts();
+		unapprovedAccounts = bank.viewUnapprovedAccounts();		
 		
 		return unapprovedAccounts;
 	}
@@ -331,7 +326,7 @@ public class BankSystemImpl implements BankSystem{
 	@Override
 	public boolean approveAccount(Account account) {
 		account.setApproved(!account.isApproved());	
-//		loggy.info("");
+		loggy.info("ACCOUNT #" + account.getId() + " WAS APPROVED");
 		
 		return bank.updateAccountApproval(account);
 	}
@@ -341,25 +336,27 @@ public class BankSystemImpl implements BankSystem{
 		return bank.viewAllUsers();
 	}
 
+	@Override
 	public boolean approveUser(User user) {
+		user.setUserApproved(!user.isUserApproved());	
+		loggy.info("USER #" + user.getId() + " WAS APPROVED");
 		
-		return false;
+		return bank.updateUserApproval(user);
 	}
 	
 	public boolean updateUserPassword(User user) {
-//		loggy.info("");
+		loggy.info("User #" + user.getId() + "'S PASSWORD WAS UPDATED.");
 		return bank.updateUserPassword(user);
 	}
 
 	@Override
 	public boolean closeAccount(Account a) {
-//		loggy.info("");
+		loggy.info("ACCOUNT #" + a.getId() + " WAS CLOSED");
 		return bank.deleteAccount(a);
 	}
 
 	@Override
 	public List<Account> getAllAccounts() {
-//		loggy.info("");
 		return bank.viewAllAccounts();
 	}
 	

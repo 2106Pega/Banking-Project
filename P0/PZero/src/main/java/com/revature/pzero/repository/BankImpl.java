@@ -256,7 +256,6 @@ public class BankImpl implements Bank{
 		return success;
 	}
 
-	///////////////////////////////////////////////////////////////////////
 	@Override
 	public boolean transfer(Account a, Account b, double transferAmount) {
 		boolean success = false;
@@ -337,7 +336,7 @@ public class BankImpl implements Bank{
 	}
 
 	@Override
-	public List<String> viewUsernames() {  //returns list of usernames
+	public List<String> viewUsernames() {
 		boolean success = false;
 		List<String> usernameList = null;
 		
@@ -502,7 +501,7 @@ public class BankImpl implements Bank{
 	public boolean updateUserPassword(User u) {
 		boolean success = false;
 		
-		String sqlQuery = "update user_table set user_password = ? where user_id = ?;";
+		String sqlQuery = "update user_table set account_password = ? where user_id = ?;";
 		
 		try(Connection conn = ConnectionPoint.getConnection()){
 			

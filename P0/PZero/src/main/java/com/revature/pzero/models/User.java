@@ -145,8 +145,8 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return "User Id: " + id + " | firstName: " + firstName + " | lastName: " + lastName + " | userName: " + userName
-				+ " | userApproved: " + userApproved + " | userType: " + getUserType();
+		return "" + getUserType() + "Id #" + id + "\t" + firstName + " " + lastName + "  \t  userName: " + userName
+				+ "  \tuserApproved: " + userApproved;
 	}
 	
 	

@@ -32,9 +32,9 @@ public class DisplayTerminalEmployee extends DisplayTerminal{
 			String prompt = "What would you like to do?\n"
 					+ "[1] View a Customer Account\n"
 					+ "[2] Delete an account\n"
-					+ "[3] View accounts that need approval\n"
+					+ "[3] View unapproved accounts\n"
 					+ "[4] View all accounts\n"
-					+ "[5] View users that need approval\n"
+					+ "[5] View unapproved users\n"
 					+ "[6] Reset customer password\n"
 					+ "[-1] Logout";
 			
@@ -67,7 +67,9 @@ public class DisplayTerminalEmployee extends DisplayTerminal{
 					quit = true;
 					break;
 				default:
-					System.out.println("ERROR. -> accessAccount (Employee)");
+					System.out.println("Please input a valid option.");
+					System.out.println(prompt);
+					break;
 			}
 		}
 		
@@ -105,14 +107,44 @@ public class DisplayTerminalEmployee extends DisplayTerminal{
 
 	//can only delete accounts if they are 1.) frozen / unapproved AND 2.) have no balance.
 	public void deleteAccount() {
-		String prompt = "Please enter a valid account id to delete: ";
-		System.out.print(prompt);
+		List<Account> allAccounts = bankSystem.getAllAccounts();
+		displayListOfAccount(allAccounts);
 		
-		int decision = numberDecisions(prompt);
+		String prompt = "Please enter a valid account id to delete or [-1] to quit: ";
 		
-		Account a = bankSystem.verifyAccount(decision);
+		int decision;
+		Account a = null;
+		boolean quit = false;
+		while(quit == false) {
+			System.out.print(prompt);
+			decision = numberDecisions(prompt);
+			
+			if(decision == -1) {
+				quit = quitDecision();
+				System.out.println("Invalid account number. Try again: ");
+				if(quit == false)
+					System.out.println(prompt);
+				else
+					break;
+			}
+			
+			if(decision < -1 || decision >= allAccounts.size()) {
+				System.out.println("Invalid account number. Try again: ");
+				continue;
+			}
+			
+			a = bankSystem.verifyAccount(allAccounts.get(decision).getId());
+			if(a == null) {
+				quit = quitDecision();
+				System.out.println("Invalid account number. Try again: ");
+				if(quit == false)
+					System.out.println(prompt);
+			}else {
+				break;
+			}
+		}
 		
-		if(!a.equals(null)) {
+		if(a != null) {
 			System.out.println(divider);
 			a.displayBalance();
 			System.out.println(divider);
@@ -129,13 +161,13 @@ public class DisplayTerminalEmployee extends DisplayTerminal{
 			}
 			
 			if(hasBalance && isAccountNotFrozen) {
-				System.out.println("Account has to be both frozen and must have a balance of $0.00.\nAccount " + a.getId() + " was not deleted.\n");
+				System.out.println("Account has to be both frozen and must have a balance of $0.00.\nAccount #" + a.getId() + " was not deleted.\n");
 			}else if(hasBalance == true && isAccountNotFrozen == false) {
-				System.out.println("Account still has a balance. Balance must be $0.00 before being deleted.\nAccount " + a.getId() + " was not deleted.\n");
+				System.out.println("Account still has a balance. Balance must be $0.00 before being deleted.\nAccount #" + a.getId() + " was not deleted.\n");
 			}else if(hasBalance == false && isAccountNotFrozen == true) {
-				System.out.println("Account isn't frozen. Account must be frozen before being deleted.\nAccount " + a.getId() + " was not deleted.\n");
+				System.out.println("Account isn't frozen. Account must be frozen before being deleted.\nAccount #" + a.getId() + " was not deleted.\n");
 			}else {
-				prompt = "Account is both frozen and contains a balance of $0.00. Account " + a.getId() + " can be deleted.\nProceed [yes/no]?";
+				prompt = "Account is both frozen and contains a balance of $0.00. Account #" + a.getId() + " can be deleted.\nProceed [yes/no]?";
 				System.out.println(prompt);
 				boolean yesOrNo = yesOrNoDecision(prompt);
 				boolean success = false;
@@ -207,14 +239,23 @@ public class DisplayTerminalEmployee extends DisplayTerminal{
 	private void customerOrAccountId() {
 		String prompt = "Would you like to enter a [1] Customer iD or [2] Account iD? ";
 		System.out.print(prompt);
-		int decision = numberDecisions(prompt);
-		
-		if(decision == 1) {
-			enterCustomerId();
-		}else if(decision == 2) {
-			enterAccountId();
-		}else {
-			System.out.println("No ID chosen.");
+		int decision;// = numberDecisions(prompt);
+	
+		boolean quit = false;
+		while(quit == false) {
+			decision = numberDecisions(prompt);
+			if(decision == 1) {
+				enterCustomerId();
+				break;
+			}else if(decision == 2) {
+				enterAccountId();
+				break;
+			}else {
+				System.out.println("No ID chosen.");
+				quit = quitDecision();
+				if(quit == false)
+					System.out.println(prompt);
+			}
 		}
 	}
 	
@@ -240,6 +281,7 @@ public class DisplayTerminalEmployee extends DisplayTerminal{
 			
 			if(user == null || user.getUserType().equals(userType)) { //cannot access other employee accounts
 				System.out.println("Invalid ID.");
+				quit = quitDecision();
 			}else {
 				successful = true;
 			}
@@ -247,8 +289,6 @@ public class DisplayTerminalEmployee extends DisplayTerminal{
 		
 		if(quit != true) {
 			accessCustomerAccount(user);
-		}else {
-			//quit
 		}
 	}
 	
@@ -274,6 +314,7 @@ public class DisplayTerminalEmployee extends DisplayTerminal{
 			
 			if(account == null) {
 				System.out.println("Invalid ID.");
+				quit = quitDecision();
 			}else {
 				successful = true;
 			}
@@ -306,8 +347,19 @@ public class DisplayTerminalEmployee extends DisplayTerminal{
 			}
 			
 			System.out.print("Select an account: ");
-			//select an account
-			accountToView = numberDecisions(prompt);
+			
+			boolean quit = false;
+			while(quit == false) {
+				accountToView = numberDecisions(prompt);
+				if(accountToView < 0 || accountToView > listOfCustomerAccounts.size()) {
+					System.out.println("Invalid input");
+					quit = quitDecision();
+					if(quit == false)
+						System.out.println(prompt);
+				}else {
+					break;
+				}
+			}
 		}
 		
 		if(accountToView != -1) {
@@ -387,13 +439,14 @@ public class DisplayTerminalEmployee extends DisplayTerminal{
 				System.out.println(prompt);
 				int decision = numberDecisions(prompt);
 				
-				if(decision < -1 || decision > listOfUnapprovedUsers.size()) {
+				if(decision < -1 || decision >= listOfUnapprovedUsers.size()) {
 					System.out.println("No user selected. Please select a number beside the user you wish to approve.");
 				}else {
 					
 					if(decision == -1) {
 						quit = true;
 					}else {
+						
 						boolean successful = bankSystem.approveUser(listOfUnapprovedUsers.get(decision));
 						
 						if(successful == true) {

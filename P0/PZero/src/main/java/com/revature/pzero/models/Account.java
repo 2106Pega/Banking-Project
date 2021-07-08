@@ -100,9 +100,9 @@ public class Account {
 	@Override
 	public String toString() {
 		if(getNickName().isBlank())
-			return "Account #: " + id + "  |  Balance: $" + balance + "  |  " + "locked? " + !isApproved();
+			return "Account #: " + id + "\tBalance: $" + balance + "\t" + "locked? " + !isApproved();
 		else
-			return "Account #: " + id + "  |  Balance: $" + balance + "  |  nickName: " + nickName + "  |  " + "locked? " + !isApproved();
+			return "Account #: " + id + "\tBalance: $" + balance + "\t" + "locked? " + !isApproved() + "\tnickName: " + nickName;
 	}
 	
 	

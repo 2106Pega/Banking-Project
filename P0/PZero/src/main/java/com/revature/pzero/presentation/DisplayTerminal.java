@@ -11,40 +11,43 @@ public abstract class DisplayTerminal {
 	
 	Scanner scanner = new Scanner(System.in);
 	BankSystemImpl bankSystem;
-	String userType = "Either CUSTOMER or EMPLOYEE";
+	String userType = "Either CUSTOMER or EMPLOYEE"; //to be overridden
 	
-	String bankName = "[insert bank name here]";
+	String bankName = "PRESTIGIOUS BANK";
+	String bankCustomerServiceNumber = "XXX-XXX-XXXX";
 	String divider = "----------------------------------------";
-	
-	//REMOVE
-	String u = "username";
-	String p = "password";
-
 	
 	//Bank terminal welcome prompt. Begins here.
 	public void welcome() {
 		String prompt = "[0] - Login?\n[1] - Sign Up?\n[-1] - Quit?";
-		System.out.println("Welcome to " + bankName + ".\n" + prompt);
+		boolean quit = false;
+		boolean success = false;
 		
-		int decision = numberDecisions(prompt);
-		
-		switch(decision) {
-		 	case 0:
-		 		displayLogin();
-		 		break;
-		 	case 1:
-		 		displaySignUp();
-		 		break;
-		 	case -1: //quit
-		 		break;
-		 	default:
-		 		System.out.println("ERROR.");
-		 		break;
+		while(quit == false && success == false) {
+			System.out.println("Welcome to " + bankName + ".\n" + prompt);
+			int decision = numberDecisions(prompt);
+			
+			switch(decision) {
+			 	case 0:
+			 		displayLogin();
+			 		success = true;
+			 		break;
+			 	case 1:
+			 		displaySignUp();
+			 		success = true;
+			 		break;
+			 	case -1:
+			 		quit = true;
+			 		break;
+			 	default:
+			 		System.out.println("Please input a valid option.");
+			 		break;
+			}
 		}
 	}
 	
 	//displays the sign up process
-	public void displaySignUp() {
+	protected void displaySignUp() {
 		System.out.println("Please be informed that all information you enter here on in\n" 
 				 + "will be acocunted as correct and any information that is found\n"
 				 + "to be incorrect could be liable to legal action.");
@@ -52,6 +55,15 @@ public abstract class DisplayTerminal {
 		boolean quit = false;
 		boolean successful = false;
 		
+		while(successful == false) {
+			System.out.println("Continue? [yes/no]");
+			successful = yesOrNoDecision("Continue? [yes/no]");
+			if(successful == false) {
+				return;
+			}
+		}
+		
+		successful = false;
 		while(quit == false && successful == false) {
 			
 			String prompt = "Please enter your first name: ";
@@ -94,10 +106,11 @@ public abstract class DisplayTerminal {
 		boolean quit = false;
 		
 		while(userChosenNumber == -2 && quit == false) {
-			String userInput = scanner.next();
+			String userInput = scanner.nextLine();
 			try {
 				userChosenNumber = Integer.parseInt(userInput);
 			}catch(Exception e) {
+				userChosenNumber = -2;
 				System.out.println("Invalid input.");
 				quit = quitDecision();
 				if(quit != true) {
@@ -105,6 +118,9 @@ public abstract class DisplayTerminal {
 				}
 			}
 		}
+		
+		if(quit == true)
+			userChosenNumber = -1;
 		
 		return userChosenNumber;
 	}
@@ -116,18 +132,33 @@ public abstract class DisplayTerminal {
 		boolean quit = false;
 		
 		while(userChosenNumber == -2 && quit == false) {
-			String userInput = scanner.next();
+			String userInput = scanner.nextLine();
 			try {
+				//removes commas from input
+				userInput = userInput.replaceAll(",", "");
+				
 				userChosenNumber = Double.parseDouble(userInput);
+				double old = userChosenNumber;
+				userChosenNumber = Math.round(userChosenNumber * 100.0) / 100.0; //round decimal to nearest hundredth's place
+				
+				if(userChosenNumber != old) {
+					System.out.println("Amount was rounded.\nIs this amount alright [yes/no]? $" + userChosenNumber);
+					boolean yesOrNo = yesOrNoDecision("Amount was rounded.\nIs this amount alright [yes/no]? $" + userChosenNumber);
+					if(yesOrNo != true) {
+						quit = true;
+						userChosenNumber = -1;
+						System.out.println("Exiting withdraw.");
+					}
+				}
+				
 			}catch(Exception e) {
 				System.out.println("Invalid input.");
 				quit = quitDecision();
 				if(quit != true) {
-					System.out.println("Please input one of the following:/n" + prompt);
+					System.out.println("Please input one of the following:\n" + prompt);
 				}
 			}
 		}
-		
 		return userChosenNumber;
 	}
 	
@@ -155,9 +186,9 @@ public abstract class DisplayTerminal {
 	//makes sure login input is appropriate and "safe"
 	protected User checkLogin() {
 		System.out.print("USERNAME: ");
-		String username = scanner.next();
+		String username = scanner.nextLine();
 		System.out.print("PASSWORD: ");
-		String password = scanner.next();
+		String password = scanner.nextLine();
 		
 		if(username.length() > 25 || password.length() > 25) {
 			System.out.println("Login unsuccessful. Please check over your credentials carefully.");
@@ -192,7 +223,7 @@ public abstract class DisplayTerminal {
 		boolean yesOrNo = false;
 		
 		while(quit == false) {
-			String userInput = scanner.next().toLowerCase().trim();
+			String userInput = scanner.nextLine().toLowerCase().trim();
 			
 			switch(userInput) {
 				case "yes":
@@ -223,7 +254,7 @@ public abstract class DisplayTerminal {
 		String decision = "";
 		
 		while(decision.isBlank()) {
-			decision = scanner.next();
+			decision = scanner.nextLine();
 			
 			//remove all special characters and spaces in string
 			int beforeLen = decision.length();

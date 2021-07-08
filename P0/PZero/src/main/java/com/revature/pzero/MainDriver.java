@@ -18,9 +18,6 @@ import com.revature.pzero.service.BankSystemImpl;
 import com.revature.pzero.util.ConnectionPoint;
 
 public class MainDriver {
-	
-	final static Logger loggy = Logger.getLogger(MainDriver.class);
-//	final static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		DisplayTerminal employee;
@@ -28,17 +25,19 @@ public class MainDriver {
 		Scanner scanner = new Scanner(System.in);
 		
 		boolean quit = false;
-		String prompt = "Are you a [1] customer or [2] employee? [-1] to quit.";
+		String prompt = "Are you a [0] customer or [1] employee? [-1] to quit.";
 		while(quit == false) {
-			System.out.println("Welcome to THE BANK!\n" + prompt);
+			System.out.println("Welcome to PRESTIGIOUS BANK!\n" + prompt);
 			int decision = numberDecisions(prompt);
 			switch(decision) {
-				case 1:
+				case 0:
+					System.out.println("CUSTOMER PORTAL\n------------------");
 					customer = new DisplayTerminalCustomer();
 					customer.welcome();
 					scanner = new Scanner(System.in);
 					break;
-				case 2:
+				case 1:
+					System.out.println("EMPLOYEE PORTAL\n------------------");
 					employee = new DisplayTerminalEmployee();
 					employee.welcome();
 					scanner = new Scanner(System.in);
@@ -53,8 +52,7 @@ public class MainDriver {
 			}
 		}
 		
-		
-		System.out.println("MainDriver: END.");
+//		System.out.println("MainDriver: END.");
 	}
 	
 	protected static int numberDecisions(String prompt) {
@@ -63,11 +61,11 @@ public class MainDriver {
 		boolean quit = false;
 		
 		while(userChosenNumber == -2 && quit == false) {
-			String userInput = scanner.next();
+			String userInput = scanner.nextLine();
 			try {
 				userChosenNumber = Integer.parseInt(userInput);
 			}catch(Exception e) {
-				System.out.println("Invalid input. Please input one of the following:/n" + prompt);
+				System.out.println("Invalid input. Please input one of the following:\n" + prompt);
 			}
 		}
 		
