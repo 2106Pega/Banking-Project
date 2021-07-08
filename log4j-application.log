@@ -34,3 +34,11 @@
 2021-07-08 02:09:47 INFO  MainDriver:763 - User 'new customer 2' logged out.
 2021-07-08 02:09:55 INFO  MainDriver:81 - Successful login on User 'new customer 1'.
 2021-07-08 02:10:08 INFO  MainDriver:767 - User 'new customer 1' exited the application.
+2021-07-08 10:32:04 INFO  MainDriver:81 - Successful login on User 'new customer 1'.
+2021-07-08 10:37:32 INFO  MainDriver:81 - Successful login on User 'new customer 2'.
+2021-07-08 10:37:40 INFO  MainDriver:51 - Bank Acc 'new bank account ' was created by User 'new customer 2' and added to the db.
+2021-07-08 10:37:43 INFO  MainDriver:192 - User 'new customer 2' Bank Acc 'new bank account ' balance updated to $100.00 in the db.
+2021-07-08 10:37:46 INFO  MainDriver:763 - User 'new customer 2' logged out.
+2021-07-08 10:38:54 INFO  MainDriver:81 - Successful login on User 'new customer 1'.
+2021-07-08 10:39:13 INFO  MainDriver:763 - User 'new customer 1' logged out.
+2021-07-08 10:39:19 INFO  MainDriver:81 - Successful login on User 'new customer 2'.

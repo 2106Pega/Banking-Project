@@ -355,7 +355,7 @@ public class PresentationImpl implements Presentation {
 				}
 				else {
 					List<BankAccount> receiverAccs = service.getCustomerBankAccounts(receiver);
-					if (receiverAccs.isEmpty() || receiverAccs.equals(null)) {
+					if (receiverAccs.isEmpty() || receiverAccs.equals(null) || allAccountsUnapproved(receiverAccs)) {
 						System.out.println(username + " has no approved bank accounts to transfer to. Backing out...");
 						return;
 					}
@@ -765,5 +765,14 @@ public class PresentationImpl implements Presentation {
 	
 	private void exitApplicationLog(String username) {
 		MainDriver.loggy.info("User '" + username + "' exited the application.");
+	}
+	
+	private boolean allAccountsUnapproved(List<BankAccount> accs) {
+		for(BankAccount ba : accs) {
+			if (ba.isApproved()) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
