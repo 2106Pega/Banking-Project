@@ -743,7 +743,7 @@ public class BankingUI {
         	logger.error("customer failed to transfer $" + transferAmount + " from account " + bankAccount.getAccountNumber() + " to account " + transferAccountNumber);
 
         }
-        bankAccount = customerAccount.loadCustomerInfoByID(bankAccount.getCustomerID());
+        bankAccount = customerAccount.loadCustomerInfoByAccount(bankAccount.getAccountNumber());
         customerMenu(bankAccount);
 
         return bankAccount;
