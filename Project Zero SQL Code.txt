@@ -1,0 +1,64 @@
+DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS employees;
+DROP TABLE IF EXISTS pending_applications;
+
+CREATE TABLE if not exists customers (
+customer_user_id SERIAL PRIMARY KEY,
+first_name VARCHAR(25),
+last_name VARCHAR(25),
+phone_number VARCHAR(10),
+email_address VARCHAR(100),
+username VARCHAR(30),
+password VARCHAR(50),
+checking_account_number SERIAL,
+checking_routing_number SERIAL,
+checking_account_balance DECIMAL,
+savings_account_number SERIAL,
+savings_routing_number SERIAL,
+savings_account_balance DECIMAL
+);
+
+CREATE TABLE if not exists employees (
+employee_user_id SERIAL PRIMARY KEY,
+username VARCHAR(30),
+password VARCHAR(50)
+);
+
+CREATE TABLE if not exists pending_applications (
+first_name VARCHAR(25),
+last_name VARCHAR(25),
+phone_number VARCHAR(10),
+email_address VARCHAR(100),
+username VARCHAR(30),
+password VARCHAR(50)
+);
+
+ALTER sequence customers_checking_account_number_seq RESTART with 1000000000;
+ALTER sequence customers_checking_routing_number_seq RESTART with 100000000;
+ALTER sequence customers_savings_account_number_seq RESTART with 1000000000;
+ALTER sequence customers_savings_routing_number_seq RESTART with 100000000;
+ALTER sequence employees_employee_user_id_seq RESTART with 1000;
+
+create role java_user LOGIN password 'p4ssword';
+
+grant select on table customers to java_user;
+grant insert on table customers to java_user;
+grant update on table customers to java_user;
+grant delete on table customers to java_user;
+grant select on table employees to java_user;
+grant insert on table employees to java_user;
+grant update on table employees to java_user;
+grant select on table pending_applications to java_user;
+grant insert on table pending_applications to java_user;
+grant update on table pending_applications to java_user;
+grant delete on table pending_applications to java_user;
+
+GRANT ALL ON SEQUENCE public.customers_customer_user_id_seq TO java_user;
+GRANT ALL ON SEQUENCE public.customers_checking_account_number_seq TO java_user;
+GRANT ALL ON SEQUENCE public.customers_checking_routing_number_seq TO java_user;
+GRANT ALL ON SEQUENCE public.customers_savings_account_number_seq TO java_user;
+GRANT ALL ON SEQUENCE public.customers_savings_routing_number_seq TO java_user;
+GRANT ALL ON SEQUENCE public.employees_employee_user_id_seq TO java_user;
+
+insert into employees values(1000, 'employee1', 'employee1password');
+insert into employees values(1001, 'employee2', 'employee2password');
