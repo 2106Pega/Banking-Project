@@ -14,7 +14,7 @@ public class LogProcess {
 	
 	
 	static Scanner sc = new Scanner(System.in);
-	final static Logger logger = Logger.getLogger(BankFrontImpl.class.getName());
+	final static Logger logger = Logger.getLogger(LogProcess.class.getName());
 	
 	public static boolean userRegistration() {
 		
@@ -25,7 +25,7 @@ public class LogProcess {
 		Users tempUser = userDao.selectUserByUsername(input);
 		
 		if (tempUser != null && tempUser.getUser_name() != null) {
-			System.out.println("The user name is existed!");
+			logger.info("failed: The user name is existed!");
 			System.out.println("Please try again!");
 			return false;
 		} else {
@@ -35,6 +35,7 @@ public class LogProcess {
 			System.out.println("please input your last name!");
 			String lastName = sc.nextLine();
 			userDao.createUser(new Users(1,input,firstName,lastName));
+			logger.info("success: created a user in db, username: "+input);
 			return true;
 		}
 	}
@@ -48,10 +49,11 @@ public class LogProcess {
 		Users tempUser = userDao.selectUserByUsername(input);
 		
 		if (tempUser == null) {
-			System.out.println("The username is not existed!");
+			logger.info("failed: The username is not existed!");
 			System.out.println("Please try again!");
 			return null;
 		} else {
+			logger.info("success: username is existed in db, username= " + input);
 			return tempUser;
 		}
 	}

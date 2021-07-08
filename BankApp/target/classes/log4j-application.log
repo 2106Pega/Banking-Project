@@ -1,0 +1,34 @@
+2021-07-07 19:03:00 INFO  BankFrontImpl:150 - 
+2021-07-07 19:03:06 INFO  BankFrontImpl:153 - failed: username can not be dupilicate
+2021-07-07 19:03:20 INFO  LogProcess:38 - success: created a user in db, username: fda2
+2021-07-07 19:03:20 INFO  BankFrontImpl:153 - failed: username can not be dupilicate
+2021-07-07 19:17:00 INFO  LogProcess:56 - success: username is existed in db, username= james123
+2021-07-07 19:17:11 INFO  AccountProcess:36 - success: All accounts for a particular user!
+2021-07-07 19:17:11 INFO  AccountProcess:37 - 1) accountName: savings123, banlance: 0.0
+2021-07-07 19:17:11 INFO  AccountProcess:36 - success: All accounts for a particular user!
+2021-07-07 19:17:11 INFO  AccountProcess:37 - 2) accountName: chekcing, banlance: 0.0
+2021-07-07 19:17:11 INFO  AccountProcess:36 - success: All accounts for a particular user!
+2021-07-07 19:17:11 INFO  AccountProcess:37 - 3) accountName: gg, banlance: 0.0
+2021-07-07 19:17:11 INFO  AccountProcess:36 - success: All accounts for a particular user!
+2021-07-07 19:17:11 INFO  AccountProcess:37 - 4) accountName: checking123, banlance: 0.0
+2021-07-07 19:17:11 INFO  AccountProcess:36 - success: All accounts for a particular user!
+2021-07-07 19:17:11 INFO  AccountProcess:37 - 5) accountName: checking, banlance: 60.0
+2021-07-07 19:17:53 INFO  LogProcess:56 - success: username is existed in db, username= james123
+2021-07-07 19:17:55 INFO  AccountProcess:36 - 1) accountName: savings123, banlance: 0.0
+2021-07-07 19:17:55 INFO  AccountProcess:36 - 2) accountName: chekcing, banlance: 0.0
+2021-07-07 19:17:55 INFO  AccountProcess:36 - 3) accountName: gg, banlance: 0.0
+2021-07-07 19:17:55 INFO  AccountProcess:36 - 4) accountName: checking123, banlance: 0.0
+2021-07-07 19:17:55 INFO  AccountProcess:36 - 5) accountName: checking, banlance: 60.0
+2021-07-07 21:52:26 INFO  AccountProcess:36 - 1) accountName: savings123, banlance: 0.0
+2021-07-07 21:52:26 INFO  AccountProcess:36 - 2) accountName: chekcing, banlance: 0.0
+2021-07-07 21:52:26 INFO  AccountProcess:36 - 3) accountName: gg, banlance: 0.0
+2021-07-07 21:52:26 INFO  AccountProcess:36 - 4) accountName: checking123, banlance: 0.0
+2021-07-07 21:52:26 INFO  AccountProcess:36 - 5) accountName: checking, banlance: 60.0
+2021-07-07 23:34:06 INFO  LogProcess:56 - success: username is existed in db, username= polloty
+2021-07-07 23:37:52 INFO  LogProcess:56 - success: username is existed in db, username= polloty
+2021-07-07 23:38:42 INFO  LogProcess:56 - success: username is existed in db, username= polloty
+2021-07-08 00:06:23 INFO  BankFrontImpl:208 - failed :input number is not matched customers number!
+2021-07-08 00:07:27 INFO  BankFrontImpl:208 - failed :input number is not matched customers number!
+2021-07-08 00:09:31 INFO  BankFrontImpl:208 - failed :input number is not matched customers number!
+2021-07-08 00:13:35 INFO  BankFrontImpl:208 - failed :input number is not matched customers number!
+2021-07-08 00:14:07 INFO  BankFrontImpl:208 - failed :input number is not matched customers number!

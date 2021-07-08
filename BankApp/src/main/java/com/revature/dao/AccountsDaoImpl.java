@@ -64,8 +64,8 @@ public class AccountsDaoImpl implements AccountsDao {
 						rs.getString(2), 
 						rs.getInt(3), 
 						rs.getBoolean(4),
-						rs.getInt(5),
-						null));
+						rs.getInt(5)
+						));
 			}
 			
 		} catch(SQLException e) {
@@ -141,8 +141,8 @@ public class AccountsDaoImpl implements AccountsDao {
 						rs.getString(2), 
 						rs.getInt(3), 
 						rs.getBoolean(4),
-						rs.getInt(5),
-						null);
+						rs.getInt(5)
+						);
 			}
 			
 		} catch(SQLException e) {

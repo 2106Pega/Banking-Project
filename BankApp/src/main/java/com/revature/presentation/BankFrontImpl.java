@@ -72,7 +72,7 @@ public class BankFrontImpl implements BankFront {
 
 		while (Double.doubleToLongBits(amount) <= 0) {
 			System.out.println();
-			System.out.println("input error!");
+			logger.info("input error, amount can not be negative!");
 			System.out.println("please input amount again!");
 			amount = sc.nextDouble();
 		}
@@ -82,7 +82,7 @@ public class BankFrontImpl implements BankFront {
 
 			while (Double.doubleToLongBits(amount) > Double.doubleToLongBits(list.get(input - 1).getBanlance())) {
 				System.out.println();
-				System.out.println("Insufficient Balance!");
+				logger.info("Insufficient Balance!");
 				System.out.println("please input amount again!");
 				amount = sc.nextDouble();
 			}
@@ -99,7 +99,7 @@ public class BankFrontImpl implements BankFront {
 
 			while (Double.doubleToLongBits(amount) > Double.doubleToLongBits(list.get(input - 1).getBanlance())) {
 				System.out.println();
-				System.out.println("Insufficient Balance!");
+				logger.info(" warning: Insufficient Balance!");
 				System.out.println("please input amount again!");
 				amount = sc.nextDouble();
 			}
@@ -112,14 +112,14 @@ public class BankFrontImpl implements BankFront {
 
 			while (userDao.selectUserByUsername(anotherAccount) == null) {
 				System.out.println();
-				System.out.println("can not find it, try agian!");
+				logger.info("can not find it, try agian!");
 				System.out.println("Please input another customer username: ");
 				anotherAccount = sc.nextLine();
 			}
 
 			Users userTemp = userDao.selectUserByUsername(anotherAccount);
 			List<Accounts> accountList = AccountProcess.viewAccounts(userTemp.getID());
-			System.out.println("Please select the corresponding number that you want to transfer money to the account!");
+			logger.info("success: Please select the corresponding number that you want to transfer money to the account!");
 			int selectAccount = sc.nextInt();
 			
 			TransactionsProcess.transfer(list.get(input - 1), accountList.get(selectAccount-1), amount);
@@ -145,18 +145,23 @@ public class BankFrontImpl implements BankFront {
 			if (num.equals("9"))
 				break;
 
+			// new customer
 			else if (num.equals("1")) {
 				boolean successful = LogProcess.userRegistration();
-				logger.info("");
+				
 				while (!successful) {
 					successful = LogProcess.userRegistration();
+					
 				}
-
+				
+				
+				//customer
 			} else if (num.equals("2")) {
 
 				Users tempCustomer = LogProcess.customerLogin();
 				while (tempCustomer == null) {
 					tempCustomer = LogProcess.customerLogin();
+					
 				}
 
 				bankApp.displayUserAccount();
@@ -165,25 +170,34 @@ public class BankFrontImpl implements BankFront {
 				// view all accounts
 				if (chose.equals("1")) {
 					List<Accounts> accList = AccountProcess.viewAccounts(tempCustomer.getID());
-					BankFrontImpl.displayAccount(accList);
+					if (accList != null && accList.size() != 0) {
+						BankFrontImpl.displayAccount(accList);
+					} else {
+						System.out.println("The current customer does not have any account!");
+						System.out.println("");
+					}
+					
 
-					// break;
+			
 
 					// create new bank account
 				} else if (chose.equals("2")) {
 
 					AccountProcess.createAccount(tempCustomer.getID());
+					
 
 				}
 
+				// Employee
 			} else if (num.equals("3")) {
 
 				AccountsDao accountDao = new AccountsDaoImpl();
 				boolean exist = EmployeeProcess.isExists();
 				while (!exist) {
-					System.out.println("username or password is not matched!");
+					logger.info("username or password is not matched!");
 					System.out.println("Please try again!");
 					System.out.println("");
+			
 					exist = EmployeeProcess.isExists();
 				}
 
@@ -191,7 +205,7 @@ public class BankFrontImpl implements BankFront {
 				int chose = sc.nextInt();
 				UsersDao userDao = new UsersDaoImpl();
 				while (userDao.selectAccountsById(chose) == null) {
-					System.out.println("input number is not matched customers number!");
+					logger.info("failed :input number is not matched customers number!");
 					System.out.println("Please try again!");
 					EmployeeProcess.viewCustomers();
 					chose = sc.nextInt();
@@ -199,16 +213,24 @@ public class BankFrontImpl implements BankFront {
 
 				System.out.println();
 				List<Accounts> accountList = AccountProcess.viewAllAccounts(chose);
-				System.out.println("Please enter the corresponding account number to approve it!");
-				int choseNext = sc.nextInt();
+				if (accountList == null || accountList.size() == 0) {
+					System.out.println("The current customer does not have any account!");
+					System.out.println("please try again!");
+					System.out.println("");
+					
+				} else {
+					System.out.println("Please enter the corresponding account number to approve it!");
+					int choseNext = sc.nextInt();
+					accountDao.approveAccounts(accountList.get(choseNext - 1).getAccountID());
+					AccountProcess.viewAllAccounts(chose);
+				}
+	
 
-				accountDao.approveAccounts(accountList.get(choseNext - 1).getAccountID());
 
-				AccountProcess.viewAllAccounts(chose);
 
-				// EmployeeProcess.viewCustomers();
+				
 
-				// break;
+
 
 			} else {
 				System.out.println("Please enter the correct number, and try again!");

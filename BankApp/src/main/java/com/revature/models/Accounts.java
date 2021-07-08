@@ -9,16 +9,13 @@ public class Accounts {
 	private double  banlance;
 	private boolean isApprove;
 	private int userID;
-	private List<Transactions> transList;
-	public Accounts(int iD, String accountName, double banlance, boolean isApprove, int userID,
-			List<Transactions> transList) {
+	public Accounts(int iD, String accountName, double banlance, boolean isApprove, int userID) {
 		super();
 		accountID = iD;
 		this.accountName = accountName;
 		this.banlance = banlance;
 		this.isApprove = isApprove;
 		this.userID = userID;
-		this.transList = transList;
 	}
 	@Override
 	public String toString() {
@@ -55,12 +52,7 @@ public class Accounts {
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
-	public List<Transactions> getTransList() {
-		return transList;
-	}
-	public void setTransList(List<Transactions> transList) {
-		this.transList = transList;
-	}
+
 	
 	
 	
