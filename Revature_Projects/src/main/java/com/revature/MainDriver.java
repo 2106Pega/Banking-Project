@@ -5,6 +5,13 @@ import java.awt.*;
 //import java.awt.event.MouseListener;
 
 import javax.swing.*;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -36,7 +43,81 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 public class MainDriver
-{	
+{
+	public static void main(String[] args) throws InvalidCredentialsException
+	{
+		UserDAO userDao = new UserDAOImpl();
+		try
+		{
+			File transactionLog = new File("C:\\Users\\grant\\Desktop\\Transaction Log.txt");
+	        if (transactionLog.createNewFile())
+	        {
+	        	//System.out.println("File created: " + myObj.getName());
+	        }
+	        else
+	        {
+	        	//System.out.println("File already exists.");
+	        }
+		}
+		catch (IOException e)
+		{
+			System.out.println("An error occurred. Likely an invalid file path.");
+		    e.printStackTrace();
+		}
+		//createMainWindow();		
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Hello! Welcome to Revature Bank. Are you a customer or an employee? Enter 'customer' or 'employee'.");
+		String firstAnswer;
+		String secondAnswer;
+		boolean done = false;
+        while (!done)
+        {
+            try
+            {
+                firstAnswer = scanner.nextLine();
+                if (firstAnswer.equals("customer"))
+        		{
+                	try
+                	{
+                		System.out.println("Are you a returning customer? Enter 'yes' or 'no'.");
+                		secondAnswer = scanner.nextLine();
+                		if (secondAnswer.equals("yes"))
+                		{
+                            done = true;
+                            ReturningUserLogin(scanner, userDao);
+                		}
+                		else if (secondAnswer.equals("no"))
+                		{
+                            done = true;
+                            NewUserRegistration(scanner, userDao);
+                		}
+                		else
+                		{
+                			InvalidInputMessage();
+                		}
+                	}
+                	catch (InputMismatchException e)
+                	{
+                		e.printStackTrace();
+                	}
+                }
+                else if (firstAnswer.equals("employee"))
+                {
+                    EmployeeLogin(scanner, userDao);
+                }
+                else
+                {
+                	InvalidInputMessage();
+                }
+            }
+            catch (InputMismatchException e)
+            {
+            	InvalidInputMessage();
+                //scanner.nextLine();  // Clear invalid input from scanner buffer.
+            }
+        }
+	}
+
 	static void ReturningUserLogin(Scanner scanner, UserDAO userDao) throws InvalidCredentialsException/*, SQLException*/
 	{
 		String username;
@@ -479,7 +560,27 @@ public class MainDriver
 	
 	public static void TransactionLog(Scanner scanner, UserDAO userDao, Employee employee)
 	{
-		
+		try
+		{
+			File transactionLog = new File("C:\\Users\\grant\\Desktop\\Transaction Log.txt");
+			  
+			BufferedReader br = new BufferedReader(new FileReader(transactionLog));
+			  
+			String st;
+			while ((st = br.readLine()) != null)
+			{
+			    System.out.println(st);
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+			System.out.println("File not found.");
+		}
+		catch (IOException e)
+		{
+			System.out.println("IOException thrown.");
+		} 
+		EmployeeOptionsMenu(scanner, userDao, employee);
 	}
 	
 	public static void DepositMenu(Scanner scanner, UserDAO userDao, User user)
@@ -593,106 +694,71 @@ public class MainDriver
 	
 	public static void TransferToMenu(Scanner scanner, UserDAO userDao, User user)
 	{
-		
+		System.out.print("This feature is currently in development. Returning to main menu.\n");
+		UserOptionsMenu(scanner, userDao, user);
+//		System.out.println("How much would you like to transfer?");
+//		float transferAmount = scanner.nextFloat();
+//		while (withdrawalAmount <= 0)
+//		//String withdrawalAmount = scanner.nextLine();
+//		//while (Float.parseFloat(withdrawalAmount) <= 0)
+//		{
+//			try
+//			{
+//				System.out.println("Withdrawal amount must be greater than $0. How much would you like to withdraw?");
+//				withdrawalAmount = scanner.nextFloat();
+//				//withdrawalAmount = scanner.nextLine();
+//			}
+//			catch (InputMismatchException e)
+//            {
+//                System.out.println("Please enter a valid numerical input.");
+//                scanner.nextLine();  // Clear invalid input from scanner buffer.
+//            }
+//		}
+//		String answer;
+//		boolean done = false;
+//		while (done == false)
+//		{
+//			try
+//			{
+//				System.out.println("From which account would you like to withdraw money? Answer 'checking' or 'savings'.");
+//				answer = scanner.nextLine();
+//				if (answer.equals("checking"))
+//				{
+//					userDao.updateUserCheckingBalance(withdrawalAmount, false, user, scanner, userDao);
+//					System.out.println("$" + withdrawalAmount + " has been withdrawn from your checking account.");
+//					done = true;
+//					UserOptionsMenu(scanner, userDao, user);
+//				}
+//				else if (answer.equals("savings"))
+//				{
+//					userDao.updateUserSavingsBalance(withdrawalAmount, false, user, scanner, userDao);
+//					System.out.println("$" + withdrawalAmount + " has been withdrawn from your savings account.");
+//					done = true;
+//					UserOptionsMenu(scanner, userDao, user);
+//				}
+//			}
+//			catch (InputMismatchException e)
+//            {
+//                System.out.println("Please enter a valid input.");
+//                scanner.nextLine();  // Clear invalid input from scanner buffer.
+//            }
+//            catch (Exception e)
+//    		{
+//    			e.printStackTrace();
+//    		}
+//		}
 	}
 	
 	public static void TransferFromMenu(Scanner scanner, UserDAO userDao, User user)
 	{
-		
+		System.out.print("This feature is currently in development. Returning to main menu.\n");
+		UserOptionsMenu(scanner, userDao, user);
 	}
 	
 	public static void InvalidInputMessage()
 	{
 		System.out.println("Please enter a valid input.");
 	}
-	
-	public static void main(String[] args) throws InvalidCredentialsException
-	{
-		UserDAO userDao = new UserDAOImpl();
-		//createMainWindow();		
-		Scanner scanner = new Scanner(System.in);
-		//System.out.println("Hello! Welcome to Revature Bank. Are you a returning user? Enter 'yes' or 'no'.");
-		System.out.println("Hello! Welcome to Revature Bank. Are you a customer or an employee? Enter 'customer' or 'employee'.");
-		String firstAnswer;
-		String secondAnswer;
-		boolean done = false;
-        while (!done)
-        {
-            try
-            {
-                firstAnswer = scanner.nextLine();
-                if (firstAnswer.equals("customer"))
-        		{
-                	try
-                	{
-                		System.out.println("Are you a returning customer? Enter 'yes' or 'no'.");
-                		secondAnswer = scanner.nextLine();
-                		if (secondAnswer.equals("yes"))
-                		{
-                            done = true;
-                            ReturningUserLogin(scanner, userDao);
-                		}
-                		else if (secondAnswer.equals("no"))
-                		{
-                            done = true;
-                            NewUserRegistration(scanner, userDao);
-                		}
-                		else
-                		{
-                			InvalidInputMessage();
-                		}
-                	}
-                	catch (InputMismatchException e)
-                	{
-                		e.printStackTrace();
-                	}
-                }
-                else if (firstAnswer.equals("employee"))
-                {
-                    EmployeeLogin(scanner, userDao);
-                }
-                else
-                {
-                	InvalidInputMessage();
-                }
-            }
-            catch (InputMismatchException e)
-            {
-            	InvalidInputMessage();
-                //scanner.nextLine();  // Clear invalid input from scanner buffer.
-            }
-        }
-	}
-	
-//	System.out.println("Hello! Welcome to Revature Bank. Are you a customer or an employee? Enter 'customer' or 'employee'.");
-//	String firstAnswer;
-//	boolean done = false;
-//    while (!done)
-//    {
-//        try
-//        {
-//            firstAnswer = scanner.nextLine();
-//            if (firstAnswer.equals("yes"))
-//    		{
-//                done = true;
-//                //scanner.close();
-//                ReturningUserLogin(scanner, userDao);
-//            }
-//            else if (firstAnswer.equals("no"))
-//            {
-//                NewUserRegistration(scanner, userDao);
-//            }
-//            else
-//            {
-//            	InvalidInputMessage();
-//            }
-//        }
-//        catch (InputMismatchException e)
-//        {
-//        	InvalidInputMessage();
-//            //scanner.nextLine();  // Clear invalid input from scanner buffer.
-//        }
-//    }
 
 	private static void createMainWindow()
 	{

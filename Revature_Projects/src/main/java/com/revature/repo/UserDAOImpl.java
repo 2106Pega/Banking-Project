@@ -1,9 +1,17 @@
 package com.revature.repo;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -381,8 +389,13 @@ public class UserDAOImpl implements UserDAO {
 		return databaseEmployees;
 	}
 	
+	//public void logTransaction()
+	//{
+	//	
+	//}
+	
 	@Override
-	public void updateUserCheckingBalance(float balanceChange, boolean depositing, User user, Scanner scanner, UserDAO userDao)
+	public void updateUserCheckingBalance(float balanceChange, boolean depositing, User user, Scanner scanner, UserDAO userDao/*, File transactionLog*/)
 	{
 		//String sql = "update accounts where username = ? AND password = ? AND customer_user_id = ? ;";
 		//String sqlTwo = "set checking_account_balance = checking_account_balance + where username = ? AND password = ? AND customer_user_id = ? ;";
@@ -399,18 +412,63 @@ public class UserDAOImpl implements UserDAO {
 			{
 				newBalance = priorBalance + balanceChange;
 				System.out.println("$" + balanceChange + " has been deposited into your checking account.");
+				try
+				{
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");  
+					LocalDateTime now = LocalDateTime.now();  
+				    //FileWriter myWriter = new FileWriter("Transaction Log.txt");
+				    FileWriter myWriter = new FileWriter("C:\\Users\\grant\\Desktop\\Transaction Log.txt", true);
+					myWriter.write(now + ": User " + user.getId() + " deposited $" + balanceChange + " into their checking account.\n");
+				    myWriter.close();
+				    //System.out.println("Successfully wrote to the file.");
+				}
+				catch (IOException e)
+				{
+				    System.out.println("An error occurred.");
+				    e.printStackTrace();
+				}
 			}
 			else if ((priorBalance - balanceChange) > 0)
 			{
 				newBalance = priorBalance - balanceChange;
 				System.out.println("$" + balanceChange + " has been withdrawn from your checking account.");
+				try
+				{
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");  
+					LocalDateTime now = LocalDateTime.now();  
+				    //FileWriter myWriter = new FileWriter("Transaction Log.txt");
+					FileWriter myWriter = new FileWriter("C:\\Users\\grant\\Desktop\\Transaction Log.txt", true);
+					myWriter.write(now + ": User " + user.getId() + " withdrew $" + balanceChange + " from their checking account.\n");
+				    myWriter.close();
+				    //System.out.println("Successfully wrote to the file.");
+				}
+				catch (IOException e)
+				{
+				    System.out.println("An error occurred.");
+				    e.printStackTrace();
+				}
 			}
 			else
 			{
 				System.out.println("Prior balance was only $" + priorBalance + " so only that much was able to be withdrawn.");
 				newBalance = 0;
+				try
+				{
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");  
+					LocalDateTime now = LocalDateTime.now();  
+				    //FileWriter myWriter = new FileWriter("Transaction Log.txt");
+				    FileWriter myWriter = new FileWriter("C:\\Users\\grant\\Desktop\\Transaction Log.txt", true);
+				    myWriter.write(now + ": User " + user.getId() + " withdrew $" + priorBalance + " from their checking account.\n");
+				    myWriter.close();
+				    //System.out.println("Successfully wrote to the file.");
+				}
+				catch (IOException e)
+				{
+				    System.out.println("An error occurred.");
+				    e.printStackTrace();
+				}
 			}
-			user.setCheckingAccountBalance(newBalance); //I guess I need this.
+			user.setCheckingAccountBalance(newBalance);
 			//System.out.print("New checking account balance: " + user.getCheckingAccountBalance());
 			ps.setFloat(1, newBalance);
 			ps.setString(2, user.getUsername());
@@ -418,6 +476,27 @@ public class UserDAOImpl implements UserDAO {
 			ps.setInt(4, user.getId());
 
 			ResultSet rs = ps.executeQuery();
+//			try
+//			{
+//				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");  
+//				LocalDateTime now = LocalDateTime.now();  
+//			    FileWriter myWriter = new FileWriter("Transaction Log.txt");
+//			    if (depositing)
+//			    {
+//				    myWriter.write(now + ": User " + user.getId() + " deposited $" + balanceChange + "\n");
+//			    }
+//			    else
+//			    {
+//				    myWriter.write(now + ": User " + user.getId() + " withdrew $" + balanceChange + "\n");
+//			    }
+//			    myWriter.close();
+//			    System.out.println("Successfully wrote to the file.");
+//			}
+//			catch (IOException e)
+//			{
+//			    System.out.println("An error occurred.");
+//			    e.printStackTrace();
+//			}
 		}
 		catch (SQLException e)
 		{
@@ -436,7 +515,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	@Override
-	public void updateUserSavingsBalance(float balanceChange, boolean depositing, User user, Scanner scanner, UserDAO userDao)
+	public void updateUserSavingsBalance(float balanceChange, boolean depositing, User user, Scanner scanner, UserDAO userDao/*, File transactionLog*/)
 	{
 		try(Connection conn = ConnectionFactory.getConnection())
 		{
@@ -448,16 +527,61 @@ public class UserDAOImpl implements UserDAO {
 			{
 				newBalance = priorBalance + balanceChange;
 				System.out.println("$" + balanceChange + " has been deposited into your savings account.");
+				try
+				{
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");  
+					LocalDateTime now = LocalDateTime.now();  
+				    //FileWriter myWriter = new FileWriter("Transaction Log.txt");
+				    FileWriter myWriter = new FileWriter("C:\\Users\\grant\\Desktop\\Transaction Log.txt", true);
+					myWriter.write(now + ": User " + user.getId() + " deposited $" + balanceChange + " into their savings account.\n");
+				    myWriter.close();
+				    //System.out.println("Successfully wrote to the file.");
+				}
+				catch (IOException e)
+				{
+				    System.out.println("An error occurred.");
+				    e.printStackTrace();
+				}
 			}
 			else if ((user.getSavingsAccountBalance() - balanceChange) > 0)
 			{
 				newBalance = priorBalance - balanceChange;
 				System.out.println("$" + balanceChange + " has been withdrawn from your savings account.");
+				try
+				{
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");  
+					LocalDateTime now = LocalDateTime.now();  
+				    //FileWriter myWriter = new FileWriter("Transaction Log.txt");
+				    FileWriter myWriter = new FileWriter("C:\\Users\\grant\\Desktop\\Transaction Log.txt", true);
+					myWriter.write(now + ": User " + user.getId() + " withdrew $" + balanceChange + " from their savings account.\n");
+				    myWriter.close();
+				    //System.out.println("Successfully wrote to the file.");
+				}
+				catch (IOException e)
+				{
+				    System.out.println("An error occurred.");
+				    e.printStackTrace();
+				}
 			}
 			else
 			{
 				newBalance = 0;
 				System.out.println("Prior balance was only $" + priorBalance + " so only that much was able to be withdrawn.");
+				try
+				{
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");  
+					LocalDateTime now = LocalDateTime.now();  
+				    //FileWriter myWriter = new FileWriter("Transaction Log.txt");
+				    FileWriter myWriter = new FileWriter("C:\\Users\\grant\\Desktop\\Transaction Log.txt", true);
+					myWriter.write(now + ": User " + user.getId() + " withdrew $" + priorBalance + " from their savings account.\n");
+				    myWriter.close();
+				    System.out.println("Successfully wrote to the file.");
+				}
+				catch (IOException e)
+				{
+				    System.out.println("An error occurred.");
+				    e.printStackTrace();
+				}
 			}
 			user.setSavingsAccountBalance(newBalance);
 			//System.out.print("New savings account balance is " + user.getSavingsAccountBalance());

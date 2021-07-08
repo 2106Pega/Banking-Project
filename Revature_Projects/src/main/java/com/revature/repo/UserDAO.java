@@ -1,5 +1,6 @@
 package com.revature.repo;
 
+import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,8 +30,8 @@ public interface UserDAO {
 	
 	//Update 
 	public void updateUser(User f);
-	public void updateUserCheckingBalance(float balanceChange, boolean depositing, User f, Scanner scanner, UserDAO userDao);
-	public void updateUserSavingsBalance(float balanceChange, boolean depositing, User f, Scanner scanner, UserDAO userDao);
+	public void updateUserCheckingBalance(float balanceChange, boolean depositing, User f, Scanner scanner, UserDAO userDao/*, File transactionLog*/);
+	public void updateUserSavingsBalance(float balanceChange, boolean depositing, User f, Scanner scanner, UserDAO userDao/*, File transactionLog*/);
 	
 	//Delete 
 	public void deleteUser(User f);
