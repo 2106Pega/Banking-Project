@@ -198,6 +198,11 @@ public class Display {
 			if(sc.hasNextDouble())
 			{
 				amount = sc.nextDouble();
+				if(amount < 0)
+				{
+					System.out.println("Invalid input, return to customer menu.");
+					customer_menu(u);
+				}
 			}
 			else
 			{
