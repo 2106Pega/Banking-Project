@@ -1,5 +1,7 @@
 package com.revature.models;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.revature.services.CustomerDao;
@@ -121,6 +123,7 @@ public class CustomerAccount {
 		
 		
 	}
+	
 
 	public BankAccount transferingMoney(BankAccount tranferFromAccount, int transferAccountNumber, double transferAmount) {
 
@@ -145,7 +148,34 @@ public class CustomerAccount {
 		
 		return transferToAccount;
 	}
+
+	public void createAnotherBankAccount(BankAccount bankAccount, String customerAcountType, double initialDeposit) {
+		try {
+			
+			int newAccountNumber = bankAccount.createAccountNumber();
+			customerDao.createBankTable(bankAccount.getCustomerID(), newAccountNumber, bankAccount.getAccountType(), initialDeposit, false);
+			
+			//calling DOA method to create case history so employees and approve/reject 
+			String caseSubject = "Needs Account Approvel";
+			String caseDescription = null;
+			boolean caseResolved = false;
+			customerDao.createCaseHistory(newAccountNumber, caseSubject, caseDescription, caseResolved);
+			
+			logger.info("New bank account added to the database with customer_id = " + bankAccount.getCustomerID());
+			
+		}catch(Exception e){
+			e.printStackTrace();		
+		}   
+		
+	}
 	
+	public List<BankAccount> loadAllAccounts(int customerID) {
+		
+		return customerDao.selectBankInfoBYID(customerID);		
+	}
+	
+	
+	 
 
 	
 }

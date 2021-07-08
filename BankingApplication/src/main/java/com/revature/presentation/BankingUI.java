@@ -202,6 +202,7 @@ public class BankingUI {
             System.out.println("3 Transfer Money");
             System.out.println("4 Check Balance");
             System.out.println("5 Display Account Details");
+            System.out.println("6 Apply for Another BankAccount");
             System.out.println("9 Previous Menu (Log Out)");
             System.out.println("0 Exit From Banking Application\n");
             System.out.print("Enter Your Choice : ");
@@ -223,9 +224,15 @@ public class BankingUI {
                 case "4":
                     displayAccountBalance(bankAccount);
                     break;
-                case "5":
-                    bankAccount.displayAccountDetails();
+                case "5":  	
+                	List < BankAccount > bankAccountList = customerAccount.loadAllAccounts(bankAccount.getCustomerID());
+                    for (BankAccount account: bankAccountList) {
+                    	account.displayAccountDetails();            
+                    }
                     customerMenu(bankAccount);
+                    break;
+                case "6":
+                    createAnotherAccount(bankAccount);
                     break;
                 case "9":
                     //call previous menu
@@ -245,7 +252,63 @@ public class BankingUI {
     }
 
 
-    private void adminLogin() {
+    private void createAnotherAccount(BankAccount bankAccount) {
+    	String customerAcountType = null;
+        boolean validAccountType = false;
+    	do {
+            System.out.println("\nEnter the number corresponding to Account Type");
+            System.out.println("1 Checking Account");
+            System.out.println("2 Savings Account");
+            System.out.print("\nEnter Your Choice of Account Type (1 or 2) : ");
+            customerAcountType = scanner.next();
+            
+            if(validNumber(customerAcountType))
+            {
+          	  if ((Integer.parseInt(customerAcountType) == 1)) {
+                    customerAcountType = "Checking Account";
+                    validAccountType = true;
+                } else if((Integer.parseInt(customerAcountType) == 2)) {
+                    customerAcountType = "Savings Account";
+                    validAccountType = true;
+                }
+                else {
+              	  System.out.print("\nInvalid Account Type");
+              	  validAccountType = false;
+                }
+            }
+            else {
+          	  System.out.print("\nInvalid Account Type");
+          	  validAccountType = false;
+            }
+            
+          }while(!(validAccountType));
+          
+          double initialDeposit = 0;
+          String amount;
+          do {
+          	System.out.print("\nEnter Initial Deposit Amount : ");
+          	amount = scanner.next();
+          	if(validNumber(amount)) {
+          		initialDeposit = Double.parseDouble(amount);
+          		if(initialDeposit <= 0) {
+          			System.out.print("\nDeposit Amount Must be greater than 0");
+          			amount = null;
+          		}
+          	}
+          	else {
+              	System.out.print("\nInvalid Deposit Amount");
+          	}
+          }while(!(validNumber(amount)));
+          
+
+          customerAccount.createAnotherBankAccount(bankAccount,customerAcountType, initialDeposit);
+
+          System.out.println("\nNew Account Created successfully, waiting for employee approvel \n");
+          
+          customerLogin();
+		
+	}
+	private void adminLogin() {
         System.out.println("\n***** Admin Login Page *****\n");
         System.out.println("Enter the number corresponding to the choices");
         System.out.println("1 Create Employee Account");
@@ -253,8 +316,7 @@ public class BankingUI {
         System.out.println("9 Previous Menu (Log Out)");
         System.out.println("0 Exit From Banking Application \n");
         System.out.print("Enter Your Choice : ");
-        
-        
+    
         String adminMenuChoice = scanner.next();
         
         switch (adminMenuChoice.toLowerCase().trim()) {
@@ -268,7 +330,6 @@ public class BankingUI {
             welcomeMenu();
             break;
         case "0":
-            //terminate the program
         	System.out.println("\nThanks for using NewWorld Banking Application");
             System.exit(1);
             Runtime.getRuntime().halt(0);
@@ -303,7 +364,6 @@ public class BankingUI {
             System.out.println("\nUnable to Create Account at this moment, please try again later !! \n");
         }
 
-        // calling employee login
         employeeLogin();
 		
 	}
@@ -318,7 +378,6 @@ public class BankingUI {
 
         AdminAccount adminAccount = employeeAccount.loginValidation(user);
 
-        //		CustomerAccount customerAccount =  new CustomerAccount();
         if ((adminAccount != null)) {
             System.out.print("\nLogin Successfully !!, Welcome " + adminAccount.getEmployeeFirstName() + " " + adminAccount.getEmployeeLastName() + "\n");
         	logger.info("Employee login Successfully !! , employee_id = " + adminAccount.getEmployeeID());
@@ -373,24 +432,18 @@ public class BankingUI {
 
         } 
         else if ((employeeMenuChoice.toLowerCase().trim().equalsIgnoreCase("3"))) {
-        	
-        	
-        	
         	int accountNumber = 0;
         	int count = 0;
         	
-        	do {
-        			
+        	do {	
         		if (count == 3) {
                     System.out.print("\nSorry, Your 3 attempt is over\n");
                 	logger.warn("Employee had 3 failed attempt to access customer account : " + accountNumber +" , employee_id: " + adminAccount.getEmployeeID());
 
                 	employeeMenu(adminAccount);
-                }
-        		
+                }       		
         		System.out.print("\nEnter Bank Account Number : ");
-            	String accountInput = scanner.next().trim();
-            	
+            	String accountInput = scanner.next().trim();          	
             	try {
             		if(accountInput.replace(" ", "").length() == 8) {
                 		accountNumber = Integer.parseInt(accountInput);
@@ -404,14 +457,11 @@ public class BankingUI {
                     		System.out.println("\nNo bank account with this account number !! \n");
                     		employeeMenu(adminAccount);
                     	}
-                		
-                		
             		}
             		else {
                 		System.out.println("\n***** Note: Account Number must have 8 digits *****");
                 	}
-            		
-            		
+         		
             	} catch(Exception e) {
             		System.out.println("\nInvalid Account Number !! ");
             	}
@@ -419,16 +469,10 @@ public class BankingUI {
             	count++;
         	} while(accountNumber !=8);
         	
-        	
-        	
-            
-            
-            
-            
         }
         else if ((employeeMenuChoice.toLowerCase().trim().equalsIgnoreCase("9"))) {
             System.out.print("employeeMenu choose 9 ");
-            employeeMenu(adminAccount);
+            welcomeMenu();
         } else if ((employeeMenuChoice.toLowerCase().trim().equalsIgnoreCase("0"))) {
             System.out.print("Thanking for using NewWorld Banking Application");
             System.exit(0);
@@ -448,7 +492,6 @@ public class BankingUI {
         System.out.printf("%-5s %-5s %-5s\n", "Customer ID	", ":", account.getCustomerID());
         System.out.printf("%-5s %-5s %-5s\n", "Name		", ":", account.getFirstName() + " " + account.getLastName());
         System.out.printf("%-5s %-5s %-5s\n", "Account Number  ", ":", account.getAccountNumber());
-
 
         do {
             System.out.print("Do you want to approve this account ? (yes/no) ");
@@ -480,9 +523,6 @@ public class BankingUI {
             System.out.print("\n\nDo you want to continue with another account? (yes/no) ");
             anotherCustomer = scanner.next();
 
-//            if ((validateYesNo(anotherCustomer) == 0)) {
-//            	continueAnotherAccount = false;
-//            } 
             if((validateYesNo(anotherCustomer) == 1)){
             	continueAnotherAccount = true;
             }
@@ -499,35 +539,14 @@ public class BankingUI {
 
     private int validateYesNo(String input) {
         if ((input.toLowerCase().equals("yes")) || (input.toLowerCase().equals("y"))) {
-            System.out.println("validateYesNo : 1");
             return 1;
         } else if ((input.toLowerCase().equals("no")) || (input.toLowerCase().equals("n"))) {
-            System.out.println("validateYesNo : 0");
             return 0;
         } else {
-            System.out.println("validateYesNo : -1");
             return -1;
         }
 
     }
-
-
-    //	public boolean checkIntegerInput (int userInput) {
-    //		try{
-    //			
-    //			if(Integer.parseInt(userInput)) {
-    //				return true;
-    //			}
-    //			else {
-    //				return false;
-    //			}
-    //			
-    //       }catch (NumberFormatException ex) {
-    //           System.out.println("The number is not an integer ");
-    //       }
-    //		return false;
-    //	}
-
 
     private void depositeMoney(BankAccount bankAccount) {
         double depositAmount = 0;
@@ -598,8 +617,6 @@ public class BankingUI {
             count++;
 
         } while ((withdrawAmount <= 0) || (withdrawAmount >= bankAccount.getAccountBalance()) || (!(validNumber(amount))));
-
-        // bankAccount = customerAccount.withdrawMoney(bankAccount, withdrawAmount);
 
         if (customerAccount.withdrawMoney(bankAccount, withdrawAmount) != null) {
             System.out.println("\nSuccessfully withdraw the $" + withdrawAmount + " from your bank account");

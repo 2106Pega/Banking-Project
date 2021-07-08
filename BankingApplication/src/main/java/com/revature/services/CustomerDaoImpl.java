@@ -234,38 +234,38 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
 	public List<BankAccount> selectBankInfoBYID(int customerID) {
 
-    	List<BankAccount> bankAccountList = new ArrayList<>();
-/**
-    	
-    	String sql = "SELECT * FROM account_information WHERE customer_id = " + customerID +";";
-    	
-    	try(Connection conn = ConnectionFactory.getConnection()){
+    	List<BankAccount> listofBankAccounts = new ArrayList<>();
+		
+		String sql = "SELECT customer_table.customer_id, first_name, last_name, account_Number, account_type, account_balance, account_approved "
+				+ "	FROM customer_table "
+				+ "Full OUTER JOIN account_information "
+				+ "ON account_information.customer_id = customer_table.customer_id "
+				+ "WHERE account_information.customer_id = " + customerID + ";" ;
+		
+		try(Connection conn = ConnectionFactory.getConnection()){
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
-			ResultSet resultSet = ps.executeQuery();
-
-			System.out.println("ResultSet: " + resultSet);
+			ResultSet resultSet = ps.executeQuery();			
 			
-//			int customerID, String accountType, int accountNumber, double accountBalance	
-			
-			while(resultSet.next()) {
+			while(resultSet.next()) {	
+				listofBankAccounts.add(new BankAccount(
+						resultSet.getInt("customer_id"),
+						resultSet.getString("first_name"), 
+						resultSet.getString("last_name"),
+						resultSet.getString("account_type"),
+						resultSet.getInt("account_number"),
+						resultSet.getDouble("account_balance"),
+						resultSet.getBoolean("account_approved")
+						));	
 				
-//				bankAccountList.add(new BankAccount(
-//						resultSet.getInt("customer_id"),
-//						resultSet.getString("account_type"),
-//						resultSet.getInt("account_number"),
-//						resultSet.getInt("account_balance")
-//						));	
-//				
 			}
 		
 		}catch (SQLException e) {
 			e.printStackTrace();
-
 		}
-**/
-		return bankAccountList;   	
+		
+		return listofBankAccounts;   	
     }
 
     @Override

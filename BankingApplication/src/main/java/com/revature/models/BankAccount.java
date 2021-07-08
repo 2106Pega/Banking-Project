@@ -186,7 +186,7 @@ public class BankAccount {
 		
 	}
 	
-	private int createAccountNumber() {
+	public int createAccountNumber() {
 		return ( (int)((Math.random() * 90000000)+10000000) );
 	}
 	
