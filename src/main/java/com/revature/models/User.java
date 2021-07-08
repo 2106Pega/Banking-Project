@@ -44,6 +44,10 @@ public class User {
 		this.isEmployee = isEmployee;
 	}
 	
+	public boolean equals(User user) {
+		return username.equals(user.getUsername());
+	}
+	
 	@Override
 	public String toString() {
 		return "Name: " + firstName + lastName + "\n"

@@ -1,1 +1,36 @@
-2021-07-07 17:00:58 INFO  MainDriver:30 - User 'kjasdfkjlhadflkj' was added to the db.
+2021-07-08 01:58:35 INFO  MainDriver:81 - Successful login on User 'new customer 1'.
+2021-07-08 01:59:14 INFO  MainDriver:192 - User 'new customer 1' Bank Acc 'acc1' balance updated to $350.69 in the db.
+2021-07-08 01:59:27 INFO  MainDriver:192 - User 'new customer 1' Bank Acc 'acc1' balance updated to $250.46 in the db.
+2021-07-08 01:59:49 INFO  MainDriver:766 - User 'new customer 1' logged out.
+2021-07-08 02:00:00 INFO  MainDriver:81 - Successful login on User 'new customer 2'.
+2021-07-08 02:00:23 INFO  MainDriver:51 - Bank Acc 'bank account 1' was created by User 'new customer 2' and added to the db.
+2021-07-08 02:00:30 INFO  MainDriver:192 - User 'new customer 2' Bank Acc 'bank account 1' balance updated to $200.00 in the db.
+2021-07-08 02:00:41 INFO  MainDriver:766 - User 'new customer 2' logged out.
+2021-07-08 02:00:52 INFO  MainDriver:81 - Successful login on User 'employee 1'.
+2021-07-08 02:01:25 INFO  MainDriver:212 - Bank Acc 'acc3' was approved by 'employee 1' and updated in the db.
+2021-07-08 02:01:28 INFO  MainDriver:212 - Bank Acc 'bank account 1' was approved by 'employee 1' and updated in the db.
+2021-07-08 02:01:37 INFO  MainDriver:766 - User 'employee 1' logged out.
+2021-07-08 02:01:48 INFO  MainDriver:81 - Successful login on User 'new customer 2'.
+2021-07-08 02:03:18 INFO  MainDriver:81 - Successful login on User 'new customer 1'.
+2021-07-08 02:04:13 INFO  MainDriver:192 - User 'new customer 1' Bank Acc 'acc1' balance updated to $350.99 in the db.
+2021-07-08 02:04:28 INFO  MainDriver:192 - User 'new customer 1' Bank Acc 'acc1' balance updated to $230.79 in the db.
+2021-07-08 02:05:03 INFO  MainDriver:192 - User 'new customer 1' Bank Acc 'acc1' balance updated to $130.79 in the db.
+2021-07-08 02:05:03 INFO  MainDriver:192 - User 'new customer 1' Bank Acc 'acc2' balance updated to $100.00 in the db.
+2021-07-08 02:05:03 INFO  MainDriver:34 - Money transfer from User 'new customer 1' to User 'new customer 1' processed successfully.
+2021-07-08 02:05:32 INFO  MainDriver:763 - User 'new customer 1' logged out.
+2021-07-08 02:07:36 INFO  MainDriver:81 - Successful login on User 'new customer 2'.
+2021-07-08 02:07:52 INFO  MainDriver:51 - Bank Acc 'bankaccount 1' was created by User 'new customer 2' and added to the db.
+2021-07-08 02:07:56 INFO  MainDriver:192 - User 'new customer 2' Bank Acc 'bankaccount 1' balance updated to $100.00 in the db.
+2021-07-08 02:08:07 INFO  MainDriver:763 - User 'new customer 2' logged out.
+2021-07-08 02:08:15 INFO  MainDriver:81 - Successful login on User 'employee 1'.
+2021-07-08 02:08:21 INFO  MainDriver:212 - Bank Acc 'acc3' was approved by 'employee 1' and updated in the db.
+2021-07-08 02:08:23 INFO  MainDriver:212 - Bank Acc 'bankaccount 1' was approved by 'employee 1' and updated in the db.
+2021-07-08 02:08:37 INFO  MainDriver:763 - User 'employee 1' logged out.
+2021-07-08 02:08:48 INFO  MainDriver:78 - Unsuccessful login on User 'new customer 1'.
+2021-07-08 02:09:01 INFO  MainDriver:81 - Successful login on User 'new customer 2'.
+2021-07-08 02:09:36 INFO  MainDriver:192 - User 'new customer 2' Bank Acc 'bankaccount 1' balance updated to $40.00 in the db.
+2021-07-08 02:09:36 INFO  MainDriver:192 - User 'new customer 1' Bank Acc 'acc1' balance updated to $190.79 in the db.
+2021-07-08 02:09:36 INFO  MainDriver:34 - Money transfer from User 'new customer 2' to User 'new customer 1' processed successfully.
+2021-07-08 02:09:47 INFO  MainDriver:763 - User 'new customer 2' logged out.
+2021-07-08 02:09:55 INFO  MainDriver:81 - Successful login on User 'new customer 1'.
+2021-07-08 02:10:08 INFO  MainDriver:767 - User 'new customer 1' exited the application.

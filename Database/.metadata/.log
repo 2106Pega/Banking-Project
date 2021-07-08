@@ -64,3 +64,148 @@ org.postgresql.util.PSQLException: ERROR: role "java_user" already exists
 	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.run(SQLQueryJob.java:220)
 	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SESSION 2021-07-07 17:30:22.352 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=11.0.11
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY org.jkiss.dbeaver.model 4 0 2021-07-07 17:33:16.673
+!MESSAGE SQL Error [42601]: ERROR: syntax error at end of input
+  Position: 322
+!SUBENTRY 1 org.jkiss.dbeaver.model 4 0 2021-07-07 17:33:16.673
+!MESSAGE ERROR: syntax error at end of input
+  Position: 322
+!STACK 0
+org.postgresql.util.PSQLException: ERROR: syntax error at end of input
+  Position: 322
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.execute(JDBCStatementImpl.java:330)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.executeStatement(JDBCStatementImpl.java:130)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeStatement(SQLQueryJob.java:510)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.lambda$0(SQLQueryJob.java:441)
+	at org.jkiss.dbeaver.model.exec.DBExecUtils.tryExecuteRecover(DBExecUtils.java:171)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeSingleQuery(SQLQueryJob.java:428)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.run(SQLQueryJob.java:220)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.jkiss.dbeaver.model 4 0 2021-07-08 00:44:23.775
+!MESSAGE 
+!STACK 0
+java.lang.NullPointerException
+	at org.jkiss.dbeaver.ext.postgresql.PostgreUtils.getRealSchemaName(PostgreUtils.java:693)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreStructureAssistant.findObjectsByMask(PostgreStructureAssistant.java:107)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreStructureAssistant.findObjectsByMask(PostgreStructureAssistant.java:1)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCStructureAssistant.findObjectsByMask(JDBCStructureAssistant.java:71)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCStructureAssistant.findObjectsByMask(JDBCStructureAssistant.java:1)
+	at org.jkiss.dbeaver.ui.editors.sql.syntax.SQLContextInformer$TablesFinderJob.run(SQLContextInformer.java:366)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.jkiss.dbeaver.model 4 0 2021-07-08 00:44:23.781
+!MESSAGE 
+!STACK 0
+java.lang.NullPointerException
+	at org.jkiss.dbeaver.ext.postgresql.PostgreUtils.getRealSchemaName(PostgreUtils.java:693)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreStructureAssistant.findObjectsByMask(PostgreStructureAssistant.java:107)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreStructureAssistant.findObjectsByMask(PostgreStructureAssistant.java:1)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCStructureAssistant.findObjectsByMask(JDBCStructureAssistant.java:71)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCStructureAssistant.findObjectsByMask(JDBCStructureAssistant.java:1)
+	at org.jkiss.dbeaver.ui.editors.sql.syntax.SQLContextInformer$TablesFinderJob.run(SQLContextInformer.java:366)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.jkiss.dbeaver.model 4 0 2021-07-08 00:44:28.910
+!MESSAGE 
+!STACK 0
+java.lang.NullPointerException
+	at org.jkiss.dbeaver.ext.postgresql.PostgreUtils.getRealSchemaName(PostgreUtils.java:693)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreStructureAssistant.findObjectsByMask(PostgreStructureAssistant.java:107)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreStructureAssistant.findObjectsByMask(PostgreStructureAssistant.java:1)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCStructureAssistant.findObjectsByMask(JDBCStructureAssistant.java:71)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCStructureAssistant.findObjectsByMask(JDBCStructureAssistant.java:1)
+	at org.jkiss.dbeaver.ui.editors.sql.syntax.SQLContextInformer$TablesFinderJob.run(SQLContextInformer.java:366)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.jkiss.dbeaver.model 4 0 2021-07-08 00:44:28.911
+!MESSAGE 
+!STACK 0
+java.lang.NullPointerException
+	at org.jkiss.dbeaver.ext.postgresql.PostgreUtils.getRealSchemaName(PostgreUtils.java:693)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreStructureAssistant.findObjectsByMask(PostgreStructureAssistant.java:107)
+	at org.jkiss.dbeaver.ext.postgresql.model.PostgreStructureAssistant.findObjectsByMask(PostgreStructureAssistant.java:1)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCStructureAssistant.findObjectsByMask(JDBCStructureAssistant.java:71)
+	at org.jkiss.dbeaver.model.impl.jdbc.JDBCStructureAssistant.findObjectsByMask(JDBCStructureAssistant.java:1)
+	at org.jkiss.dbeaver.ui.editors.sql.syntax.SQLContextInformer$TablesFinderJob.run(SQLContextInformer.java:366)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.jkiss.dbeaver.model 4 0 2021-07-08 00:57:55.208
+!MESSAGE SQL Error [42601]: ERROR: syntax error at or near "insert"
+  Position: 883
+!SUBENTRY 1 org.jkiss.dbeaver.model 4 0 2021-07-08 00:57:55.208
+!MESSAGE ERROR: syntax error at or near "insert"
+  Position: 883
+!STACK 0
+org.postgresql.util.PSQLException: ERROR: syntax error at or near "insert"
+  Position: 883
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.execute(JDBCStatementImpl.java:330)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.executeStatement(JDBCStatementImpl.java:130)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeStatement(SQLQueryJob.java:510)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.lambda$0(SQLQueryJob.java:441)
+	at org.jkiss.dbeaver.model.exec.DBExecUtils.tryExecuteRecover(DBExecUtils.java:171)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeSingleQuery(SQLQueryJob.java:428)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.run(SQLQueryJob.java:220)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.jkiss.dbeaver.model 4 0 2021-07-08 00:59:03.088
+!MESSAGE SQL Error [23503]: ERROR: insert or update on table "bank_accounts" violates foreign key constraint "bank_accounts_u_user_name_fkey"
+  Detail: Key (u_user_name)=(newcustomer1) is not present in table "users".
+!SUBENTRY 1 org.jkiss.dbeaver.model 4 0 2021-07-08 00:59:03.088
+!MESSAGE ERROR: insert or update on table "bank_accounts" violates foreign key constraint "bank_accounts_u_user_name_fkey"
+  Detail: Key (u_user_name)=(newcustomer1) is not present in table "users".
+!STACK 0
+org.postgresql.util.PSQLException: ERROR: insert or update on table "bank_accounts" violates foreign key constraint "bank_accounts_u_user_name_fkey"
+  Detail: Key (u_user_name)=(newcustomer1) is not present in table "users".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.execute(JDBCStatementImpl.java:330)
+	at org.jkiss.dbeaver.model.impl.jdbc.exec.JDBCStatementImpl.executeStatement(JDBCStatementImpl.java:130)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeStatement(SQLQueryJob.java:510)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.lambda$0(SQLQueryJob.java:441)
+	at org.jkiss.dbeaver.model.exec.DBExecUtils.tryExecuteRecover(DBExecUtils.java:171)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.executeSingleQuery(SQLQueryJob.java:428)
+	at org.jkiss.dbeaver.ui.editors.sql.execute.SQLQueryJob.run(SQLQueryJob.java:220)
+	at org.jkiss.dbeaver.model.runtime.AbstractJob.run(AbstractJob.java:105)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.jkiss.dbeaver.model 2 0 2021-07-08 02:10:34.201
+!MESSAGE Some sessions are still open: [SESSION BankingDB [Main <postgres>]]

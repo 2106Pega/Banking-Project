@@ -13,6 +13,7 @@ public class PresentationImpl implements Presentation {
 
 	private Service service;
 	private Scanner sc = new Scanner(System.in);
+	private static boolean firstPickBankAccountLoop = true;
 	
 	public PresentationImpl(Service service) {
 		this.service = service;
@@ -182,7 +183,7 @@ public class PresentationImpl implements Presentation {
 				
 				switch(sc.nextLine().toLowerCase()) {
 					case "y":
-						service.createNewUser(firstName, lastName, username, password);
+						service.createNewUser(new User(firstName, lastName, username, password, false));
 						loop = false;
 						bigLoop = false;
 						System.out.println("Congratulations, " + firstName.toUpperCase() + ", on creating your new Perry Bank account!\n");
@@ -238,7 +239,7 @@ public class PresentationImpl implements Presentation {
 
 	@Override
 	public void checkBalance(BankAccount acc) {
-		System.out.println("The balance of bank account '" + acc.getName() + "' is " + MoneyUtils.toMoneyString(acc.getBalance()) + ".");
+		System.out.println("The balance of bank account '" + acc.getName() + "' is " + MoneyUtils.toMoneyString(acc.getBalance()) + ".\n");
 	}
 
 	@Override
@@ -252,7 +253,6 @@ public class PresentationImpl implements Presentation {
 			
 			input = sc.nextLine();
 			if (input.equals("back")) {
-//				System.out.println("Backing out to previous menu.\n");
 				return;
 			}
 			try {
@@ -285,7 +285,6 @@ public class PresentationImpl implements Presentation {
 			
 			input = sc.nextLine();
 			if (input.equals("back")) {
-//				System.out.println("Backing out to previous menu.\n");
 				return;
 			}
 			try {
@@ -311,8 +310,9 @@ public class PresentationImpl implements Presentation {
 
 	@Override
 	public void makeMoneyTransferToSelf(User user, BankAccount sendingAcc) {
+		firstPickBankAccountLoop = true;
 		while(true) {
-			BankAccount receivingAcc = pickBankAccount(user);
+			BankAccount receivingAcc = pickBankAccount(user, false);
 			if(receivingAcc == null) {
 				return;
 			}
@@ -355,12 +355,12 @@ public class PresentationImpl implements Presentation {
 				}
 				else {
 					List<BankAccount> receiverAccs = service.getCustomerBankAccounts(receiver);
-					if (receiverAccs == null) {
+					if (receiverAccs.isEmpty() || receiverAccs.equals(null)) {
 						System.out.println(username + " has no approved bank accounts to transfer to. Backing out...");
 						return;
 					}
 					while(true) {
-						System.out.println("Enter the index of one of " + username + "'s bank accounts to transfer money to");
+						System.out.println("Enter the index of one of the bank accounts owned by '" + username + "' to transfer money to");
 						System.out.println("Enter 'back' to back out");
 						printIndexedBankAccounts(receiverAccs);
 						
@@ -370,8 +370,9 @@ public class PresentationImpl implements Presentation {
 						}
 						try {
 							inputNum = Integer.parseInt(input);
-							receivingAcc = receiverAccs.get(inputNum);
+							receivingAcc = receiverAccs.get(inputNum-1);
 							moneyTransferHelper(sender, sendingAcc, receiver, receivingAcc);
+							return;
 						}
 						catch(IndexOutOfBoundsException | NumberFormatException e) {
 							inputNum = -1;
@@ -400,7 +401,7 @@ public class PresentationImpl implements Presentation {
 
 			switch(input) {
 			case "1":
-				BankAccount acc = pickBankAccount(user);
+				BankAccount acc = pickBankAccount(user, true);
 				if(!(acc == null)) {
 					displayBankAccountOptions(user, acc);
 				}
@@ -416,6 +417,7 @@ public class PresentationImpl implements Presentation {
 				System.exit(0);
 			default:
 				System.out.println("Invalid input. Please, try again.\n");
+				break;
 			}
 		}
 	}
@@ -436,7 +438,6 @@ public class PresentationImpl implements Presentation {
 			String input = sc.nextLine().toLowerCase();
 
 			if(input.equals("back")) {
-				System.out.println("Backing out to previous menu.");
 				return;
 			}
 			switch(input) {
@@ -463,7 +464,7 @@ public class PresentationImpl implements Presentation {
 	}
 	
 	@Override
-	public BankAccount pickBankAccount(User user) {
+	public BankAccount pickBankAccount(User user, Boolean displayMultipleTimes) {
 		int inputNum = -1;
 		BankAccount selectedBankAccount = null;
 		
@@ -474,7 +475,8 @@ public class PresentationImpl implements Presentation {
 			String answer = sc.nextLine().toLowerCase();
 			switch(answer) {
 			case "y":
-				return createNewBankAccountPrompt(user);
+				createNewBankAccountPrompt(user);
+				return null;
 			case "n":
 				return null;
 			default:
@@ -482,12 +484,15 @@ public class PresentationImpl implements Presentation {
 			}
 		}
 		
-		while(true) {
+		if(displayMultipleTimes || !displayMultipleTimes && firstPickBankAccountLoop) {
 			System.out.println("Enter the index of the bank account you would like to interact with. "
 					+ "NOTE: You cannot interact with accounts that are awaiting approval.");
 			System.out.println("Enter 'back' to back out.\n");
 			printIndexedBankAccounts(accs);
-			
+			firstPickBankAccountLoop = false;
+		}
+		
+		while(true) {			
 			String input = sc.nextLine().toLowerCase();
 			if (input.equals("back")) {
 //				System.out.println("Returning to login menu.\n");
@@ -495,7 +500,7 @@ public class PresentationImpl implements Presentation {
 			}
 			try {
 				inputNum = Integer.parseInt(input);
-				selectedBankAccount = accs.get(inputNum);
+				selectedBankAccount = accs.get(inputNum-1);
 				if(selectedBankAccount.isApproved()) {
 					return selectedBankAccount;
 				}
@@ -503,7 +508,7 @@ public class PresentationImpl implements Presentation {
 			}
 			catch(NumberFormatException | IndexOutOfBoundsException e) {
 				inputNum = -1;
-				System.out.println("Invalid input. Please, try again.\n");
+				System.out.println("Invalid input. Please, try again.");
 			}
 		}
 	}
@@ -547,6 +552,7 @@ public class PresentationImpl implements Presentation {
 	public void approveBankAccountsPrompt(User employee) {
 		String input = null;
 		int inputNum = -1;
+		int numAccountsApproved = 0;
 		List<BankAccount> awaitingApprovalList = service.getBankAccountsAwaitingApproval();
 		
 		System.out.println("Here are the bank accounts awaiting approval.");
@@ -555,19 +561,20 @@ public class PresentationImpl implements Presentation {
 			printIndexedBankAccountsWithUsername(awaitingApprovalList);
 
 			input = sc.nextLine().toLowerCase();
-			while(!input.equals("stop")) {
+			while(!input.equals("stop") && !awaitingApprovalList.isEmpty()) {
 				try {
 					if(awaitingApprovalList.isEmpty()) {
 						System.out.println("There are no more bank accounts left to approve.");
 						return;
 					}
 					inputNum = Integer.parseInt(input);
-					BankAccount acc = awaitingApprovalList.get(inputNum);
+					BankAccount acc = awaitingApprovalList.get(inputNum-1);
 					if(acc.isApproved()) {
 						System.out.println("This account has already been approved.");
 					}
 					else {
 						service.validateBankAccount(acc, employee);
+						numAccountsApproved++;
 						System.out.println(acc.getName() + " has been successfully approved.");
 					}
 				}
@@ -579,13 +586,12 @@ public class PresentationImpl implements Presentation {
 					inputNum = -1;
 					System.out.println("Invalid index. Please, try again.\n");
 				}
-				
+				if(awaitingApprovalList.size() == numAccountsApproved) {
+					System.out.println("There are no more bank accounts left to approve.\n");
+					break;
+				}
 				input = sc.nextLine().toLowerCase();
 			}
-			System.out.println("Finishing approving bank accounts...\n");
-		}
-		else {
-			System.out.println("There are no more bank accounts left to approve.");
 		}
 	}
 	
@@ -594,7 +600,7 @@ public class PresentationImpl implements Presentation {
 		User customer = null;
 		
 		
-		System.out.println("If you would like to see a list of all customers, ordered by last name, enter 'list'");
+		System.out.println("If you would like to see a list of all customers, ordered by last name, enter 'list'.");
 		System.out.println("Enter the username of the customer whose bank accounts you would like to view.");
 		System.out.println("Enter 'back' to back out.");
 			
@@ -633,13 +639,13 @@ public class PresentationImpl implements Presentation {
 	
 	private void printIndexedBankAccounts(List<BankAccount> accs) {
 		for(int i = 0; i < accs.size(); i++) {
-			System.out.println("(" + i + ")" + accs.get(i).toTabbedString());
+			System.out.println("(" + (i+1) + ")" + accs.get(i).toTabbedString());
 		}
 	}
 
 	private void printIndexedBankAccountsWithUsername(List<BankAccount> accs) {
 		for(int i = 0; i < accs.size(); i++) {
-			System.out.println("(" + i + ")" + accs.get(i).toTabbedStringWithUsername());
+			System.out.println("(" + (i+1) + ")" + accs.get(i).toTabbedStringWithUsername());
 		}
 	}
 	
@@ -681,8 +687,8 @@ public class PresentationImpl implements Presentation {
 		
 		System.out.println("Select the type of money transfer you would like to make\n"
 				+ "Enter 'back' to back out.\n"
-				+ "(1) Transfer to another one of your bank accounts\n"
-				+ "(2) Transfer to another user's bank account");
+				+ "(1) Transfer money to another one of your bank accounts\n"
+				+ "(2) Transfer money to another user's bank account");
 		
 		String input = sc.nextLine().toLowerCase();
 		
@@ -706,7 +712,7 @@ public class PresentationImpl implements Presentation {
 		
 		while(true) {
 			System.out.println("Enter the amount of money you would like to transfer from " + sendingAcc.getName() + " to " + receivingAcc.getName());
-			System.out.println("Enter 'back' to return to the previous menu");
+			System.out.println("Enter 'back' to back out.");
 			
 			String input = sc.nextLine().toLowerCase();
 			if(input.equals("back")) {
@@ -718,12 +724,16 @@ public class PresentationImpl implements Presentation {
 					if(amount > 0) {
 						if (sendingAcc.getBalance() >= amount) {
 							service.makeMoneyTransfer(sender, sendingAcc, receiver, receivingAcc, amount);
+							System.out.println("Successfully transferred " + MoneyUtils.toMoneyString(amount) + " from your '" 
+									+ sendingAcc.getName() + "' account to the '" + receivingAcc.getName() + "' account of '" 
+									+ receiver.getUsername() + "'.");
 							break;
 						}
 						else {
 							System.out.println("Your '" + sendingAcc.getName() + "' account does not contain enough funds "
-									+ "to transfer " + MoneyUtils.toMoneyString(amount) + ".\n"
-									+ "Your account currently only contains " + MoneyUtils.toMoneyString(sendingAcc.getBalance()) + ".\n");
+									+ "to transfer " + MoneyUtils.toMoneyString(amount) + ".\n" 
+									+ "'" + sendingAcc.getName() + "' currently only contains " 
+									+ MoneyUtils.toMoneyString(sendingAcc.getBalance()) + ".\n");
 						}
 					}
 					else {

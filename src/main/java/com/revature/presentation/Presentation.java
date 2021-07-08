@@ -23,7 +23,7 @@ public interface Presentation {
 	
 	public BankAccount createNewBankAccountPrompt(User user);
 
-	public BankAccount pickBankAccount(User user);
+	public BankAccount pickBankAccount(User user, Boolean displayMultipleTimes);
 	
 	public void checkBalance(BankAccount acc);
 	

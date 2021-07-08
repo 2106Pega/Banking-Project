@@ -1,5 +1,7 @@
 package com.revature.models;
 
+import com.revature.util.MoneyUtils;
+
 public class BankAccount {
 	private int accountId;
 	private String usernameRef, name;
@@ -49,41 +51,41 @@ public class BankAccount {
 	public String toString() {
 		if(isApproved) {
 			return "Account Name: " + name + "\n"
-					+ "Balance: " + balance + "\n";
+					+ "Balance: " + MoneyUtils.toMoneyString(balance) + "\n";
 		}
 		return "Account Name: " + name + " [AWAITING APPROVAL]\n"
-		+ "Balance: " + balance + "\n";
+		+ "Balance: " + MoneyUtils.toMoneyString(balance) + "\n";
 	}
 	
 	public String toStringWithUsername() {
 		if(isApproved) {
 			return "Username: " + usernameRef + "\n"
 					+ "Account Name: " + name + "\n"
-					+ "Balance: " + balance + "\n";
+					+ "Balance: " + MoneyUtils.toMoneyString(balance) + "\n";
 		}
 		return "Username: " + usernameRef + "\n"
 				+ "Account Name: " + name + " [AWAITING APPROVAL]\n"
-				+ "Balance: " + balance + "\n";
+				+ "Balance: " + MoneyUtils.toMoneyString(balance) + "\n";
 	}
 
 	public String toTabbedString() {
 		if(isApproved) {
 			return "\tAccount Name: " + name + "\n"
-					+ "\tBalance: " + balance + "\n";
+					+ "\tBalance: " + MoneyUtils.toMoneyString(balance) + "\n";
 		}
 		return "\tAccount Name: " + name + " [AWAITING APPROVAL]\n"
-		+ "\tBalance: " + balance + "\n";
+		+ "\tBalance: " + MoneyUtils.toMoneyString(balance) + "\n";
 	}
 	
 	public String toTabbedStringWithUsername() {
 		if(isApproved) {
 			return "\tUsername: " + usernameRef + "\n"
 					+ "\tAccount Name: " + name + "\n"
-					+ "\tBalance: " + balance + "\n";
+					+ "\tBalance: " + MoneyUtils.toMoneyString(balance) + "\n";
 		}
 		return "\tUsername: " + usernameRef + "\n"
 				+ "\tAccount Name: " + name + " [AWAITING APPROVAL]\n"
-				+ "\tBalance: " + balance + "\n";
+				+ "\tBalance: " + MoneyUtils.toMoneyString(balance) + "\n";
 	}
 
 	public boolean equals(BankAccount acc) {

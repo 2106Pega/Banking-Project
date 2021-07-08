@@ -14,17 +14,15 @@ public interface Service {
 	
 	// Customer methods
 	
-	public void makeMoneyTransfer(User sender, BankAccount senderAcc, User receiver, BankAccount receiverAcc, double amount); //
+	public boolean makeMoneyTransfer(User sender, BankAccount senderAcc, User receiver, BankAccount receiverAcc, double amount); //
 	
-	public void changeBalance(BankAccount acc, User user, double amount); //
+	public boolean changeBalance(BankAccount acc, User user, double amount); //
 	
-	public void createNewUser(String firstName, String lastName, String username, String password); //
+	public boolean createNewUser(User user); //
 	
 	public User logIn(String username, String password); //
 	
 	public BankAccount createNewBankAccount(User user, String name, double balance); //
-	
-//	public boolean changePassword(BankAccount acc, String oldPassword, String newPassword);
 	
 	
 	// Employee methods
@@ -33,7 +31,7 @@ public interface Service {
 	
 	public List<BankAccount> getCustomerBankAccounts(User user);
 	
-	public void validateBankAccount(BankAccount acc, User employee);
+	public boolean validateBankAccount(BankAccount acc, User employee);
 	
 	public List<User> getCustomersOrderedByLastName();
 	
@@ -50,9 +48,9 @@ public interface Service {
 
 	public boolean isValidName(String name);
 
-	boolean isValidBankAccountName(String name);
+	public boolean isValidBankAccountName(String name);
 
-	boolean isValidLogIn(String username, String password);
+	public boolean isValidLogIn(String username, String password);
 	
 	public boolean stringMatchesPattern(String str, Pattern p);
 }

@@ -56,6 +56,6 @@ insert into users values
 	('new customer 2', 'good p4ssword', 'lance', 'lancelot');
 
 insert into bank_accounts(u_user_name, account_name, balance, is_approved) values
-	('new customer 1', 'acc1', 100.00, true),
-	('new customer 1', 'acc2', 0.00, true),
-	('new customer 1', 'acc3', 50.00, false);
+	('newcustomer1', 'acc1', 0.00, false),
+	('newcustomer1', 'acc2', 0.00, false),
+	('newcustomer1', 'acc3', 50.00, true);

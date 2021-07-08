@@ -21,23 +21,43 @@ public class ServiceImpl implements Service{
 	// Customer Methods
 	
 	@Override
-	public void makeMoneyTransfer(User sender, BankAccount senderAcc, User receiver, BankAccount receiverAcc, double amount) {
+	public boolean makeMoneyTransfer(User sender, BankAccount senderAcc, User receiver, BankAccount receiverAcc, double amount) {
+		boolean receiverProcessed = false;
+		
 		amount = MoneyUtils.round(amount);
-		changeBalance(senderAcc, sender, senderAcc.getBalance() - amount);
-		changeBalance(receiverAcc, receiver, receiverAcc.getBalance() + amount);
-		MainDriver.loggy.info("Money transfer from User '" + sender.getUsername() + "' to User '" +  receiver.getUsername() + "' completed.");
+		boolean senderProcessed = changeBalance(senderAcc, sender, senderAcc.getBalance() - amount);
+		if (senderProcessed) {
+			receiverProcessed = changeBalance(receiverAcc, receiver, receiverAcc.getBalance() + amount);
+		}
+		
+		if(senderProcessed && receiverProcessed) {
+			MainDriver.loggy.info("Money transfer from User '" + sender.getUsername() + "' to User '" +  receiver.getUsername() 
+				+ "' processed successfully.");
+			return true;
+		}
+		else if (!senderProcessed) {
+			MainDriver.loggy.info("Money transfer from User '" + sender.getUsername() + "' to User '" +  receiver.getUsername() 
+			+ "' failed before transaction.");
+		}
+		else {
+			MainDriver.loggy.info("Money transfer from User '" + sender.getUsername() + "' to User '" +  receiver.getUsername() 
+				+ "' failed during transaction. Returning funds to User '" + sender.getUsername() + "'.");
+			changeBalance(senderAcc, sender, senderAcc.getBalance() + amount);
+		}
+		return false;
+		
 	}
 
 	@Override
-	public void changeBalance(BankAccount acc, User user, double amount) {
+	public boolean changeBalance(BankAccount acc, User user, double amount) {
 		amount = MoneyUtils.round(amount);
 		acc.setBalance(amount);
-		dbHandler.updateBalance(acc, user, amount);
+		return dbHandler.updateBalance(acc, user, amount);
 	}
 
 	@Override
-	public void createNewUser(String firstName, String lastName, String username, String password) {
-		dbHandler.insertNewUser(new User(username, password, firstName, lastName, false));
+	public boolean createNewUser(User user) {
+		return dbHandler.insertNewUser(user);
 	}
 
 	@Override
@@ -70,16 +90,18 @@ public class ServiceImpl implements Service{
 		return dbHandler.selectBankAccountsToBeApproved();
 	}
 	
-
 	@Override
 	public List<BankAccount> getCustomerBankAccounts(User user) {
 		return dbHandler.selectBankAccountsByUserName(user.getUsername());
 	}
 	
 	@Override
-	public void validateBankAccount(BankAccount acc, User employee) {
-		acc.setApproved(true);
-		dbHandler.updateBankAccountApproval(acc, employee);
+	public boolean validateBankAccount(BankAccount acc, User employee) {
+		boolean approved = dbHandler.updateBankAccountApproval(acc, employee);
+		if(approved) {
+			acc.setApproved(true);
+		}
+		return approved;
 	}
 
 	@Override
@@ -176,7 +198,7 @@ public class ServiceImpl implements Service{
 	}
 	
 	private boolean isProblematicName(String name) {
-		if(name.equals("back")) {
+		if(name == "back" || name == null || name == "null") {
 			System.out.println("You are not allowed to use " + name + " in this scenario.");
 			return true;
 		}
