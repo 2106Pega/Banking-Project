@@ -1,5 +1,6 @@
 package com.revature.presentation;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Scanner;
@@ -56,7 +57,7 @@ public class Presentation {
 	}
 	
 	public void DisplayLoginPage() {
-		System.out.println("**********Customer login**********\n");
+		System.out.println("\n\n\n**********Customer login**********\n");
 		String username = null, password = null;
 		Customer customer = null;
 
@@ -77,25 +78,30 @@ public class Presentation {
 	}
 	
 	public void DisplayNewBankAccountSignup(Customer customer) {
-		System.out.println("**********New Account Signup**********\n");
+		System.out.println("\n\n\n**********New Account Signup**********\n");
 		String depositAmount = null;
 		System.out.println("Welcome to new account signup. You will have access after an employee approves the new account.\n");
-		System.out.print("Please enter deposit amount: ");
+		System.out.print("Please enter deposit amount (or enter QUIT to exit): ");
 		depositAmount = scanner.nextLine();
+		if(depositAmount.equals("QUIT")) {
+			DisplayCustomerPage(customer);
+			return;
+		}
+			
 		while( ! (presentationService.IsDoubleParsable(depositAmount)) || !(presentationService.InsertAccountByCustomer(customer, Double.parseDouble(depositAmount)))) {
 			System.out.print("Invalid deposit amount, please try again: ");
 			depositAmount = scanner.nextLine();
+			if(depositAmount.equals("QUIT")) {
+				DisplayCustomerPage(customer);
+				return;
+			}
 		}
-		//while( ! presentationService.InsertAccountByCustomer(customer, Double.parseDouble(depositAmount))) {
-			//System.out.println("Error creating account, please deposit a valid amount:");
-			//depositAmount = scanner.nextLine();
-		//}
-		System.out.println("Account created successfully. Returning to main page.");
+		System.out.println("Account created successfully. Returning to main customer summary...");
 		DisplayCustomerPage(customer);
 	}
 	
 	public void ViewPendingAccounts() {
-		System.out.println("**********Pending Accounts**********\n");
+		System.out.println("\n\n\n**********Pending Accounts**********\n");
 		List<Account> accounts = presentationService.GetPendingAccounts();
 		String substr = null, inputResult = null;
 		System.out.println("Bank Accounts:");
@@ -104,7 +110,7 @@ public class Presentation {
 		if(accountListIterator.hasNext()) {
 			while (accountListIterator.hasNext()) {
 				Account account = accountListIterator.next();
-				System.out.println("CustomerID: " + account.getCustomer_id() + ", AccountID: " + account.getAccount_id() + ", Balance: " + account.getBalance());
+				System.out.println("CustomerID: " + account.getCustomer_id() + ", AccountID: " + account.getAccount_id() + ", Balance: " + String.format("%.2f",account.getBalance()));
 			}
 			System.out.println("Enter +AccountID to approve account, -AccountID to reject account, ~CustomerID to view the pending account's customer, or Q to go back.");
 			while(inputResult == null) {
@@ -120,8 +126,6 @@ public class Presentation {
 				}
 				inputResult = null;
 			}
-		}else {
-			System.out.println("There are no pending bank accounts...");
 		}
 	}
 	
@@ -131,7 +135,7 @@ public class Presentation {
 		String customerID = null;
 		List<Account> accounts = null;
 		List<Customer> customers = presentationService.GetAllCustomers();
-		System.out.println("**********Customers**********\n");
+		System.out.println("\n\n\n**********Customers**********\n");
 		
 		customerListIterator = customers.listIterator();
 		while (customerListIterator.hasNext()) {
@@ -140,7 +144,7 @@ public class Presentation {
 		}
 		
 		while(customerID == null) {
-			System.out.println("Enter customer's first name (or QUIT to return to employee portal): ");
+			System.out.println("Enter customer's ID to view the customer's accounts (or QUIT to return to employee portal): ");
 			customerID = scanner.nextLine();
 			if(customerID.equals("QUIT")) {
 				DisplayEmployeePage();
@@ -150,7 +154,7 @@ public class Presentation {
 				accountListIterator = accounts.listIterator();
 				while (accountListIterator.hasNext()) {
 					Account account = accountListIterator.next();
-					System.out.println("AccountID: " + account.getAccount_id() + ", CustomerID: " + account.getCustomer_id() + ", Balance: " + account.getBalance());
+					System.out.println("AccountID: " + account.getAccount_id() + ", CustomerID: " + account.getCustomer_id() + ", Balance: " +String.format("%.2f", account.getBalance()));
 				}
 			}
 			customerID = null;
@@ -160,7 +164,7 @@ public class Presentation {
 	
 	public void DisplayEmployeePage() {
 		String inputResult = null;
-		System.out.println("**********Employee Portal**********\n");
+		System.out.println("\n\n\n**********Employee Portal**********\n");
 		
 		while(inputResult == null) {
 			System.out.println("Enter (1) to view pending accounts");
@@ -174,7 +178,7 @@ public class Presentation {
 			}else if (inputResult.equals("2")) {
 				DisplayCustomerAccounts();
 			}else if (inputResult.equals("3")){
-				System.out.println("Closing banking application...");
+				System.out.println("Returning to login page..");
 				DisplayInitialPage();
 			}else {
 				inputResult = null;
@@ -187,7 +191,7 @@ public class Presentation {
 	
 	
 	public void DisplayTransferPage(Customer customer) {
-		System.out.println("**********Transfer Funds**********\n");
+		System.out.println("\n\n\n**********Transfer Funds**********\n");
 		System.out.println("Bank Accounts:");
 		List<Account> accounts = presentationService.GetAccountsByCustomer(customer.getCustomerId());
 		String targetAccountID = null, sourceAccountID = null, transferAmount = null;
@@ -196,40 +200,52 @@ public class Presentation {
 		while (accountListIterator.hasNext()) {
 			Account account = accountListIterator.next();
 			if(account.isApproved())
-				System.out.println(account.getAccount_id() + "     " + account.getBalance());
+				System.out.println(account.getAccount_id() + "     " + String.format("%.2f",account.getBalance()));
 		}
 		
-		System.out.println("Enter the ID of the account you wish to transfer to, or enter QUIT to exit transfer page: ");
+		System.out.println("\nEnter the ID of the account you wish to transfer to, or enter QUIT to exit transfer page: ");
 		targetAccountID = scanner.nextLine();
-		if(targetAccountID.equals("QUIT"))
+		if(targetAccountID.equals("QUIT")) {
 			DisplayCustomerPage(customer);
+			return;
+		}
 		
 		System.out.println("Enter the ID of the account you wish to transfer from, or enter QUIT to exit transfer page: ");
 		sourceAccountID = scanner.nextLine();
-		if(sourceAccountID.equals("QUIT"))
+		if(sourceAccountID.equals("QUIT")) {
 			DisplayCustomerPage(customer);
+			return;
+		}
 		
 		System.out.println("Enter the amount (USD) you wish to withdraw from, or enter QUIT to exit withdrawal page: ");
 		transferAmount = scanner.nextLine();
-		if(transferAmount.equals("QUIT"))
+		if(transferAmount.equals("QUIT")) {
 			DisplayCustomerPage(customer);
+			return;
+		}
 		
-		while( ! presentationService.TransferBetweenAccounts(Double.parseDouble(transferAmount), Integer.parseInt(targetAccountID), Integer.parseInt(sourceAccountID), customer)) {
+		while( ! (presentationService.IsIntParsable(targetAccountID)) ||  ! (presentationService.IsIntParsable(sourceAccountID)) ||  ! (presentationService.IsDoubleParsable(transferAmount)) || ! presentationService.TransferBetweenAccounts(Double.parseDouble(transferAmount), Integer.parseInt(targetAccountID), Integer.parseInt(sourceAccountID), customer)) {
 			System.out.println("Error transfering money between accounts. Please try again.");
 			System.out.println("Enter the ID of the account you wish to transfer to, or enter QUIT to exit transfer page: ");
 			targetAccountID = scanner.nextLine();
-			if(targetAccountID.equals("QUIT"))
+			if(targetAccountID.equals("QUIT")) {
 				DisplayCustomerPage(customer);
+				return;
+			}
 			
 			System.out.println("Enter the ID of the account you wish to transfer from, or enter QUIT to exit transfer page: ");
 			sourceAccountID = scanner.nextLine();
-			if(sourceAccountID.equals("QUIT"))
+			if(sourceAccountID.equals("QUIT")) {
 				DisplayCustomerPage(customer);
+				return;
+			}
 			
 			System.out.println("Enter the amount (USD) you wish to withdraw from, or enter QUIT to exit withdrawal page: ");
 			transferAmount = scanner.nextLine();
-			if(transferAmount.equals("QUIT"))
+			if(transferAmount.equals("QUIT")) {
 				DisplayCustomerPage(customer);
+				return;
+			}
 		}
 		System.out.println("Withdraw of " + transferAmount + " successful, returning to account summary...");
 		DisplayCustomerPage(customer);
@@ -241,7 +257,7 @@ public class Presentation {
 	
 	
 	public void DisplayWithdrawPage(Customer customer) {
-		System.out.println("**********Withdraw**********\n");
+		System.out.println("\n\n\n**********Withdraw**********\n");
 		System.out.println("Bank Accounts:");
 		List<Account> accounts = presentationService.GetAccountsByCustomer(customer.getCustomerId());
 		String withdrawAccountID = null, withdrawAmount = null;
@@ -250,35 +266,43 @@ public class Presentation {
 		while (accountListIterator.hasNext()) {
 			Account account = accountListIterator.next();
 			if(account.isApproved())
-				System.out.println(account.getAccount_id() + "     " + account.getBalance());
+				System.out.println(account.getAccount_id() + "     " + String.format("%.2f",account.getBalance()));
 		}
 		
 		System.out.println("Enter the ID of the account you wish to withdraw from, or enter QUIT to exit withdrawal page: ");
 		withdrawAccountID = scanner.nextLine();
-		if(withdrawAccountID.equals("QUIT"))
+		if(withdrawAccountID.equals("QUIT")) {
 			DisplayCustomerPage(customer);
+			return;
+		}
 		System.out.println("Enter the amount (USD) you wish to withdraw from, or enter QUIT to exit withdrawal page: ");
 		withdrawAmount = scanner.nextLine();
-		if(withdrawAmount.equals("QUIT"))
+		if(withdrawAmount.equals("QUIT")) {
 			DisplayCustomerPage(customer);
+			return;
+		}
 		
 		while( ! (presentationService.IsIntParsable(withdrawAccountID)) || ! (presentationService.IsDoubleParsable(withdrawAmount)) || !(presentationService.WithdrawFromAccount(Integer.parseInt(withdrawAccountID), Double.parseDouble(withdrawAmount), customer))) {
 			System.out.println("Error withdrawing money from account. Please try again.");
-			System.out.println("Enter the ID of the account you wish to withdraw from: ");
+			System.out.println("Enter the ID of the account you wish to withdraw from, or enter QUIT to exit withdrawal page: ");
 			withdrawAccountID = scanner.nextLine();
-			System.out.println("Enter the amount (USD) you wish to withdraw from: ");
+			if(withdrawAccountID.equals("QUIT")) {
+				DisplayCustomerPage(customer);
+				return;
+			}
+			System.out.println("Enter the amount (USD) you wish to withdraw from, or enter QUIT to exit withdrawal page: ");
 			withdrawAmount = scanner.nextLine();
+			if(withdrawAmount.equals("QUIT")) {
+				DisplayCustomerPage(customer);
+				return;
+			}
 		}
 		System.out.println("Withdraw of " + withdrawAmount + " successful, returning to account summary...");
 		DisplayCustomerPage(customer);
 	}
 	
-	
-	
-	
-	
 	public void DisplayDepositPage(Customer customer) {
-		System.out.println("**********Deposit**********\n");
+		System.out.println("\n\n\n**********Deposit**********\n");
 		System.out.println("Bank Accounts:");
 		List<Account> accounts = presentationService.GetAccountsByCustomer(customer.getCustomerId());
 		String depositAccountID = null, depositAmount = null;
@@ -287,31 +311,43 @@ public class Presentation {
 		while (accountListIterator.hasNext()) {
 			Account account = accountListIterator.next();
 			if(account.isApproved())
-				System.out.println(account.getAccount_id() + "     " + account.getBalance());
+				System.out.println(account.getAccount_id() + "     " + String.format("%.2f",account.getBalance()));
 		}
 		
-		System.out.println("Enter the ID of the account you wish to deposit into, or enter QUIT to exit deposit page: ");
+		System.out.println("\nEnter the ID of the account you wish to deposit into, or enter QUIT to exit deposit page: ");
 		depositAccountID = scanner.nextLine();
-		if(depositAccountID.equals("QUIT"))
+		if(depositAccountID.equals("QUIT")) {
 			DisplayCustomerPage(customer);
+			return;
+		}
 		System.out.println("Enter the amount (USD) you wish to deposit, or enter QUIT to exit deposit page: ");
 		depositAmount = scanner.nextLine();
-		if(depositAmount.equals("QUIT"))
+		if(depositAmount.equals("QUIT")) {
 			DisplayCustomerPage(customer);
+			return;
+		}
 		
 		while(  ! (presentationService.IsIntParsable(depositAccountID)) || ! (presentationService.IsDoubleParsable(depositAmount)) || !(presentationService.DepositIntoAccount(Integer.parseInt(depositAccountID), Double.parseDouble(depositAmount), customer))) {
 			System.out.println("Error depositing money into account. Please try again.");
-			System.out.println("Enter the ID of the account you wish to deposit into: ");
+			System.out.println("Enter the ID of the account you wish to deposit into, or enter QUIT to exit deposit page: ");
 			depositAccountID = scanner.nextLine();
-			System.out.println("Enter the amount (USD) you wish to deposit: ");
+			if(depositAccountID.equals("QUIT")) {
+				DisplayCustomerPage(customer);
+				return;
+			}
+			System.out.println("Enter the amount (USD) you wish to deposit, or enter QUIT to exit deposit page: ");
 			depositAmount = scanner.nextLine();
+			if(depositAccountID.equals("QUIT")) {
+				DisplayCustomerPage(customer);
+				return;
+			}
 		}
 		System.out.println("Deposit of " + depositAmount + " successful, returning to account summary...");
 		DisplayCustomerPage(customer);
 	}
 	
 	public void DisplayCustomerPage(Customer customer) {
-		System.out.println("**********Customer Summary**********\n");
+		System.out.println("\n\n\n**********Customer Summary**********\n");
 		System.out.println("Welcome, " + customer.getFirstName() + " " + customer.getLastName() + "!\n");
 		System.out.println("Bank Accounts:");
 		List<Account> accounts = presentationService.GetAccountsByCustomer(customer.getCustomerId());
@@ -321,11 +357,11 @@ public class Presentation {
 		while (accountListIterator.hasNext()) {
 			Account account = accountListIterator.next();
 			if(account.isApproved())
-				System.out.println(account.getAccount_id() + "     " + account.getBalance());
+				System.out.println(account.getAccount_id() + "     " + String.format("%.2f",account.getBalance()));
 		}
 		
 		while(inputResult == null) {
-			System.out.println("Enter (1) sign up for a new bank account");
+			System.out.println("\nEnter (1) sign up for a new bank account");
 			System.out.println("Enter (2) to deposit money into a bank account");
 			System.out.println("Enter (3) to withdraw money from a bank account");
 			System.out.println("Enter (4) to move money from one account to another");
@@ -353,7 +389,7 @@ public class Presentation {
 	
 	public void DisplayInitialPage() {
 		String inputResult = null;
-		System.out.println("**********Revature Bank Portal**********\n");
+		System.out.println("\n\n\n**********Revature Bank Portal**********\n");
 		System.out.println("Welcome to Revature Bank!\n");
 		
 		while(inputResult == null || inputResult.equals("4")) {
@@ -382,7 +418,7 @@ public class Presentation {
 	
 	
 	public void DisplayRegistrationPage() {
-		System.out.println("**********Customer Registration**********\n");
+		System.out.println("\n\n\n**********Customer Registration**********\n");
 		System.out.println("Thank you for considering an account with us, please answer the following questions as honestly as possible:\n");
 		String username = null, password = null, firstName = null, lastName = null, email = null, phoneNumber = null, finalDecision = null;
 		
@@ -436,12 +472,12 @@ public class Presentation {
 		}
 		if(finalDecision.equals("Y")) {
 			if(presentationService.InsertCustomer(username, password, firstName, lastName, phoneNumber, email)) {
-				System.out.print("\n\nCustomer account created successfully.\n\n\n\n\n\n\n\n");
+				System.out.print("\n\nCustomer account created successfully.\n");
 			}else {
-				System.out.print("\n\nError creating account, please try again.\n\n\n\n\n\n\n\n");
+				System.out.print("\n\nError creating account, please try again.\n");
 			}
 		}else {
-			System.out.print("\n\nCustomer account was not created, returning to menu.\n\n\n\n\n\n\n\n");
+			System.out.print("\n\nCustomer account was not created, returning to menu.\n");
 		}
 		DisplayInitialPage();
 	}

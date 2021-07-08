@@ -1,6 +1,5 @@
 package com.revature.presentation;
 
-import java.net.Inet4Address;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,7 +25,6 @@ public class PresentationService {
 	private AccountDAO aDao;
 	static Logger log;
 	private Pattern emailPattern;
-	private Pattern decimalPattern;
 	Matcher emailMatcher;
 	Matcher decimalMatcher;
 	
@@ -37,12 +35,11 @@ public class PresentationService {
 		this.aDao = new AccountDAOImpl();
 		log = Logger.getLogger(PresentationService.class.getName());
 		emailPattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
-		decimalPattern = Pattern.compile("([0-9].*)\\\\.([0-9].*)");
 	}
 	
 	public boolean TransferBetweenAccounts(double transferAmount, int targetAccountID, int sourceAccountID, Customer customer) {
 		Account account = aDao.GetAccountByAccountID(sourceAccountID);
-		if(account.getBalance() < transferAmount || account.getCustomer_id() != customer.getCustomerId()) {
+		if(account.getBalance() < transferAmount || transferAmount < 0 || account.getCustomer_id() != customer.getCustomerId()) {
 			log.info("ERROR: Transfer between account " + targetAccountID + " and " + sourceAccountID + " failed due to insufficient balance");
 			return false;
 		}else if(aDao.TransferMoneyBetweenAccounts(transferAmount, targetAccountID, sourceAccountID, customer)) {

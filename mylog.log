@@ -144,3 +144,110 @@
 07-07@12:16:46 INFO  (PresentationService.java:136)     - SUCCESS: Fetched customer by username and password
 07-07@12:16:46 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
 07-07@12:16:50 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@12:45:55 INFO  (PresentationService.java:136)     - SUCCESS: Fetched customer by username and password
+07-07@12:45:55 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@12:46:10 INFO  (PresentationService.java:160)     - SUCCESS: New account created (123.0)
+07-07@12:46:10 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@12:47:29 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@13:31:53 INFO  (PresentationService.java:172)     - SUCCESS: New customer created
+07-07@13:33:13 INFO  (PresentationService.java:178)     - ERROR: Unable to create new customer
+07-07@13:36:04 INFO  (PresentationService.java:114)     - SUCCESS: Fetching user by username and password
+07-07@13:36:40 INFO  (PresentationService.java:59)     - SUCCESS: Fetching all customers
+07-07@13:37:51 INFO  (PresentationService.java:114)     - SUCCESS: Fetching user by username and password
+07-07@13:37:58 INFO  (PresentationService.java:59)     - SUCCESS: Fetching all customers
+07-07@13:38:02 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@13:55:28 INFO  (PresentationService.java:136)     - SUCCESS: Fetched customer by username and password
+07-07@13:55:28 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@13:55:37 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:01:37 INFO  (PresentationService.java:49)     - SUCCESS: Transfer between account 27 and 25 succeeded
+07-07@14:01:37 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:08:26 INFO  (PresentationService.java:172)     - SUCCESS: New customer created
+07-07@14:08:35 INFO  (PresentationService.java:136)     - SUCCESS: Fetched customer by username and password
+07-07@14:08:35 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:08:43 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:08:50 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:08:50 INFO  (PresentationService.java:85)     - ERROR: Deposit into account 1 failed due to unknown error... (23.0)
+07-07@14:08:53 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:27:37 INFO  (PresentationService.java:160)     - SUCCESS: New account created (1000.0)
+07-07@14:27:37 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:27:41 INFO  (PresentationService.java:156)     - ERROR: Unable to create new account due to incorrect deposit amount (-1000.0)
+07-07@14:27:48 INFO  (PresentationService.java:160)     - SUCCESS: New account created (1020.0)
+07-07@14:27:48 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:28:03 INFO  (PresentationService.java:114)     - SUCCESS: Fetching user by username and password
+07-07@14:28:05 INFO  (PresentationService.java:124)     - SUCCESS: Fetching pending accounts
+07-07@14:28:43 INFO  (PresentationService.java:136)     - SUCCESS: Fetched customer by username and password
+07-07@14:28:43 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:28:47 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:28:57 INFO  (PresentationService.java:46)     - ERROR: Transfer between account 125 and 124 failed due to insufficient balance
+07-07@14:29:19 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:29:26 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:29:35 INFO  (PresentationService.java:49)     - SUCCESS: Transfer between account 125 and 124 succeeded
+07-07@14:29:35 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:30:28 INFO  (PresentationService.java:140)     - ERROR: Unable to fetch customer by username and password
+07-07@14:30:36 INFO  (PresentationService.java:140)     - ERROR: Unable to fetch customer by username and password
+07-07@14:30:45 INFO  (PresentationService.java:136)     - SUCCESS: Fetched customer by username and password
+07-07@14:30:45 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:31:31 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:31:34 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:31:34 INFO  (PresentationService.java:107)     - ERROR: Withdraw from account 124 failed due to unknown error... (1.0)
+07-07@14:31:41 INFO  (PresentationService.java:91)     - ERROR: Withdraw from account 0 failed due to invalid withdraw amount (0.0)
+07-07@14:31:45 INFO  (PresentationService.java:91)     - ERROR: Withdraw from account 124 failed due to invalid withdraw amount (0.0)
+07-07@14:37:00 INFO  (PresentationService.java:91)     - ERROR: Withdraw from account 124 failed due to invalid withdraw amount (-1.0)
+07-07@14:37:05 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:37:05 INFO  (PresentationService.java:101)     - SUCCESS: Withdraw from account 125 succeeded (2020.0)
+07-07@14:37:05 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:37:16 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:37:24 INFO  (PresentationService.java:91)     - ERROR: Withdraw from account 124 failed due to invalid withdraw amount (-100.0)
+07-07@14:37:34 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:37:34 INFO  (PresentationService.java:107)     - ERROR: Withdraw from account 125 failed due to unknown error... (34.03)
+07-07@14:37:37 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@14:59:18 INFO  (PresentationService.java:178)     - ERROR: Unable to create new customer
+07-07@15:08:33 INFO  (PresentationService.java:178)     - ERROR: Unable to create new customer
+07-07@15:09:52 INFO  (PresentationService.java:172)     - SUCCESS: New customer created
+07-07@15:10:03 INFO  (PresentationService.java:136)     - SUCCESS: Fetched customer by username and password
+07-07@15:10:03 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@15:10:13 INFO  (PresentationService.java:160)     - SUCCESS: New account created (5000.0)
+07-07@15:10:13 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@15:10:30 INFO  (PresentationService.java:114)     - SUCCESS: Fetching user by username and password
+07-07@15:10:32 INFO  (PresentationService.java:124)     - SUCCESS: Fetching pending accounts
+07-07@15:21:24 INFO  (PresentationService.java:59)     - SUCCESS: Fetching all customers
+07-07@15:21:28 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@15:22:39 INFO  (PresentationService.java:136)     - SUCCESS: Fetched customer by username and password
+07-07@15:22:39 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@15:22:46 INFO  (PresentationService.java:156)     - ERROR: Unable to create new account due to incorrect deposit amount (-10.0)
+07-07@15:22:48 INFO  (PresentationService.java:160)     - SUCCESS: New account created (100.0)
+07-07@15:22:48 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@15:33:47 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@15:33:55 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@15:33:55 INFO  (PresentationService.java:107)     - ERROR: Withdraw from account 134 failed due to unknown error... (6000.0)
+07-07@15:34:08 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@15:34:08 INFO  (PresentationService.java:101)     - SUCCESS: Withdraw from account 134 succeeded (4500.0)
+07-07@15:34:08 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@15:34:12 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@15:34:19 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@15:34:19 INFO  (PresentationService.java:79)     - SUCCESS: Deposit into account 134 succeeded (4500.0)
+07-07@15:34:19 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@15:34:34 INFO  (PresentationService.java:160)     - SUCCESS: New account created (3.0)
+07-07@15:34:34 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@15:59:29 INFO  (PresentationService.java:136)     - SUCCESS: Fetched customer by username and password
+07-07@15:59:29 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@16:01:20 INFO  (PresentationService.java:136)     - SUCCESS: Fetched customer by username and password
+07-07@16:01:20 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@18:13:13 INFO  (PresentationService.java:136)     - SUCCESS: Fetched customer by username and password
+07-07@18:13:13 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@18:13:25 INFO  (PresentationService.java:160)     - SUCCESS: New account created (500.01009)
+07-07@18:13:25 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@18:13:34 INFO  (PresentationService.java:114)     - SUCCESS: Fetching user by username and password
+07-07@18:13:37 INFO  (PresentationService.java:124)     - SUCCESS: Fetching pending accounts
+07-07@18:15:00 INFO  (PresentationService.java:136)     - SUCCESS: Fetched customer by username and password
+07-07@18:15:00 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@18:16:45 INFO  (PresentationService.java:114)     - SUCCESS: Fetching user by username and password
+07-07@18:16:50 INFO  (PresentationService.java:124)     - SUCCESS: Fetching pending accounts
+07-07@18:17:06 INFO  (PresentationService.java:124)     - SUCCESS: Fetching pending accounts
+07-07@18:21:54 INFO  (PresentationService.java:136)     - SUCCESS: Fetched customer by username and password
+07-07@18:21:54 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@18:21:59 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@18:22:23 INFO  (PresentationService.java:49)     - SUCCESS: Transfer between account 134 and 142 succeeded
+07-07@18:22:23 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@18:23:01 INFO  (PresentationService.java:147)     - SUCCESS: Fetched accounts by customer
+07-07@18:23:12 INFO  (PresentationService.java:46)     - ERROR: Transfer between account 134 and 142 failed due to insufficient balance

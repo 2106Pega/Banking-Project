@@ -1,0 +1,86 @@
+CREATE TABLE IF NOT EXISTS public.accounts
+(
+    account_id integer NOT NULL DEFAULT nextval('accounts_account_id_seq'::regclass),
+    customer_id integer NOT NULL,
+    balance double precision NOT NULL,
+    approval boolean NOT NULL,
+    CONSTRAINT accounts_pkey PRIMARY KEY (account_id),
+    CONSTRAINT customer_id FOREIGN KEY (customer_id)
+        REFERENCES public.customers (customer_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.accounts
+    OWNER to postgres;
+
+
+
+-- Table: public.customers
+
+-- DROP TABLE public.customers;
+
+CREATE TABLE IF NOT EXISTS public.customers
+(
+    customer_id integer NOT NULL,
+    first_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    last_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    phone_number character varying(12) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT customers_pkey PRIMARY KEY (customer_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.customers
+    OWNER to postgres;
+
+
+
+-- Table: public.employees
+
+-- DROP TABLE public.employees;
+
+CREATE TABLE IF NOT EXISTS public.employees
+(
+    employee_id integer NOT NULL DEFAULT nextval('employees_employee_id_seq'::regclass),
+    username character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    password character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT employees_pkey PRIMARY KEY (employee_id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.employees
+    OWNER to postgres;
+
+
+
+-- Table: public.users
+
+-- DROP TABLE public.users;
+
+CREATE TABLE IF NOT EXISTS public.users
+(
+    user_id integer NOT NULL DEFAULT nextval('users_user_id_seq'::regclass),
+    username character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    password character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT users_pkey PRIMARY KEY (user_id),
+    CONSTRAINT username UNIQUE (username)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE public.users
+    OWNER to postgres;

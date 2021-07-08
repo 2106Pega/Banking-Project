@@ -3,9 +3,14 @@ import org.junit.*;
 
 import com.revature.models.Account;
 import com.revature.models.Customer;
+import com.revature.models.User;
 import com.revature.presentation.PresentationService;
 import com.revature.repo.AccountDAO;
 import com.revature.repo.AccountDAOImpl;
+import com.revature.repo.CustomerDAO;
+import com.revature.repo.CustomerDAOImpl;
+import com.revature.repo.UserDAO;
+import com.revature.repo.UserDAOImpl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -16,6 +21,8 @@ import static org.junit.Assert.assertTrue;
 public class Test {
 	PresentationService ps = new PresentationService();
 	AccountDAO a = new AccountDAOImpl();
+	UserDAO u = new UserDAOImpl();
+	CustomerDAO c = new CustomerDAOImpl();
 	
 	public void main(String[] args) {
 		this.TestEmail();
@@ -77,13 +84,30 @@ public class Test {
 	}
 	
 	@org.junit.Test
+	public void TestAccountDeposit() {
+		assertTrue(a.DepositIntoAccount(134, 1));
+		assertTrue(a.DepositIntoAccount(142, 1));
+	}
+	
+	@org.junit.Test
 	public void TestGetAccountByID() {
 		Account account1 = new Account(20, 8, 100, true);
 		Account account2 = new Account(21, 8, 100, true);
 		assertEquals(account1.getAccount_id(), a.GetAccountByAccountID(20).getAccount_id());
 		assertEquals(account2.getAccount_id(), a.GetAccountByAccountID(21).getAccount_id());
-		//assertTrue(a.WithdrawFromAccount(9, 1));
 	}
+	
+	@org.junit.Test
+	public void TestInsertUser() {
+		User user1 = new User("username", "password");
+		User user2 = new User("username", "password");
+		User user3 = new User("username1", "password");
+		assertFalse(u.insertUser(user1));
+		assertFalse(u.insertUser(user2));
+		assertTrue(u.insertUser(user3));
+		//assertTrue(u.insertUser(null)));
+	}
+
 	
 	@org.junit.Test
 	public void TestApproveAccount() {
