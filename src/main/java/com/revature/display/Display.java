@@ -73,6 +73,7 @@ public class Display {
 			String account_name_a = sc.nextLine();
 			Account account_a = new Account(username_a, account_name_a, false, 0);
 			e.approve(account_a);
+			break;
 			
 		case "2":
 			System.out.println("Please enter the username that you want to reject.");
@@ -81,6 +82,7 @@ public class Display {
 			String account_name_r = sc.nextLine();
 			Account account_r = new Account(username_r, account_name_r, false, 0);
 			e.reject(account_r);
+			break;
 		
 		case "3":
 			System.out.println("Please enter the username that you want to view.");
@@ -89,10 +91,12 @@ public class Display {
 			String account_name_v = sc.nextLine();
 			Account account_v = new Account(username_v, account_name_v, false, 0);
 			e.view_customer(account_v);
+			break;
 			
 		default:
 			System.out.println("Invalid input, please reselect the option.");
 			employee_menu(employee);
+			break;
 		}		
 	}
 	
@@ -281,6 +285,7 @@ public class Display {
 		default:
 			System.out.println("Option is not valid. Will show the menu again.");
 			customer_menu(u);
+			break;
 		}
 
 	}
