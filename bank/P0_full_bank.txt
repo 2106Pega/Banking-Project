@@ -25,7 +25,7 @@
 ​
 ## User Stories
 Total Points: 23 points
-Points Earned: 15 points
+Points Earned: 18 points
 ​
 ---* As a user, I can login.
 	* 2 points

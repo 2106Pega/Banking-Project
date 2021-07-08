@@ -1,5 +1,10 @@
 package com.revature.service;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.BufferedReader;
+
 import com.revature.exceptions.PasswordMismatchException;
 import com.revature.exceptions.UserNotFoundExecption;
 import com.revature.models.User;
@@ -7,7 +12,7 @@ import com.revature.repo.AccountDAO;
 import com.revature.repo.UserDAO;
 
 public class BankManagerImpl implements BankManager {
-	
+
 	AccountDAO aDao;
 	UserDAO uDao;
 
@@ -18,9 +23,9 @@ public class BankManagerImpl implements BankManager {
 	}
 
 	public boolean authenticate(String username) {
-		
+
 		boolean userFound = false;
-		
+
 		try {
 			User u = uDao.selectUserByUsername(username);
 			if (u != null)
@@ -34,14 +39,14 @@ public class BankManagerImpl implements BankManager {
 	}
 
 	public boolean checkPassword(String username, String password) {
-		
+
 		boolean passwordMatch = false;
-		
+
 		try {
 			User u = uDao.selectUserByPassword(username, password);
 			if (u != null)
 				passwordMatch = true;
-			
+
 		} 
 		catch (PasswordMismatchException e) {
 			// TODO Auto-generated catch block
@@ -52,7 +57,7 @@ public class BankManagerImpl implements BankManager {
 
 	@Override
 	public boolean validPassword(String password) {
-		
+
 		boolean valid = false;
 		if (password.length() > 5)
 			valid = true;
@@ -61,7 +66,7 @@ public class BankManagerImpl implements BankManager {
 
 	@Override
 	public int checkAccountType(String username) {
-		
+
 		int accountType = 0;
 		try {
 			User u = uDao.selectUserByUsername(username);
@@ -71,7 +76,7 @@ public class BankManagerImpl implements BankManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return accountType;
 	}
 
@@ -86,7 +91,7 @@ public class BankManagerImpl implements BankManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		aDao.createApplication(u.getId(), startingBalance);
 	}
 
@@ -99,17 +104,17 @@ public class BankManagerImpl implements BankManager {
 				balanceStatement = "Please input a positive number.";
 			else balanceStatement = startingBalance;
 			return balanceStatement;
-			
-	    } 
+
+		} 
 		catch (final NumberFormatException e) {
-	    	e.printStackTrace();
-	    	
-	    }
-		
+			balanceStatement = "Please input a valid number.";
+
+		}
+
 		//double numericBalance = Double.parseDouble(startingBalance);
-		
-			
-		return null;
+
+
+		return balanceStatement;
 	}
 
 	@Override
@@ -123,7 +128,7 @@ public class BankManagerImpl implements BankManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		aDao.createAccount(u.getId(), startingBalance);	
 	}
 
@@ -139,5 +144,25 @@ public class BankManagerImpl implements BankManager {
 			e.printStackTrace();
 		}
 		return u;
+	}
+
+	@Override
+	public StringBuilder readLog() {
+		// TODO Auto-generated method stub
+		File f=new File("C:\\Users\\Q\\Documents\\Revature\\Banking-Project\\bank\\BankingApplication\\src\\main\\resources", "log4j-application.log"); 
+		StringBuilder logger = new StringBuilder(); 
+
+		try{ 
+			BufferedReader r = new BufferedReader(new FileReader(f)); 
+
+			while((r.readLine()) != null) { 
+				logger.append(r.readLine()); 
+				logger.append("\n");
+			} 
+			r.close(); 
+		} 
+		catch(IOException e){} 
+		
+		return logger;
 	}
 }

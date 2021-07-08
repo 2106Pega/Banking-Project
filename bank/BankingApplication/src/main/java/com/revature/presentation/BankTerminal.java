@@ -15,9 +15,9 @@ import com.revature.service.BankManager;
 import com.revature.service.BankManagerImpl;
 
 public class BankTerminal {
-	
+
 	final static Logger loggy = Logger.getLogger(MainDriver.class);
-	
+
 	AccountDAO aDao = new AccountDaoImpl();
 	UserDAO uDao = new UserDaoImpl();
 	String username = null;
@@ -67,7 +67,6 @@ public class BankTerminal {
 
 		boolean validUsername = false;
 
-		System.out.println("\n");
 		System.out.println("Please Choose Your Username: ");
 
 		while (validUsername == false) {
@@ -82,7 +81,6 @@ public class BankTerminal {
 		}
 
 		boolean validPassword = false;
-		System.out.println("\n");
 		System.out.println("Please Choose Your Password: ");
 
 		while (validPassword == false) {		
@@ -96,11 +94,9 @@ public class BankTerminal {
 
 		System.out.println("Please Enter Your First Name: ");
 		firstName = sc.nextLine();
-		System.out.println("\n");
 
 		System.out.println("Please Enter Your Last Name: ");
 		lastName = sc.nextLine();
-		System.out.println("\n");
 
 		System.out.println("Please Enter (1) to register as a CUSTOMER or (2) to register as an EMPLOYEE. ");
 
@@ -125,9 +121,15 @@ public class BankTerminal {
 
 		uDao.createNewUser(newUser, newPassword, firstName, lastName, accountType);
 
+		loggy.info(newUser + " created a new account.");
+		System.out.println("\n");
+
 		System.out.println("Congratulations! You have successfully created an account!");
 		System.out.println("\n");
-		loggy.info(newUser + " created a new account.");
+
+		if (accountType == 1)
+			this.customerMenu();
+		else this.employeeMenu();
 	}
 
 	public void loginMenu() {
@@ -136,10 +138,10 @@ public class BankTerminal {
 		System.out.println("Please Enter Your Username: ");
 
 		username = sc.nextLine();
+		System.out.println("\n");
 
 		if (bManager.authenticate(username) == true) {
 
-			System.out.println("\n");
 			System.out.println("Please Enter Your Password: ");
 			String password = sc.nextLine();
 
@@ -182,11 +184,11 @@ public class BankTerminal {
 			System.out.println("Invalid User.");
 			System.out.println("Enter 0 to try again.");
 			System.out.println("Enter 1 to return to Welcome Menu.");
-			System.out.println("\n");
 
 			boolean validEntry = false;
 			while (validEntry == false) {
 				String tryAgain = sc.nextLine();
+				System.out.println("\n");
 
 				switch(tryAgain.toLowerCase()) {
 				case "0":
@@ -220,6 +222,7 @@ public class BankTerminal {
 			System.out.println("Enter 0 to logout.");
 
 			String userAction = sc.nextLine();
+			System.out.println("\n");
 
 			switch(userAction.toLowerCase()) {
 			case "0":
@@ -244,8 +247,11 @@ public class BankTerminal {
 					else System.out.println(checkedBalance);
 				}
 
-				System.out.println("Thank you! Your application is being reviewed.");
 				loggy.info(username + " applied for a new bank account.");
+
+				System.out.println("\n");
+				System.out.println("Thank you! Your application is being reviewed.");
+
 				validEntry = true;
 				break;
 
@@ -256,25 +262,34 @@ public class BankTerminal {
 				boolean accountFound = false;
 
 				while (accountFound == false) {
-					for (Account a : aDao.selectAccountsbyUser(u.getId()))
+					int counter = 0;
+
+					for (Account a : aDao.selectAccountsbyUser(u.getId())) {
 						System.out.println("Account Number: " + a.getAccountId() + "   Balance: " + a.getBalance());
+						counter++;
+					}
 					System.out.println("\n");
+
+					if (counter == 0) {
+						System.out.println("No Active Accounts");
+						System.out.println("\n");
+						this.customerMenu();
+					}
 
 					System.out.println("Enter Account Number if you want to view that account specifically.");
 					System.out.println("Enter 0 to return to the menu.");
 
 					String accountInfo = sc.nextLine();
+					System.out.println("\n");
 
-					//System.out.println(accountInfo);
+					if (accountInfo.equals("0")) {
+						this.customerMenu();
+						accountFound = true;
+					}
 
 					for (Account a : aDao.selectAccountsbyUser(u.getId())) {
-						//System.out.println();
-						if (accountInfo.equals("0")) {
-							this.customerMenu();
-							accountFound = true;
-						}
 
-						else if (Integer.toString(a.getAccountId()).equals(accountInfo)) {
+						if (Integer.toString(a.getAccountId()).equals(accountInfo)) {
 							Account acc = aDao.selectAccountbyId(Integer.parseInt(accountInfo));
 							System.out.println("Account Number: " + acc.getAccountId() + "   Balance: " + acc.getBalance());
 							accountFound = true;
@@ -289,6 +304,7 @@ public class BankTerminal {
 				break;
 
 			case "3":
+
 				boolean validDeposit = false;
 				boolean validAccount = false;
 				Account acc = new Account();
@@ -298,13 +314,23 @@ public class BankTerminal {
 
 					while (validAccount == false) {
 
-						for (Account a : aDao.selectAccountsbyUser(us.getId()))
+						int counter = 0;
+						for (Account a : aDao.selectAccountsbyUser(us.getId())) {
+							counter++;
 							System.out.println("Account Number: " + a.getAccountId() + "   Balance: " + a.getBalance());
-						System.out.println("\n");
+						}
 
-						System.out.println("Enter the Account Number you would like to deposit to:");
+						if (counter == 0) {
+							System.out.println("No Active Accounts");
+							System.out.println("\n");
+							this.customerMenu();
+						}
+
+						System.out.println("\n");
+						System.out.println("Enter the Account Number you would like to deposit to: ");
 
 						String accountInfo = sc.nextLine();
+						System.out.println("\n");
 
 						//System.out.println(accountInfo);
 
@@ -334,6 +360,9 @@ public class BankTerminal {
 				}
 
 				loggy.info(username + " made a deposit.");
+				System.out.println("\n");
+				System.out.println("Thank you for your deposit!");
+
 				validEntry = true;
 				break;
 
@@ -348,15 +377,26 @@ public class BankTerminal {
 
 					while (validAccount == false) {
 
-						for (Account a : aDao.selectAccountsbyUser(us.getId()))
+						int counter = 0;
+
+						for (Account a : aDao.selectAccountsbyUser(us.getId())) {
 							System.out.println("Account Number: " + a.getAccountId() + "   Balance: " + a.getBalance());
+							counter++;
+						}
+
 						System.out.println("\n");
+
+						if (counter == 0) {
+							System.out.println("No Active Accounts");
+							System.out.println("\n");
+							this.customerMenu();
+						}
 
 						System.out.println("Enter the Account Number you would like to withdraw from:");
 
 						String accountInfo = sc.nextLine();
 
-						//System.out.println(accountInfo);
+						System.out.println("\n");
 
 						for (Account a : aDao.selectAccountsbyUser(us.getId())) {
 							//System.out.println();
@@ -389,30 +429,45 @@ public class BankTerminal {
 				}
 
 				loggy.info(username + " made a withdrawal.");
+				System.out.println("\n");
+				System.out.println("Thank you for your withdrawal!");
+
 				validEntry = true;
 				break;
-				
+
 			case "5":
-				
+
 				boolean validTransfer = false;
 				boolean validAccountFrom = false;
 				boolean validAccountTo = false;
 				Account transferFrom = new Account();
 				Account transferTo = new Account();
-				
+
 				User userTransferring = bManager.selectUser(username);
 
 				while (validTransfer == false) {
 
 					while (validAccountFrom == false) {
 
-						for (Account a : aDao.selectAccountsbyUser(userTransferring.getId()))
+						int counter = 0;
+
+						for (Account a : aDao.selectAccountsbyUser(userTransferring.getId())) {
 							System.out.println("Account Number: " + a.getAccountId() + "   Balance: " + a.getBalance());
+							counter++;
+						}
+
+						if (counter == 0) {
+							System.out.println("No Active Accounts");
+							System.out.println("\n");
+							this.customerMenu();
+						}
+
 						System.out.println("\n");
 
 						System.out.println("Enter the Account Number you would like to transfer from:");
 
 						String transFrom = sc.nextLine();
+						System.out.println("\n");
 
 						for (Account a : aDao.selectAccountsbyUser(userTransferring.getId())) {
 							//System.out.println();
@@ -425,16 +480,17 @@ public class BankTerminal {
 						if (validAccountFrom == false) 
 							System.out.println("Invalid account number.");
 					}
-					
+
 					while (validAccountTo == false) {
 
-//						for (Account a : aDao.selectAllAccounts())
-//							System.out.println("Account Number: " + a.getAccountId() + "   Balance: " + a.getBalance());
-//						System.out.println("\n");
+						//						for (Account a : aDao.selectAllAccounts())
+						//							System.out.println("Account Number: " + a.getAccountId() + "   Balance: " + a.getBalance());
+						//						System.out.println("\n");
 
 						System.out.println("Enter the Account Number you would like to transfer to:");
 
 						String transTo = sc.nextLine();
+						System.out.println("\n");
 
 						for (Account a : aDao.selectAllAccounts()) {
 
@@ -454,16 +510,21 @@ public class BankTerminal {
 					String checkedBalance = bManager.checkStartingBalance(transferAmount);
 
 					if (checkedBalance == transferAmount) {
-						aDao.updateAccount(transferFrom.getAccountId(), 0 - Double.parseDouble(transferAmount));
-						aDao.updateAccount(transferTo.getAccountId(), Double.parseDouble(transferAmount));
+						if (Double.parseDouble(transferAmount) <= transferFrom.getBalance()) {
+							aDao.updateAccount(transferFrom.getAccountId(), 0 - Double.parseDouble(transferAmount));
+							aDao.updateAccount(transferTo.getAccountId(), Double.parseDouble(transferAmount));
 
-						validTransfer = true;
+							validTransfer = true;
+						}
+						else System.out.println("Not enough money.");
 					}
-					
 					else System.out.println(checkedBalance);
 				}
 
 				loggy.info(username + " made a transfer.");
+				System.out.println("\n");
+				System.out.println("Transfer successful!");
+
 				validEntry = true;
 				break;
 
@@ -475,10 +536,12 @@ public class BankTerminal {
 
 			while (exit == false) {
 
+				System.out.println("\n");
 				System.out.println("Enter 1 to return to the menu.");
 				System.out.println("Enter 0 to logout.");
 
 				userAction = sc.nextLine();
+				System.out.println("\n");
 
 				switch(userAction.toLowerCase()) {
 				case "0":
@@ -509,9 +572,11 @@ public class BankTerminal {
 			System.out.println("Enter 1 to view account applications.");
 			System.out.println("Enter 2 to approve or deny pending applications.");
 			System.out.println("Enter 3 to view a customer's accounts.");
+			System.out.println("Enter 4 to view transactions log.");
 			System.out.println("Enter 0 to logout.");
 
 			String userAction = sc.nextLine();
+			System.out.println("\n");
 
 			switch(userAction.toLowerCase()) {
 			case "0":
@@ -542,6 +607,7 @@ public class BankTerminal {
 					Account appStatus = new Account();
 
 					String applicationDecision = sc.nextLine();
+					System.out.println("\n");
 
 					switch(applicationDecision.toLowerCase()) {
 
@@ -555,6 +621,7 @@ public class BankTerminal {
 							System.out.println("Enter the application number you would like to approve: ");
 
 							String applicationApprove = sc.nextLine();
+							System.out.println("\n");
 
 							for (Account a : aDao.selectAllApplications()) {
 								if (Integer.toString(a.getApplicationId()).equals(applicationApprove)) {
@@ -569,6 +636,8 @@ public class BankTerminal {
 						}
 
 						aDao.deleteApplication(appStatus);
+						System.out.println("Application Approved!");
+						
 						validDecision = true;
 						break;
 
@@ -582,6 +651,7 @@ public class BankTerminal {
 							System.out.println("Enter the application number you would like to deny: ");
 
 							String applicationDeny = sc.nextLine();
+							System.out.println("\n");
 
 							for (Account a : aDao.selectAllApplications()) {
 								if (Integer.toString(a.getApplicationId()).equals(applicationDeny)) {
@@ -593,6 +663,9 @@ public class BankTerminal {
 							if (accountFound == false) 
 								System.out.println("Invalid application number.");
 						}
+						
+						System.out.println("Application Denied!");
+						
 						validDecision = true;
 						break;
 
@@ -601,12 +674,16 @@ public class BankTerminal {
 							bManager.approveBankAccount(a.getUsername(), a.getBalance());
 							aDao.deleteApplication(a);
 						}
+						
+						System.out.println("All Applications Approved!");
 						validDecision = true;
 						break;
 
 					case "4":
 						for (Account a : aDao.selectAllApplications())
 							aDao.deleteApplication(a);
+						
+						System.out.println("All Application Denied!");
 						validDecision = true;
 						break;
 
@@ -627,6 +704,7 @@ public class BankTerminal {
 					System.out.println("Enter the User ID of the user account you would like to view: ");
 
 					String userSelect = sc.nextLine();
+					System.out.println("\n");
 
 					for (User u : uDao.selectAllUsers()) {
 						if (Integer.toString(u.getId()).equals(userSelect)) {
@@ -645,6 +723,13 @@ public class BankTerminal {
 				validEntry = true;
 				break;
 
+			case "4":
+				System.out.println("Transactions Log: ");
+				System.out.println(bManager.readLog());
+
+				validEntry = true;
+				break;
+
 			default:
 				System.out.println("Sorry that input is not valid.");
 			}
@@ -652,11 +737,12 @@ public class BankTerminal {
 			validEntry = false;
 
 			while (validEntry == false) {
-
+				System.out.println("\n");
 				System.out.println("Enter 1 to return to the menu.");
 				System.out.println("Enter 0 to logout.");
 
 				userAction = sc.nextLine();
+				System.out.println("\n");
 
 				switch(userAction.toLowerCase()) {
 				case "0":
@@ -679,5 +765,6 @@ public class BankTerminal {
 	public void logoutMenu() {
 		System.out.println("Thank you for using Revature Bank!");
 		sc.close();
+		System.exit(0);
 	}
 }

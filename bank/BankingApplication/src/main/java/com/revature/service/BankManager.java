@@ -20,5 +20,7 @@ public interface BankManager {
 	
 	User selectUser(String username);
 	
+	StringBuilder readLog();
+	
 	
 }

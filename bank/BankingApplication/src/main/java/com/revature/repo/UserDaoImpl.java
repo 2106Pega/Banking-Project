@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.revature.exceptions.PasswordMismatchException;
 import com.revature.exceptions.UserNotFoundExecption;
-import com.revature.models.Account;
 import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
 
