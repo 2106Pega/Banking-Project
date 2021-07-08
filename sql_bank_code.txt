@@ -1,0 +1,33 @@
+create table employee_accounts (
+	employee_id serial primary key,
+	user_name varchar(30) unique not null,
+	pass_word varchar(30) not null
+
+);
+
+create table customer_accounts (
+	customer_id serial primary key,
+	user_name varchar(30) unique not null,
+	pass_word varchar(30) not null
+
+);
+
+create table bank (
+	account_id serial primary key,
+	balance decimal not null,
+	is_approved boolean not null,
+	customer_id int,
+	foreign key(customer_id) references customer_accounts(customer_id)
+
+);
+
+select version();
+
+insert into bank (balance, is_approved, customer_id) values (10.0, true, 1) returning account_id;
+
+create or replace function transfer(sender_id int, receiver_id int, amount decimal) returns void
+	language sql 
+	as $$
+		update bank set balance = balance - amount where account_id = sender_id;
+		update bank set balance = balance + amount where account_id = receiver_id;
+	$$;

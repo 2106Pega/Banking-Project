@@ -831,7 +831,7 @@ public class BankUiImpl implements BankUi {
 	public void viewTransactionLog() {
 		
 		try {
-			File logFile = new File("C:\\Users\\kmraz\\Documents\\Revature\\Projects\\Transactions.log");
+			File logFile = new File("C:\\Users\\kmraz\\Documents\\Revature\\Git\\Projects\\Transactions.log");
 			Scanner read = new Scanner(logFile);
 			
 			if (!read.hasNextLine()) {
