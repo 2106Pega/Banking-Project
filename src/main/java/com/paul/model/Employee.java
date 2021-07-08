@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.paul.bank.BankPortal;
 import com.paul.dao.*;
 
 public class Employee extends User {
@@ -35,8 +36,7 @@ public class Employee extends User {
 				System.out.println(String.format("Client index %d: %s", i, allClients.get(i).username));
 			}
 			System.out.println("Which client do you want to view?");
-			customerChoice = in.nextInt();
-			in.nextLine();
+			customerChoice = BankPortal.handleInput();
 			
 			if (customerChoice < 0 || customerChoice >= allClients.size()) {
 				System.out.println("Sorry, that customer number is not a valid choice!");
@@ -47,7 +47,7 @@ public class Employee extends User {
 				System.out.println(String.format("Account %d: %f", acct.accountID, acct.balance));
 			}
 			if (custAccounts.size() == 0) {
-				System.out.println("This custoemr doesn't seem to have any approved accounts.");
+				System.out.println("This customer doesn't seem to have any approved accounts.");
 			}
 			break;
 		case 3:
@@ -55,7 +55,6 @@ public class Employee extends User {
 			break;
 		case 4: default:
 			System.out.println("Goodbye!");
-			in.close();
 			System.exit(0);
 			break;
 		}

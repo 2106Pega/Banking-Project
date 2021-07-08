@@ -3,14 +3,7 @@ package com.paul.bank;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
-import java.util.Base64;
 import java.util.Scanner;
-
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,14 +25,29 @@ public class BankPortal {
 		return hash;
 	}
 	
+	public static int handleInput() {
+		boolean gotInput = false;	
+		int res = -1;
+		while (!gotInput) {
+			String line = in.nextLine();
+			line = line.replaceAll("[\\n\\t ]", "");
+			try {
+				res = Integer.parseInt(line);
+				gotInput = true;
+			} catch(NumberFormatException ex) {
+				System.out.println("Sorry, that input isn't valid!");
+			}
+		}
+		return res;
+	}
+	
 	static void signOn() throws NoSuchAlgorithmException {
 		String uname;
 		String passwd;
 		int type;
 		
 		System.out.print("Please enter your account type (1. Client; 2. Employee): ");
-		type = in.nextInt();
-		in.nextLine();
+		type = handleInput();
 		
 		System.out.print("Please enter your username: ");
 		uname = in.nextLine();
@@ -64,8 +72,7 @@ public class BankPortal {
 		boolean setPasswd = false;
 		
 		System.out.print("Please enter your account type (1. Client; 2. Employee): ");
-		type = in.nextInt();
-		in.nextLine();
+		type = handleInput();
 		
 		System.out.print("Please enter your username: ");
 		uname = in.nextLine();
@@ -94,8 +101,7 @@ public class BankPortal {
 		boolean running = true;
 		while (running) {
 			loggedOnUser.printOptions();
-			loggedOnUser.processChoice(in.nextInt());
-			in.nextLine();
+			loggedOnUser.processChoice(handleInput());
 		}
 	}
 	
@@ -104,13 +110,11 @@ public class BankPortal {
 		while (running) {
 			System.out.println("What would you like to do?");
 			System.out.println("1. Log on; 2. Create new account. 3. Exit");
-			switch(in.nextInt()) {
+			switch(handleInput()) {
 				case 1:
-					in.nextLine();
 					signOn();
 					break;
 				case 2:
-					in.nextLine();
 					createNewUser();
 					break;
 				case 3: default:

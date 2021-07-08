@@ -6,11 +6,13 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.paul.bank.BankPortal;
 import com.paul.dao.*;
 
 public class Client extends User {
 	public ArrayList<Account> accounts;
 	private static final Logger LOG = LogManager.getLogger(Client.class);
+	Scanner in = new Scanner(System.in);
 	
 	public Client(int uId, String uname, String passwd) { 
 		this.userId = uId;
@@ -37,7 +39,6 @@ public class Client extends User {
 
 	@Override
 	public int processChoice(int choice) {
-		Scanner in = new Scanner(System.in);
 		int acctChoice = -1;
 		int secondAcctChoice = -1;
 		boolean withdrawl = false;
@@ -62,21 +63,18 @@ public class Client extends User {
 				break;
 			}
 			System.out.println("Which account do you want to deposit/withdraw to/from?");
-			acctChoice = in.nextInt();
-			in.nextLine();
+			acctChoice = BankPortal.handleInput();
 			
 			if (acctChoice < 0 || acctChoice >= this.accounts.size()) {
 				System.out.println("Sorry, that account number is not a valid choice!");
 				break;
 			}
 			System.out.println("Do you want to make a deposit (1) or a withdrawl (2)?");
-			int tmp = in.nextInt();
-			in.nextLine();
+			int tmp = BankPortal.handleInput();
 			withdrawl = (tmp == 1) ? false : true;
 			if (!withdrawl) {
 				System.out.println("How much do you want to deposit?");
-				amount = in.nextDouble();
-				in.nextLine();
+				amount = handleDoubleInput();
 				double res = deposit(amount, acctChoice);
 				if (res == -1.0) {
 					System.out.println("Something went wrong with your transaction.");
@@ -85,8 +83,7 @@ public class Client extends User {
 				}
 			} else {
 				System.out.println("How much do you want to withdraw?");
-				amount = in.nextDouble();
-				in.nextLine();
+				amount = handleDoubleInput();
 				double res = withdraw(amount, acctChoice);
 				if (res == -1.0) {
 					System.out.println("Something went wrong with your transaction.");
@@ -97,8 +94,7 @@ public class Client extends User {
 			break;
 		case 3:
 			System.out.println("With how much do you want to apply for an account with?: ");
-			double bal = in.nextDouble();
-			in.nextLine();
+			double bal = handleDoubleInput();
 			applyForBankAccount(bal);
 			break;
 		case 4:
@@ -111,12 +107,10 @@ public class Client extends User {
 				break;
 			}
 			System.out.println("Which account do you want to transfer from?");
-			acctChoice = in.nextInt();
-			in.nextLine();
+			acctChoice = BankPortal.handleInput();
 			
 			System.out.println("Which account do you want to transfer to?");
-			secondAcctChoice = in.nextInt();
-			in.nextLine();
+			secondAcctChoice = BankPortal.handleInput();
 			
 			if (acctChoice == secondAcctChoice) { 
 				System.out.println("You can't do a money transfer to the same account!");
@@ -129,8 +123,7 @@ public class Client extends User {
 			}
 			
 			System.out.println("How much do you want to transfer?");
-			amount = in.nextDouble();
-			in.nextLine();
+			amount = handleDoubleInput();
 			double wdRes = withdraw(amount, acctChoice);
 			if (wdRes >= 0.0) {
 				deposit(amount, secondAcctChoice);
@@ -197,5 +190,21 @@ public class Client extends User {
 		getMyAccounts();
 		LOG.info("User " + this.username + " withdrew " + Double.toString(amount));
 		return this.accounts.get(idx).balance;
+	}
+	
+	double handleDoubleInput() {
+		boolean gotInput = false;	
+		double res = -1.0;
+		while (!gotInput) {
+			String line = in.nextLine();
+			line = line.replaceAll("[\\n\\t ]", "");
+			try {
+				res = Double.parseDouble(line);
+				gotInput = true;
+			} catch(NumberFormatException ex) {
+				System.out.println("Sorry, that input isn't valid!");
+			}
+		}
+		return res;
 	}
 }

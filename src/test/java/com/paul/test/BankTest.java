@@ -20,7 +20,7 @@ public class BankTest {
 	
 	@Before
 	public void setup() {
-		testClient = dao.getClient(4);
+		testClient = dao.getClient(3);
 		testClient.getMyAccounts();
 		testClient.accounts.get(0).setBalance(500);
 		testClient.accounts.get(1).setBalance(300);
@@ -36,9 +36,9 @@ public class BankTest {
 	
 	@Test
 	public void getMyAccountsTest() throws NoSuchAlgorithmException {
-		Client cli = (Client) dao.verifyUser("paul", BankPortal.hashPasswd("based"), 1);
+		Client cli = (Client) dao.verifyUser("test", BankPortal.hashPasswd("junit"), 1);
 		cli.getMyAccounts();
-		assertTrue(2 >= cli.accounts.size());
+		assertTrue(2 <= cli.accounts.size());
 	}
 	
 	@Test
@@ -73,15 +73,15 @@ public class BankTest {
 	
 	@Test
 	public void getAccountsDAOTest() {
-		ArrayList<Account> accts = dao.getAccounts(4);
+		ArrayList<Account> accts = dao.getAccounts(3);
 		assertEquals(500.0, accts.get(0).getBalance(), epsilon);
 		assertEquals(300.0, accts.get(1).getBalance(), epsilon);
 	}
 	
 	@Test
-	public void verifyUserTest() {
-		assertTrue(dao.verifyUser("test", "junit", User.CLIENT_TYPE).equals(testClient));
-		assertFalse(dao.verifyUser("henry", "dog", User.CLIENT_TYPE).equals(testClient));
+	public void verifyUserTest() throws NoSuchAlgorithmException {
+		assertTrue(dao.verifyUser("test", BankPortal.hashPasswd("junit"), User.CLIENT_TYPE).equals(testClient));
+		assertFalse(dao.verifyUser("henry", BankPortal.hashPasswd("dog"), User.EMPLOYEE_TYPE).equals(testClient));
 		assertEquals(null, dao.verifyUser("nonexistent", "null", 1));
 	}
 	
