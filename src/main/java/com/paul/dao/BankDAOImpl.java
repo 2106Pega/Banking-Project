@@ -22,9 +22,9 @@ public class BankDAOImpl implements BankDAO {
 		ArrayList<Message> messages = new ArrayList<Message>(); 
 		try {
 			connection = DAOUtil.getConnection();
-			String sql = "SELECT * FROM messages WHERE recipient_id = '%d'";
-			sql = String.format(sql, recipID);
+			String sql = "SELECT * FROM messages WHERE recipient_id = ?";
 			statement = connection.prepareStatement(sql);
+			statement.setInt(1, recipID);
 			ResultSet allMessages = statement.executeQuery();
 			while(allMessages.next()) {
 				Message msg = new Message(allMessages.getInt("message_id"), allMessages.getInt("sender_id"), allMessages.getInt("recipient_id"), allMessages.getDouble("balance"));
@@ -43,9 +43,9 @@ public class BankDAOImpl implements BankDAO {
 		ArrayList<Account> accounts = new ArrayList<Account>(); 
 		try {
 			connection = DAOUtil.getConnection();
-			String sql = "SELECT * FROM accounts WHERE owner_id = %d GROUP BY account_id";
-			sql = String.format(sql, ownerID);
+			String sql = "SELECT * FROM accounts WHERE owner_id = ? GROUP BY account_id";
 			statement = connection.prepareStatement(sql);
+			statement.setInt(1, ownerID);
 			ResultSet allAccounts = statement.executeQuery();
 			while(allAccounts.next()) {
 				Account acct = new Account(allAccounts.getInt("account_id"), allAccounts.getInt("owner_id"), allAccounts.getDouble("balance"));
@@ -133,11 +133,13 @@ public class BankDAOImpl implements BankDAO {
 	public void sendMessage(Message msg) {
 		String sql = "INSERT INTO public.messages "
 				+ "(sender_id, recipient_id, balance) "
-				+ "VALUES('%d', '%d', '%f');";
-		sql = String.format(sql, msg.senderID, msg.recipientID, msg.balance);
+				+ "VALUES(?, ?, ?);";
 		try {
 			connection = DAOUtil.getConnection();	
 			statement = connection.prepareStatement(sql);
+			statement.setInt(1, msg.senderID);
+			statement.setInt(2, msg.recipientID);
+			statement.setDouble(3, msg.balance);
 			statement.execute();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -151,9 +153,9 @@ public class BankDAOImpl implements BankDAO {
 		Client cli = null;
 		try {
 			connection = DAOUtil.getConnection();
-			String sql = "SELECT * FROM clients where id = '%d'";
-			sql = String.format(sql, userID);
+			String sql = "SELECT * FROM clients where id = ?";
 			statement = connection.prepareStatement(sql);
+			statement.setInt(1, userID);
 			ResultSet allClients = statement.executeQuery();
 			while (allClients.next()) {
 				cli = new Client(allClients.getInt("id"), allClients.getString("username"),
@@ -170,11 +172,11 @@ public class BankDAOImpl implements BankDAO {
 	@Override
 	public void deleteMessage(int msgID) {
 		// TODO Auto-generated method stub
-		String sql = "DELETE FROM public.messages WHERE message_id = '%d';";
-		sql = String.format(sql, msgID);
+		String sql = "DELETE FROM public.messages WHERE message_id = ?;";
 		try {
 			connection = DAOUtil.getConnection();	
 			statement = connection.prepareStatement(sql);
+			statement.setInt(1, msgID);
 			statement.execute();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -186,11 +188,12 @@ public class BankDAOImpl implements BankDAO {
 	@Override
 	public void createBankAccount(int ownerID, double balance) {
 		// TODO Auto-generated method stub
-		String sql = "INSERT INTO public.accounts (balance, owner_id) VALUES(%f, %d);";
-		sql = String.format(sql, balance, ownerID);
+		String sql = "INSERT INTO public.accounts (balance, owner_id) VALUES(?, ?);";
 		try {
 			connection = DAOUtil.getConnection();	
 			statement = connection.prepareStatement(sql);
+			statement.setDouble(1, balance);
+			statement.setInt(2, ownerID);
 			statement.execute();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -201,11 +204,12 @@ public class BankDAOImpl implements BankDAO {
 
 	@Override
 	public void commitAccount(Account acct) {
-		String sql = "UPDATE public.accounts SET balance=%f WHERE account_id=%d;";
-		sql = String.format(sql, acct.getBalance(), acct.getAccountID());
+		String sql = "UPDATE public.accounts SET balance=? WHERE account_id=?;";
 		try {
 			connection = DAOUtil.getConnection();	
 			statement = connection.prepareStatement(sql);
+			statement.setDouble(1, acct.getBalance());
+			statement.setInt(2, acct.getAccountID());
 			statement.execute();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -236,11 +240,5 @@ public class BankDAOImpl implements BankDAO {
 		} finally {
 			closeResources(); 
 		}
-	}
-
-	@Override
-	public User verifyUser(String uname) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

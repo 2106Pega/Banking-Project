@@ -324,3 +324,57 @@
 2021-07-07 21:58:53  INFO com.paul.model.Client:191 User test withdrew 100.0
 2021-07-07 21:58:53  INFO com.paul.model.Client:164 User test tried to deposit a negative balance
 2021-07-07 21:58:53  INFO com.paul.model.Client:179 User test tried to withdraw a negative balance
+2021-07-07 22:33:33  INFO com.paul.model.Client:171 User test deposited 400.0
+2021-07-07 22:33:33  INFO com.paul.model.Client:171 User test deposited 100.0
+2021-07-07 22:33:34  INFO com.paul.model.Client:185 User test tried to withdraw too much money from an account
+2021-07-07 22:33:34  INFO com.paul.model.Client:185 User test tried to withdraw too much money from an account
+2021-07-07 22:33:34  INFO com.paul.model.Client:191 User test withdrew 400.0
+2021-07-07 22:33:34  INFO com.paul.model.Client:191 User test withdrew 100.0
+2021-07-07 22:33:34  INFO com.paul.model.Client:164 User test tried to deposit a negative balance
+2021-07-07 22:33:34  INFO com.paul.model.Client:179 User test tried to withdraw a negative balance
+2021-07-07 22:33:48  TRACE com.paul.bank.BankPortal:97 New User paul2 created
+2021-07-07 22:33:55  TRACE com.paul.bank.BankPortal:61 User paul2 logged on
+2021-07-07 22:34:02  TRACE com.paul.model.Client:151 User paul2 applied for a bank account
+2021-07-07 22:34:06  TRACE com.paul.model.Client:151 User paul2 applied for a bank account
+2021-07-07 22:34:18  TRACE com.paul.bank.BankPortal:61 User henry logged on
+2021-07-07 22:34:51  TRACE com.paul.bank.BankPortal:61 User paul2 logged on
+2021-07-07 22:35:05  INFO com.paul.model.Client:191 User paul2 withdrew 100.0
+2021-07-07 22:35:26  INFO com.paul.model.Client:185 User paul2 tried to withdraw too much money from an account
+2021-07-07 22:35:35  INFO com.paul.model.Client:191 User paul2 withdrew 100.0
+2021-07-07 22:35:35  INFO com.paul.model.Client:171 User paul2 deposited 100.0
+2021-07-07 22:37:15  INFO com.paul.model.Client:171 User test deposited 400.0
+2021-07-07 22:37:16  INFO com.paul.model.Client:171 User test deposited 100.0
+2021-07-07 22:37:16  INFO com.paul.model.Client:185 User test tried to withdraw too much money from an account
+2021-07-07 22:37:16  INFO com.paul.model.Client:185 User test tried to withdraw too much money from an account
+2021-07-07 22:37:17  INFO com.paul.model.Client:191 User test withdrew 400.0
+2021-07-07 22:37:17  INFO com.paul.model.Client:191 User test withdrew 100.0
+2021-07-07 22:37:17  INFO com.paul.model.Client:164 User test tried to deposit a negative balance
+2021-07-07 22:37:17  INFO com.paul.model.Client:179 User test tried to withdraw a negative balance
+2021-07-07 22:43:24  INFO com.paul.model.Client:171 User test deposited 400.0
+2021-07-07 22:43:24  INFO com.paul.model.Client:171 User test deposited 100.0
+2021-07-07 22:43:25  INFO com.paul.model.Client:185 User test tried to withdraw too much money from an account
+2021-07-07 22:43:25  INFO com.paul.model.Client:185 User test tried to withdraw too much money from an account
+2021-07-07 22:43:25  INFO com.paul.model.Client:191 User test withdrew 400.0
+2021-07-07 22:43:25  INFO com.paul.model.Client:191 User test withdrew 100.0
+2021-07-07 22:43:26  INFO com.paul.model.Client:164 User test tried to deposit a negative balance
+2021-07-07 22:43:26  INFO com.paul.model.Client:179 User test tried to withdraw a negative balance
+2021-07-07 22:43:37  INFO com.paul.model.Client:171 User test deposited 400.0
+2021-07-07 22:43:38  INFO com.paul.model.Client:171 User test deposited 100.0
+2021-07-07 22:43:39  INFO com.paul.model.Client:185 User test tried to withdraw too much money from an account
+2021-07-07 22:43:39  INFO com.paul.model.Client:185 User test tried to withdraw too much money from an account
+2021-07-07 22:43:39  INFO com.paul.model.Client:191 User test withdrew 400.0
+2021-07-07 22:43:39  INFO com.paul.model.Client:191 User test withdrew 100.0
+2021-07-07 22:43:39  INFO com.paul.model.Client:164 User test tried to deposit a negative balance
+2021-07-07 22:43:39  INFO com.paul.model.Client:179 User test tried to withdraw a negative balance
+2021-07-07 22:43:51  TRACE com.paul.bank.BankPortal:97 New User ruby created
+2021-07-07 22:44:08  TRACE com.paul.bank.BankPortal:97 New User user created
+2021-07-07 22:44:14  TRACE com.paul.bank.BankPortal:61 User user logged on
+2021-07-07 22:45:39  TRACE com.paul.model.Client:151 User user applied for a bank account
+2021-07-07 22:45:42  TRACE com.paul.model.Client:151 User user applied for a bank account
+2021-07-07 22:45:53  TRACE com.paul.bank.BankPortal:61 User ruby logged on
+2021-07-07 22:46:23  TRACE com.paul.bank.BankPortal:61 User user logged on
+2021-07-07 22:46:32  INFO com.paul.model.Client:191 User user withdrew 100.0
+2021-07-07 22:46:51  INFO com.paul.model.Client:164 User user tried to deposit a negative balance
+2021-07-07 22:47:05  INFO com.paul.model.Client:185 User user tried to withdraw too much money from an account
+2021-07-07 22:47:17  INFO com.paul.model.Client:191 User user withdrew 100.0
+2021-07-07 22:47:17  INFO com.paul.model.Client:171 User user deposited 100.0

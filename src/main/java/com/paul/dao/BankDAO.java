@@ -9,7 +9,6 @@ public interface BankDAO {
 	Client getClient(int userID);
 	ArrayList<Client> getAllClients();
 	User verifyUser(String uname, String passwd, int accountType);
-	User verifyUser(String uname);
 	void sendMessage(Message msg);
 	void deleteMessage(int msgID);
 	void createBankAccount(int ownerID, double balance);
