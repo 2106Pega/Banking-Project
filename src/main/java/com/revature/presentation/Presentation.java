@@ -115,7 +115,7 @@ public class Presentation {
 				Account account = accountListIterator.next();
 				System.out.println("CustomerID: " + account.getCustomer_id() + ", AccountID: " + account.getAccount_id() + ", Balance: " + String.format("%.2f",account.getBalance()));
 			}
-			System.out.println("Enter +AccountID to approve account, -AccountID to reject account, ~CustomerID to view the pending account's customer, or Q to go back.");
+			System.out.println("Enter +AccountID to approve account, -AccountID to reject account, or QUIT to go back.");
 			while(inputResult == null) {
 				inputResult = scanner.nextLine();
 				substr = inputResult.substring(1);
@@ -123,7 +123,7 @@ public class Presentation {
 					presentationService.ApproveAccount(substr);
 				}else if (inputResult.charAt(0) == '-') {
 					presentationService.DenyAccount(substr);
-				}else if (inputResult.equals("Q")){
+				}else if (inputResult.equals("QUIT")){
 					DisplayEmployeePage();
 					break;
 				}
@@ -176,7 +176,6 @@ public class Presentation {
 			
 			inputResult = scanner.nextLine();
 			if(inputResult.equals("1")) {
-				System.out.println("Closing banking application...");
 				ViewPendingAccounts();
 			}else if (inputResult.equals("2")) {
 				DisplayCustomerAccounts();
