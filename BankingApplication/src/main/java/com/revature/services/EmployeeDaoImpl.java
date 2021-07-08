@@ -193,6 +193,47 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		
 	}
 
+	@Override
+	public BankAccount getUnapprovedByAccountNumber(int accountNumber) {
+BankAccount bankAccount = null;
+    	
+    	//String sql = "SELECT customer_id, account_number, account_balance FROM account_information WHERE account_number = " + accountNumber + ";";
+    	
+    	String sql = "SELECT customer_table.customer_id, first_name, last_name, account_Number, account_type, account_balance, account_approved "
+				+ "	FROM customer_table "
+				+ "Full OUTER JOIN account_information "
+				+ "ON account_information.customer_id = customer_table.customer_id "
+				+ "WHERE account_information.account_number =" + accountNumber +";";
+	
+    	
+    	
+    	try(Connection conn = ConnectionFactory.getConnection()){
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ResultSet resultSet = ps.executeQuery();			
+			
+			while(resultSet.next()) {	
+				bankAccount = new BankAccount(
+						resultSet.getInt("customer_id"),
+						resultSet.getString("first_name"), 
+						resultSet.getString("last_name"),
+						resultSet.getString("account_type"),
+						resultSet.getInt("account_number"),
+						resultSet.getDouble("account_balance"),
+						resultSet.getBoolean("account_approved")
+						);	
+				
+				return bankAccount;
+			}
+		
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	
+    	return bankAccount; 
+	}
+
 	
 
 }

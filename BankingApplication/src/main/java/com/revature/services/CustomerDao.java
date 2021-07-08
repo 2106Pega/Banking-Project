@@ -52,7 +52,6 @@ public interface CustomerDao {
 	 * Function to display the account details of a specific user
 	 * Displays first name, last name, account number and account balance
 	 */
-	public List<BankAccount> viewAccountDetails(int customer_id);
 
 	
 	public List<BankAccount> caseHistory ();

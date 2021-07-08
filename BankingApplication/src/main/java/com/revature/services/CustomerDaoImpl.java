@@ -295,11 +295,6 @@ public class CustomerDaoImpl implements CustomerDao {
         return false;
     }
 
-    @Override
-    public List < BankAccount > viewAccountDetails(int customer_id) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     @Override
     public List < BankAccount > caseHistory() {

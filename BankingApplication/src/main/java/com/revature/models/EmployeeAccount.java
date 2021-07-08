@@ -77,4 +77,23 @@ public class EmployeeAccount {
 		return employeeDao.approveAccount(customerID, accountNumber, accountApproved);
 	}
 	
+	public BankAccount getUnapprovedAccount(int accountNumber) {
+		BankAccount bankAccount = null;	
+		try {
+			bankAccount = employeeDao.getUnapprovedByAccountNumber(accountNumber);
+			
+			if( !(bankAccount.isAccountApproved()) ){
+				return bankAccount;
+			}
+			else {
+				return bankAccount = null;
+			}
+
+			
+		}
+		catch (Exception e){
+			return bankAccount = null;
+		}
+	}
+	
 }

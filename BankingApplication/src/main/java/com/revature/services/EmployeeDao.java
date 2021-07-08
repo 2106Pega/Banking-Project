@@ -20,6 +20,8 @@ public interface EmployeeDao {
 	
 	public boolean approveAccount(int customerID, int accountNumber, boolean accountApproved);
 	
+	public BankAccount getUnapprovedByAccountNumber(int accountNumber);
+	
 	List<BankAccount> getPendingAccounts(); 
 	List<BankAccount> getCustomerAccounts();
 
