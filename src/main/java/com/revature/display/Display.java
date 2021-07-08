@@ -23,6 +23,7 @@ public class Display {
 		System.out.println("Are you a customer or employee?");
 		System.out.println("1. Customer");
 		System.out.println("2. Employee");
+		System.out.println("3. Exit");
 		System.out.println("Please select the number of the options.");
 		String ans = sc.nextLine();
 		if(ans.equals("1")) {
@@ -30,6 +31,10 @@ public class Display {
 		}
 		else if(ans.equals("2")) {
 			employee_login();
+		}
+		else if(ans.equals("3"))
+		{
+			return;
 		}
 		else
 		{
@@ -62,6 +67,7 @@ public class Display {
 		System.out.println("1. Approve an account");
 		System.out.println("2. Reject an account");
 		System.out.println("3. View the information of an account");
+		System.out.println("4. Exit");
 		System.out.println("Please enter the number of the options.");
 		String ans = sc.nextLine();
 		switch(ans)
@@ -93,6 +99,9 @@ public class Display {
 			e.view_customer(account_v);
 			break;
 			
+		case "4":
+			break;
+			
 		default:
 			System.out.println("Invalid input, please reselect the option.");
 			employee_menu(employee);
@@ -105,15 +114,20 @@ public class Display {
 		System.out.println("Do you have an account?");
 		System.out.println("1. Yes");
 		System.out.println("2. No");
+		System.out.println("3. Exit");
 		System.out.println("Please enter the number of the options.");
 		String ans = sc.nextLine();
-		if(ans.equals("1") || ans.toLowerCase().equals("yes"))
+		if(ans.equals("1"))
 		{
 			user_login();
 		}
-		else if(ans.equals("2") || ans.toLowerCase().equals("no"))
+		else if(ans.equals("2"))
 		{
 			user_apply();
+		}
+		else if(ans.equals("3"))
+		{
+			return;
 		}
 		else
 		{
@@ -170,6 +184,7 @@ public class Display {
 		System.out.println("4. withdraw to your specific account");
 		System.out.println("5. post a money transfer to another account");
 		System.out.println("6. accept a money transfer from another account");
+		System.out.println("7. exit");
 		System.out.println("Please enter your option(number of the menu): ");
 		String option = sc.nextLine();
 		
@@ -280,6 +295,9 @@ public class Display {
 				customer_menu(u);
 			}
 			c.accept(account_rs, account_ta, amount_rs);
+			break;
+			
+		case "7":
 			break;
 			
 		default:
