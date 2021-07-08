@@ -126,6 +126,8 @@ public class BankTerminal {
 
 		System.out.println("Congratulations! You have successfully created an account!");
 		System.out.println("\n");
+		
+		username = newUser;
 
 		if (accountType == 1)
 			this.customerMenu();
