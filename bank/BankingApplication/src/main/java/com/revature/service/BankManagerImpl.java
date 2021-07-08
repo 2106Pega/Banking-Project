@@ -111,8 +111,6 @@ public class BankManagerImpl implements BankManager {
 
 		}
 
-		//double numericBalance = Double.parseDouble(startingBalance);
-
 
 		return balanceStatement;
 	}
