@@ -1,0 +1,66 @@
+DROP TABLE IF EXISTS transactionHistoy;
+DROP TABLE IF EXISTS accounts;
+DROP TABLE IF EXISTS users;
+
+
+CREATE TABLE IF NOT EXISTS users (
+user_id Serial PRIMARY KEY,
+user_name varchar(30) UNIQUE NOT NULL,
+user_password varchar(30) NOT NULL,
+first_name varchar(30),
+last_name varchar(30),
+is_employee boolean
+);
+
+
+CREATE TABLE IF NOT EXISTS accounts (
+account_id Serial PRIMARY KEY,
+user_id int,
+account_name varchar(30),
+approved boolean,
+balance int,
+CONSTRAINT fk_users
+	FOREIGN KEY(user_id)
+		references users(user_id)
+);
+
+CREATE TABLE IF NOT EXISTS transactionHistoy(
+transaction_id Serial PRIMARY KEY,
+from_account int NOT NULL,
+to_account int NOT NULL,
+ammount int,
+CONSTRAINT fk_faccount
+	FOREIGN key(from_account)
+		references accounts(account_id), 
+CONSTRAINT fk_taccount
+	FOREIGN key(to_account)
+		references accounts(account_id)
+);
+
+INSERT INTO public.users
+(user_name, user_password, first_name, last_name, is_employee)
+VALUES('Employee', 'admin', 'Chris', 'Eberle', true);
+
+INSERT INTO public.users
+(user_name, user_password, first_name, last_name, is_employee)
+VALUES('Customer', 'admin', 'Thaddeus', 'Okon', false);
+
+select * from users;
+
+INSERT INTO public.accounts
+(user_id, account_name, approved, balance)
+VALUES(1, 'EberleAccount', true, 5000);
+
+INSERT INTO public.accounts
+(user_id, account_name, approved, balance)
+VALUES(2, 'AprovedAccount', true, 600);
+
+
+SELECT * FROM accounts a ;
+
+REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM java;
+REVOKE USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public FROM java;
+drop role if exists java;
+create role java with login password 'javaPassword';
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to java;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO java;
