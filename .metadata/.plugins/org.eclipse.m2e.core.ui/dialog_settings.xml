@@ -48,6 +48,7 @@
 		<list key="name">
 		</list>
 		<list key="artifactId">
+			<item value="Project1FullStackBanking"/>
 			<item value="Project0FullBank"/>
 		</list>
 		<list key="projectNameTemplate">

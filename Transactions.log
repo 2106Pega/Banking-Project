@@ -7,3 +7,11 @@
 2021-07-08 10:26:31 INFO  BankUiImpl:551 - User 'johnsmith' deposited $50.0 to account 3.
 2021-07-08 10:27:04 INFO  BankUiImpl:622 - User 'kmrazek' withdrew $50.0 from account 2.
 2021-07-08 10:27:37 INFO  BankUiImpl:700 - User 'kmrazek' transferred $100.0 from account 1 to account 2.
+2021-07-15 22:24:43 INFO  BankControllerImpl:114 - User '1' deposited $90.0 to account 5.
+2021-07-15 22:25:01 INFO  BankControllerImpl:155 - User '1' withdrew $15.0 from account 1.
+2021-07-15 22:26:28 INFO  BankControllerImpl:201 - User '1' transferred $130.0 from account 2 to account 7.
+2021-07-15 23:36:07 INFO  BankControllerImpl:211 - User '1' transferred $50.0 from account 1 to account 9.
+2021-07-15 23:36:47 INFO  BankControllerImpl:211 - User '1' transferred $40.0 from account 1 to account 9.
+2021-07-15 23:37:59 INFO  BankControllerImpl:112 - User '3' deposited $10.0 to account 11.
+2021-07-15 23:38:09 INFO  BankControllerImpl:156 - User '3' withdrew $5.0 from account 11.
+2021-07-15 23:38:32 INFO  BankControllerImpl:211 - User '3' transferred $20.0 from account 10 to account 2.
